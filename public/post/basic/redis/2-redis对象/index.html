@@ -1,0 +1,1239 @@
+
+
+<!DOCTYPE html>
+<html lang="en" itemscope itemtype="http://schema.org/WebPage">
+  <head>
+    
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+ 
+
+
+      <title>[redis] redis 对象 - </title>
+
+  <meta name="description" content="学习redis中的对象: string list hash set zset ...">
+  <meta name="author" content="ch"/><script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "WebSite",
+    "name": "Beautiful Hugo",
+    
+    "url": "https:\/\/ahang7.github.io\/"
+}
+</script><script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Organization",
+  "name": "",
+  "url": "https:\/\/ahang7.github.io\/"
+  
+  
+  
+  
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [{
+        "@type": "ListItem",
+        "position": 1,
+        "item": {
+          "@id": "https:\/\/ahang7.github.io\/",
+          "name": "home"
+        }
+    },{
+        "@type": "ListItem",
+        "position": 3,
+        "item": {
+          "@id": "https:\/\/ahang7.github.io\/post\/basic\/redis\/2-redis%E5%AF%B9%E8%B1%A1\/",
+          "name": "[redis] redis 对象"
+        }
+    }]
+}
+</script><script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Article",
+  "author": {
+    "name" : "ch"
+  },
+  "headline": "[redis] redis 对象",
+  "description" : "三、对象 Redis Object 是什么？ redis是key-value存储，key-value在redis中被抽象为对象(Object)，key只能是String对象，value支持丰富的对象类型{String, List, Set, Hash, Sorted Set, Stream\u0026hellip;}\nObject在内存中的样子 #define LRU_BITS 24 typedef struct reidsObject { unsigned type:4; unsigned encoding:4; unsigned lru:LRU_BITS; int refcount; void *ptr; } robj; Type: 查看redis对象 Encoding: 表明使用哪种底层编码 Lru: 记录对象访问信息，用于内存淘汰 Refcount: 引用计数，用来描述有多少指针，指向该对象 Ptr: 内容指针，指向实际内容 对象与数据结果 实际操作的对象有6个Redis对象，他们的底层依赖一些数据对象，包括字符串、跳表、哈希表、压缩列表、双端列表等\n1.String String是什么 String是字符串，是Redis中最基本的数据对象，最大为512MB，可以通过配置项proto-max-bulk-len修改它\nString可以存储各种类型的字符串（包括二进制文件）\n适用场景 使用场景：一般用来存放字节数据、文本数据、序列化****后的对象数据\n例子：\n缓存场景：Value存Json字符串等信息 计数场景：因为Redis处理命令是单线程，所以执行命令的过程是原子的，因此String数据类型适合计数场景 在redis中怎么使用： 常用操作：创建、查询、更新、删除\n创建 \u0026ndash;\u0026gt; set, setnx\nSET key value # 设置一个key值为特定的value set命令扩展参数：EX（键过期时间秒）、PX（键过期时间毫秒）、NX（只有键不存在时才对键进行操作，基本替代下面的SETNX操作）、XX（键存在时才对键进行操作） SETNX key value # 用于在指定的key不存在时，为key设置指定的值 查询 \u0026ndash;\u0026gt; get, mget\nGet key # 查询某个key，存在就返回对应的value，不存在返回nil\n",
+  "inLanguage" : "en",
+  "wordCount":  779 ,
+  "datePublished" : "2024-10-26T00:00:00\u002b00:00",
+  "dateModified" : "2024-10-26T00:00:00\u002b00:00",
+  "image" : "https:\/\/ahang7.github.io\/img\/avatar-icon.png",
+  "keywords" : [ "redis" ],
+  "mainEntityOfPage" : "https:\/\/ahang7.github.io\/post\/basic\/redis\/2-redis%E5%AF%B9%E8%B1%A1\/",
+  "publisher" : {
+    "@type": "Organization",
+    "name" : "https:\/\/ahang7.github.io\/",
+    "logo" : {
+        "@type" : "ImageObject",
+        "url" : "https:\/\/ahang7.github.io\/img\/avatar-icon.png",
+        "height" :  60 ,
+        "width" :  60
+    }
+  }
+}
+</script>
+
+
+<meta property="og:title" content="[redis] redis 对象" />
+<meta property="og:description" content="学习redis中的对象: string list hash set zset ...">
+<meta property="og:image" content="https://ahang7.github.io/img/avatar-icon.png" />
+<meta property="og:url" content="https://ahang7.github.io/post/basic/redis/2-redis%E5%AF%B9%E8%B1%A1/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Beautiful Hugo" />
+
+  <meta name="twitter:title" content="[redis] redis 对象" />
+  <meta name="twitter:description" content="学习redis中的对象: string list hash set zset ...">
+  <meta name="twitter:image" content="https://ahang7.github.io/img/avatar-icon.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link href='https://ahang7.github.io/img/favicon.ico' rel='icon' type='image/x-icon'/>
+  <meta name="generator" content="Hugo 0.136.0">
+  <link rel="alternate" href="https://ahang7.github.io/index.xml" type="application/rss+xml" title="Beautiful Hugo"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.css" integrity="sha384-3UiQGuEI4TTMaFmGIZumfRPtfKQ3trwQE2JgosJxCnGmQpL/lJdjpcHkaaFwHlcI" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous"><link rel="stylesheet" href="https://ahang7.github.io/css/main.css" /><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+  <link rel="stylesheet" href="https://ahang7.github.io/css/highlight.min.css" /><link rel="stylesheet" href="https://ahang7.github.io/css/codeblock.css" /><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.css" integrity="sha384-h/L2W9KefUClHWaty3SLE5F/qvc4djlyR4qY3NUV5HGQBBW7stbcfff1+I/vmsHh" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/default-skin/default-skin.min.css" integrity="sha384-iD0dNku6PYSIQLyfTOpB06F2KCZJAKLOThS5HRe8b3ibhdEQ6eKsFf/EeFxdOt5R" crossorigin="anonymous">
+
+
+  </head>
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://ahang7.github.io/">Beautiful Hugo</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li>
+              <a title="Blog" href="/">Blog</a>
+            </li>
+          
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent" role="button" tabindex="0">Samples</a>
+              <div class="navlinks-children">
+                
+                  <a href="/post/2017-03-07-bigimg-sample">Big Image Sample</a>
+                
+                  <a href="/post/2017-03-05-math-sample">Math Sample</a>
+                
+                  <a href="/post/2016-03-08-code-sample">Code Sample</a>
+                
+              </div>
+            </li>
+          
+        
+          
+            <li>
+              <a title="About" href="/page/about/">About</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="Tags" href="/tags">Tags</a>
+            </li>
+          
+        
+
+        
+
+        
+      </ul>
+    </div>
+
+    
+      <div class="avatar-container">
+        <div class="avatar-img-border">
+          <a title="Beautiful Hugo" href="https://ahang7.github.io/">
+            <img class="avatar-img" src="https://ahang7.github.io/img/avatar-icon.png" alt="Beautiful Hugo" />
+           
+          </a>
+        </div>
+      </div>
+    
+
+  </div>
+</nav>
+
+
+
+
+    
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+
+  
+  
+  
+
+
+
+
+
+
+  
+
+  <header class="header-section ">
+    
+    
+    <div class="intro-header no-img">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <div class="post-heading">
+              
+                <h1>[redis] redis 对象</h1>
+              
+              
+              
+                
+                  <h2 class="post-subheading">学习redis中的对象: string list hash set zset ...</h2>
+                
+              
+              
+                <span class="post-meta">
+  
+  
+  <i class="fas fa-calendar"></i>&nbsp;Posted on October 26, 2024
+  
+  
+    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;4&nbsp;minutes
+  
+  
+    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;779&nbsp;words
+  
+  
+    
+      &nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;ch
+    
+  
+  
+</span>
+
+
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+  </header>
+
+
+    
+<div class="container" role="main">
+  <div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+      <article role="main" class="blog-post">
+        <h2 id="三对象">三、对象</h2>
+<h3 id="redis-object-是什么">Redis Object 是什么？</h3>
+<p>redis是key-value存储，key-value在redis中被抽象为对象(Object)，key只能是String对象，value支持丰富的对象类型{String, List, Set, Hash, Sorted Set, Stream&hellip;}</p>
+<h4 id="object在内存中的样子">Object在内存中的样子</h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="cp">#define LRU_BITS 24
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="k">typedef</span> <span class="k">struct</span> <span class="n">reidsObject</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">unsigned</span> <span class="nl">type</span><span class="p">:</span><span class="mi">4</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">unsigned</span> <span class="nl">encoding</span><span class="p">:</span><span class="mi">4</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">unsigned</span> <span class="nl">lru</span><span class="p">:</span><span class="n">LRU_BITS</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">refcount</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="o">*</span><span class="n">ptr</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span> <span class="n">robj</span><span class="p">;</span>
+</span></span></code></pre></div><ul>
+<li>Type: 查看redis对象</li>
+<li>Encoding: 表明使用哪种底层编码</li>
+<li>Lru: 记录对象访问信息，用于内存淘汰</li>
+<li>Refcount: 引用计数，用来描述有多少指针，指向该对象</li>
+<li>Ptr: 内容指针，指向实际内容</li>
+</ul>
+<h4 id="对象与数据结果">对象与数据结果</h4>
+<p>实际操作的对象有6个Redis对象，他们的底层依赖一些数据对象，包括字符串、跳表、哈希表、压缩列表、双端列表等</p>
+<h3 id="1string">1.String</h3>
+<h4 id="string是什么">String是什么</h4>
+<p>String是字符串，是Redis中最基本的数据对象，最大为512MB，可以通过配置项<strong>proto-max-bulk-len</strong>修改它</p>
+<p>String可以存储各种类型的字符串（包括二进制文件）</p>
+<h4 id="适用场景">适用场景</h4>
+<p>使用场景：一般用来存放<strong>字节数据</strong>、<strong>文本数据</strong>、<strong>序列化****后的对象数据</strong></p>
+<p>例子：</p>
+<ol>
+<li>缓存场景：Value存Json字符串等信息</li>
+<li>计数场景：因为Redis处理命令是单线程，所以执行命令的过程是原子的，因此String数据类型适合计数场景</li>
+</ol>
+<h4 id="在redis中怎么使用">在redis中怎么使用：</h4>
+<p>常用操作：创建、查询、更新、删除</p>
+<ul>
+<li>
+<p>创建 &ndash;&gt; set, setnx</p>
+<ul>
+<li><strong>SET</strong> key value # 设置一个key值为特定的value
+  set命令扩展参数：EX（键过期时间秒）、PX（键过期时间毫秒）、NX（只有键不存在时才对键进行操作，基本替代下面的SETNX操作）、XX（键存在时才对键进行操作）</li>
+<li><strong>SETNX</strong> key value # 用于在指定的<strong>key不存在</strong>时，为key设置指定的值</li>
+</ul>
+</li>
+<li>
+<p>查询 &ndash;&gt; get, mget</p>
+<ul>
+<li>
+<p><strong>Get</strong> key # 查询某个key，存在就返回对应的value，不存在返回nil</p>
+</li>
+<li>
+<p><strong>Mget</strong> key [key &hellip;] # 一次查询多个key，如果某个key不存在，对应位置返回nil</p>
+</li>
+</ul>
+</li>
+<li>
+<p>更新 &ndash;&gt; set</p>
+<ul>
+<li>见上面的set</li>
+</ul>
+</li>
+<li>
+<p>删除 &ndash;&gt; del</p>
+<ul>
+<li><strong>DEL</strong> key [key &hellip;] # 删除对象，返回值为删除成功了几行</li>
+</ul>
+</li>
+</ul>
+<h4 id="底层实现很重要">底层实现（很重要）</h4>
+<p>String有三种编码方式：<strong>INT</strong>**、EMBSTR、**<strong>RAW</strong></p>
+<ul>
+<li>
+<p>String对象编码</p>
+<ul>
+<li>
+<p>INT: 存放整形，可以用long表示的整数</p>
+</li>
+<li>
+<p>EMBSTR: 如果字符串**小于等于(&lt;=)**阈值字节(redis &gt; 3.2 ? 44 : 39)，使用EMBSTR编码</p>
+</li>
+<li>
+<p>RAW: 字符串**大于(&gt;)**阈值字节，使用RAW编码</p>
+</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>关于阈值字节大小，在源码中使用<strong>OBJ_ENCODING_EMBSTR_SIZE_LIMIT</strong>表示</p>
+<p>3.2版本前是39字节，3.2版本之后是44字节</p>
+</blockquote>
+<p>EMBSTR和RAW都是由redisObject和SDS两个结果组成，两者差异在于EMBSTR下redisObject和SDS是连续的内存，RAW编码下redisObject和SDS的内存是分开的</p>
+<p>EMBSTR的优缺点：</p>
+<ol>
+<li>
+<p>优点：一次性分配内存，redisObject和SDS两个结构一次性分配内存</p>
+</li>
+<li>
+<p>缺点：重新分配空间时，整体需要重新再分配</p>
+</li>
+<li>
+<p>EMBSTR设计为只读，任何写操作之后EMBSTR都会变成RAW</p>
+</li>
+</ol>
+<p>编码转化的可能：</p>
+<p>INT -&gt; RAW: 当内存不再是整形，或者大小超过了long</p>
+<p>EMBSTR -&gt; RAW: 任何写操作之后EMBSTR都会变成RAW</p>
+<ul>
+<li><strong>SDS</strong>(Simple Synamic String)，简单动态字符串，是redis内部作为基石的字符串封装（很重要）</li>
+</ul>
+<p>SDS是redis封装字符串结构，用以<strong>解决字符串追加和长度计算操作来带的性能瓶颈</strong>问题</p>
+<p>redis中SDS分为sdshdr8、sdshdr16、sdshdr32、sdshdr64，字段属性一致，区别再对应不同大小的字符串</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="k">struct</span> <span class="nf">__attribute__</span><span class="p">((</span><span class="n">__packed__</span><span class="p">))</span> <span class="n">sdshdr8</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">uint8_t</span> <span class="n">len</span><span class="p">;</span>   <span class="c1">// 使用了多少内部
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kt">uint8_t</span> <span class="n">alloc</span><span class="p">;</span> <span class="c1">// 分配了多少内存
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kt">unsigned</span> <span class="kt">char</span> <span class="n">flags</span><span class="p">;</span> <span class="c1">// 标记是什么分类 例如： #define SDS_TYPE_8 1
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="kt">char</span> <span class="n">buf</span><span class="p">[];</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>从上面的结构可以看出SDS是怎么解决问题的：</p>
+<ol>
+<li>
+<p>增加len字段，快速返回长度</p>
+</li>
+<li>
+<p>增加空余空间(alloc - len)，为后续追加数据留余地</p>
+</li>
+<li>
+<p>不要以&rsquo;\0&rsquo;作为判断标准，二进制安全</p>
+</li>
+</ol>
+<p>SDS预留空间大小的规则：alloc = min(len, 1M) + len：</p>
+<p>len小于1M的情况下，alloc=2*len, 预留len大小的空间</p>
+<p>len大于1M的情况下，alloc=1M+lne, 预留1M大小的空间</p>
+<h3 id="2list">2.List</h3>
+<h4 id="list是什么">List是什么</h4>
+<p>Redis List是一组了解起来的字符串<strong>集合</strong></p>
+<h4 id="适用场景-1">适用场景</h4>
+<p>List作为一个列表存储，属于比较底层的数据结构，可以实验的场景非常多，比如存储一批任务数据，存储一批消息</p>
+<h4 id="在redis中怎么使用-1">在Redis中怎么使用</h4>
+<p>常用操作：创建、查询、更新、删除</p>
+<ul>
+<li>
+<p>创建 &ndash;&gt; LPUSH, RPUSH</p>
+<ul>
+<li>
+<p><strong>LPUSH</strong> key value [value &hellip;] 从头部增加元素，返回List中元素总数</p>
+</li>
+<li>
+<p><strong>RPUSH</strong> key value [value &hellip;] 从尾部增加元素，返回List中元素总数</p>
+</li>
+</ul>
+</li>
+<li>
+<p>查询 &ndash;&gt; LLEN, LRANGE</p>
+<ul>
+<li>
+<p><strong>LLEN</strong> 查看List的长度，即List中元素的总数</p>
+</li>
+<li>
+<p><strong>LRANGE</strong> key start stop 查看start到stop为角标的元素</p>
+</li>
+</ul>
+</li>
+<li>
+<p>更新 &ndash;&gt; LPUSH, RPUSH, LPOP, RPOP, LREM</p>
+<ul>
+<li>
+<p><strong>LPOP</strong> key 移除并获取列表的第一个元素</p>
+</li>
+<li>
+<p><strong>RPOP</strong> key 移除并获取列表的第一个元素</p>
+</li>
+<li>
+<p><strong>LREM</strong> key count value 移除值等于value的元素</p>
+<p>    count = 0 ，则移除所有等于value的元素；</p>
+<p>    count &gt; 0 ，则从左到右开始移除count个value元素；</p>
+<p>    Count &lt; 0，则从右往左移除count个元素</p>
+</li>
+</ul>
+</li>
+<li>
+<p>删除 &ndash;&gt; DEL, UNLINK</p>
+<ul>
+<li>
+<p><strong>DEL</strong> key [key &hellip;] 删除对象，返回值为删除成功了几个键</p>
+</li>
+<li>
+<p><strong>UNLIKN</strong> key [key &hellip;] 删除对象，返回值为删除成功了几个键</p>
+</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>del命令与unlink命令均为删除对象，<strong>不同</strong>的是</p>
+<p>del命令是<strong>同步</strong>删除目录，会阻塞客户端，直到删除完成；</p>
+<p>unlink命令是<strong>异步</strong>删除命令，只是取消key在键空间的关联，让其不在能查到，删除是异步进行，所以不会阻塞客户端</p>
+</blockquote>
+<h4 id="底层实现">底层实现（*）</h4>
+<p>List对象有两种编码方式（在版本3.2之前）：ZIPLIST、LINKEDLIST</p>
+<p>满足以下条件时，使用ZIPLIST编码：</p>
+<ol>
+<li>
+<p>列表对象保存的所有字符串对象长度都<strong>小于64字节</strong></p>
+</li>
+<li>
+<p>列表对象元素个数少于512个，这是LIST的限制，不是ZIPLIST的限制</p>
+</li>
+</ol>
+<p>ZIPLIST底层用<strong>压缩列表</strong>实现，ZIPLIST内存排序很紧凑，可以有效节省内存空间</p>
+<p><img src="https://rt5bap83jl.feishu.cn/space/api/box/stream/download/asynccode/?code=NWMxZjQwZGYwMDAzMDQzMzNiOTQwZGE2NWNiOWY4ODBfZUZ3a1p6TWZWVUFTQ0FMd2dpamd5SGRiZzdCVkxSSldfVG9rZW46UlkzNmJTNUFLb0JNZWJ4VW9YRGNRckkzbnFlXzE3MjE4NDEzNjY6MTcyMTg0NDk2Nl9WNA" alt=""></p>
+<blockquote>
+<p>压缩列表的数据是紧凑的</p>
+</blockquote>
+<p>不满足ZIPLIST编码条件时，则使用<strong>LINKEDLIST编码</strong></p>
+<p><img src="https://rt5bap83jl.feishu.cn/space/api/box/stream/download/asynccode/?code=OWIwMWM5N2NiMDM3Zjk2NjU0MGU4ZTM5NjliZDI5YzJfSldnTkJVQWZvbzVOaXdreUhybk5QbHZqVDNlTHdkNjdfVG9rZW46VURURGJBd1hKb3gwNlF4dEExMmNQeE9nbllmXzE3MjE4NDEzNjY6MTcyMTg0NDk2Nl9WNA" alt=""></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="k">typedef</span> <span class="k">struct</span> <span class="n">list</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">listNode</span> <span class="o">*</span><span class="n">head</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">listNode</span> <span class="o">*</span><span class="n">tail</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="o">*</span><span class="p">(</span><span class="o">*</span><span class="n">dup</span><span class="p">)(</span><span class="kt">void</span> <span class="o">*</span><span class="n">ptr</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="p">(</span><span class="o">*</span><span class="n">free</span><span class="p">)(</span><span class="kt">void</span> <span class="o">*</span><span class="n">ptr</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="p">(</span><span class="o">*</span><span class="n">match</span><span class="p">)(</span><span class="kt">void</span> <span class="o">*</span><span class="n">ptr</span><span class="p">,</span> <span class="kt">void</span> <span class="o">*</span><span class="n">key</span><span class="p">);</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">len</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span> <span class="n">list</span><span class="p">;</span>
+</span></span></code></pre></div><p>使用LINKEDLIST编码，是几个String对象的链接结构，以链表的形式连接，删除更加灵活但是在内存上不如ZIPLIST紧凑，所以只有在<strong>列表个数或节点长度比较大</strong>的时候，才会使用LINKEDLIST编码，LINKEDLIST编码以牺牲内存换取了更加快处理的性能</p>
+<blockquote>
+<p>分析：</p>
+<p>ZIPLIST是为了数据较少时节约内存</p>
+<p>LINKEDLIST是为了数据多时提高更新效率，ZIPLIST数据稍多是插入数据会导致很多内存复制</p>
+</blockquote>
+<ul>
+<li><strong>QUICKLIST</strong> 横空出世</li>
+</ul>
+<p>3.2版本之后引入了**QUICKLIST，**QUICKLIST其实就是ZIPLIST和LINKEDLIST的结合体（LINKEDLIST原来单个节点只能存放一个数据，现在单个节点存放的是一个ZIPLIST）</p>
+<p><img src="https://rt5bap83jl.feishu.cn/space/api/box/stream/download/asynccode/?code=MWI3MjEzYzliMDk5NzUwZjRiMzU0MmU5NmIwMDcyOTNfb1hGWGt4OGpoMkZxM2tMNW1ENklQNVd3emVNYzdrM1hfVG9rZW46UGZWY2JXUFNab0FoR0l4SnE5Y2NuampKblNjXzE3MjE4NDEzNjY6MTcyMTg0NDk2Nl9WNA" alt=""></p>
+<p>当数据较少时，QUICKLIST的节点就只有一个，相当于一个ZIPLIST</p>
+<p>当数据很多的时候，则同时利用ZIPLIST和LINKEDLIST的优势</p>
+<h4 id="ziplist优化">ZIPLIST优化</h4>
+<p>ZIPLIST存在一个连锁更新问题，在Redis 7.0之后，使用LISTPACK（也称为紧凑列表）的编码模式取代了ZIPLIST，而他们其实本质都是一种压缩的列表，所以可以统一叫做压缩列表</p>
+<h3 id="21底层数据结构--压缩列表">2.1底层数据结构&ndash;压缩列表</h3>
+<p>压缩列表，就是排列紧凑的列表，在Redis中有两个编码方式，一种是ZIPLIST，另一种是LISTPACK（于redis 5.0引入知道redis 7.0完全替代ZIPLIST）</p>
+<h4 id="压缩列表解决什么问题">压缩列表解决什么问题？</h4>
+<p>压缩列表是List的底层数据结构，压缩列表主要用做<strong>为底层数据结构提供紧凑型的数据存储方式，能节约****内存</strong>（节省列表指针的开销），小数据量的时候遍历访问性能好（连续+缓存命中率友好）</p>
+<h4 id="ziplist整体结构">ZIPLIST整体结构</h4>
+<p>虽然有LISTPACK，但是实际面试中还是ZIPLIST比较多</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="c1">// redis代码注释，描述了ZIPLIST的结构
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"> <span class="o">*</span> <span class="o">&lt;</span><span class="n">zlbytes</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">zltail</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">zllen</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">entry</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">entry</span><span class="o">&gt;</span> <span class="p">...</span> <span class="o">&lt;</span><span class="n">entry</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">zlend</span><span class="o">&gt;</span>
+</span></span></code></pre></div><p>各字段定义：</p>
+<ul>
+<li>
+<p>zlbytes: 表示该ZIPLIST一共占了多少字节，这个数字是包含zlbytes本身占据的字节的</p>
+</li>
+<li>
+<p>zltail: ZIPLIST尾巴节点，相对于ZIPLIST的开头，偏移的字节数</p>
+</li>
+<li>
+<p>zllen: 表示有多少个数据节点</p>
+</li>
+<li>
+<p>entry: 表示压缩列表的数据节点</p>
+</li>
+<li>
+<p>zlend: 一个特殊的entry节点，表示ZIPLIST的结束</p>
+</li>
+</ul>
+<h4 id="ziplist节点结构entrys">ZIPLIST节点结构<!-- raw HTML omitted --></h4>
+<p>定义如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="o">&lt;</span><span class="n">prevlen</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">encoding</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">entry</span><span class="o">-</span><span class="n">data</span><span class="o">&gt;</span>
+</span></span></code></pre></div><p>各字段含义：</p>
+<ul>
+<li>Prevlen: 表示上一个节点的数据长度。通过该节点可以定位上一个节点的起始地址，(p - prevlen)可以跳到前一个节点的开头位置，实现往前操作，即压缩列表可以从后往前遍历</li>
+</ul>
+<p>一个entry的大小，小于254字节，那么prevlen熟悉需要1字节长的空间来保存这个长度，<strong>255是特殊字符，被zlend使用了</strong></p>
+<p>当entry的大小大于等于254字节，那么prevlen属性需要用5字节长的空间来保持这个长度值，注意<strong>5个字节中第一字节为11111110，也就是254</strong>，标志这是个5字节的prelen信息，剩下4个字节来表示大小</p>
+<ul>
+<li>
+<p>Encoding: 编码类型，包含了一个entry的长度信息，可用于正向遍历</p>
+</li>
+<li>
+<p>Entry-data: 实际的数据</p>
+</li>
+</ul>
+<h4 id="encoding说明">encoding说明</h4>
+<p>encoding字段是一个整形数据，其二进制编码由内容数据(entry-data)的类型和内容数据(entry-data)的字节长度两部分组成，根据内容类型有如下几种情况</p>
+<p>&hellip;</p>
+<table>
+  <thead>
+      <tr>
+          <th></th>
+          <th></th>
+          <th></th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>类型</td>
+          <td>区分</td>
+          <td>补充</td>
+      </tr>
+      <tr>
+          <td>String</td>
+          <td>前几位标识类型，后几位标识长度</td>
+          <td></td>
+      </tr>
+      <tr>
+          <td>int</td>
+          <td>整体1字节编码，只标识了类型，没有大小</td>
+          <td>因为int的具体类型自带大小，比如int32，就是32位，4字节大小，不需要encoding特别标识</td>
+      </tr>
+  </tbody>
+</table>
+<h4 id="ziplist查询数据">ZIPLIST查询数据</h4>
+<p>两个关键操作：查询ZIPLIST的数据总量，查询指定数据的节点</p>
+<ul>
+<li><strong>查询ZIPLIST的数据总量</strong></li>
+</ul>
+<p>ZIPLIST的header定义了记录节点数量的字段zllen，所以<strong>通常</strong>是在O(1)时间复杂度直接返回，为什么是通常？因为zllen是2个字节，当zllen大于65534时，zllen就存不下了，此时真实的节点数量需要遍历得来。</p>
+<p>之所以zllen是2个字节，原因是redis中应用ZIPLIST是为了节点个数少的场景，所以将zllen设计得比较小，节约内存空间</p>
+<ul>
+<li><strong>查询指定数据的节点</strong></li>
+</ul>
+<p>在ZIPLIST中查询指定数据的节点，需要遍历整个压缩列表，平均时间复杂度为O(N)</p>
+<h4 id="ziplist更新数据">ZIPLIST更新数据</h4>
+<p>ZIPLIST的更新就是增加、删除数据，ZIPLIST提供头尾增减的能力，但是操作平均时间复杂度O(N)，因为在头部增加一个节点会导致后面节点都往后移动，所以更新平均时间复杂度O(N)</p>
+<p>更新操作可能带来连锁更新。连锁更新是指节点后移发生不止一次，而是多次（一般）</p>
+<h4 id="listpack优化">LISTPACK优化</h4>
+<p>LISTPACK是为了解决ZIPLIST最大的痛点——连锁更新</p>
+<blockquote>
+<p>ZIPLIST需要支持LIST，LIST是一种双端访问的结构，所以需要能从后往前遍历</p>
+<p>ZIPLIST的数据节点：<!-- raw HTML omitted --> <!-- raw HTML omitted --> <!-- raw HTML omitted --></p>
+<p>其中，prevlen表示上个节点的数据长度，通过这个字段可以定位上一个节点的数据</p>
+<p><strong>连锁更新的问题，就是因为prevlen导致的</strong></p>
+</blockquote>
+<p>LISTPACK以一种不记录prevlen，并且还能找到上一个节点的起始位置的节点结构，解决了这一问题</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="o">&lt;</span><span class="n">encoding</span><span class="o">-</span><span class="n">type</span><span class="o">&gt;&lt;</span><span class="n">element</span><span class="o">-</span><span class="n">data</span><span class="o">&gt;&lt;</span><span class="n">element</span><span class="o">-</span><span class="n">tot</span><span class="o">-</span><span class="n">len</span><span class="o">&gt;</span>
+</span></span></code></pre></div><ul>
+<li>
+<p>encoding-type是编码类型，element-data是数据内容，element-tot-len存储整个节点除了它自身之外的长度(*)</p>
+</li>
+<li>
+<p>element-tot-len所占用的每个字节的<strong>第一个bit</strong>用于标识是否结束，剩下7个bit来存储数据大小</p>
+<ul>
+<li>
+<p>0 是结束</p>
+</li>
+<li>
+<p>1 是开始</p>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="总结">总结</h4>
+<ul>
+<li>
+<p>重点理解压缩列表是节约内存的一种数据结构，它采取了将数据紧密排列的形式来压缩空间</p>
+</li>
+<li>
+<p>理解ZIPLIST的基本操作&ndash;查询&amp;&amp;更新</p>
+</li>
+<li>
+<p>重点理解ZIPLIST节约内存的思路</p>
+</li>
+</ul>
+<h3 id="3set">3.Set</h3>
+<h4 id="set是什么">Set是什么</h4>
+<p>Redis的Set是一个不重复，无序的字符串集合（而外补充，如果是INTSET编码的时候其实是有序的，不过一般不应该依赖这个，整体上还是当成无序来用比较好）</p>
+<h4 id="适用场景-2">适用场景</h4>
+<p>适用于无序集合场景，例如某用户关注了哪些公众号，这些信息放进一个集合，Set还提供了查交集，并集的功能，可以很方便实现共同关注的能力</p>
+<h4 id="常用操作">常用操作</h4>
+<p>Set的基本操作有：创建，查询，更新，删除</p>
+<ul>
+<li>
+<p>创建：SADD</p>
+<ul>
+<li><strong>SADD</strong> key member [member &hellip;] 添加元素，返回值为成功添加了几个元素</li>
+</ul>
+</li>
+<li>
+<p>查询：SISMEMBR, SCARD, SMEMBERS, SSCAN, SINTER, SUNION, SDIFF</p>
+<ul>
+<li>
+<p><strong>SISMEMBER</strong> key member 查询元素是否存在</p>
+</li>
+<li>
+<p><strong>SCARD</strong> key 查询集合元素个数</p>
+</li>
+<li>
+<p><strong>SMEMBERS</strong> key 查看集合的所有元素</p>
+</li>
+<li>
+<p><strong>SSCAN</strong> key cursor[MATCH pattern][COUNT count] 查看集合元素，可以理解为指定游标进行查询，可以指定个数，默认为10</p>
+</li>
+<li>
+<p><strong>SINTER</strong> key [key &hellip;] 返回在第一个集合，同时在后面<strong>所有集合都存在</strong>元素</p>
+</li>
+<li>
+<p><strong>SUNION</strong> key [key &hellip;] 返回所有集合的并集，集合个数大于等于2</p>
+</li>
+<li>
+<p><strong>SDIFF</strong> key [key &hellip;] 返回第一个集合有，且后续集合中不存在的元素，结合个数大于等于2，注意</p>
+</li>
+</ul>
+</li>
+<li>
+<p>更新：SADD, SREM</p>
+<ul>
+<li>
+<p><strong>SADD &ndash; &gt;</strong> 参考上文</p>
+</li>
+<li>
+<p><strong>SREM</strong> key member [member &hellip;] 删除元素，返回值为成功删除几个元素</p>
+</li>
+</ul>
+</li>
+<li>
+<p>删除：DEL</p>
+<ul>
+<li>DEL key 删除元素</li>
+</ul>
+</li>
+</ul>
+<h4 id="底层编码">底层编码</h4>
+<p>Set的底层编码是Set对象编码，Set对象编码：<strong>INTSET，HASHTABLE</strong></p>
+<p>如果集群元素都是整数，且元素数量不超过52个，可以用INTSET编码，结构如下</p>
+<p><img src="https://rt5bap83jl.feishu.cn/space/api/box/stream/download/asynccode/?code=ZGZlZTlmOGVjNWQ5NTViZmU1OWEwNDI2NWYyNjk3NzZfSXlXblZ0NXJxV3JtMWxBRkZxWmhKMFM5VFN1ZXhQSW9fVG9rZW46THNCMGJpcFV2b2ZzQk54RHpGdWNLQmp6bnRjXzE3MjE4NDEzNjY6MTcyMTg0NDk2Nl9WNA" alt=""></p>
+<p>可以看到INTSET排列比较紧凑，内存占用少，但是查询的时候需要二分查找</p>
+<p>当不满足INTSET条件时，需要HASHTABLE，结构如下</p>
+<p><img src="https://rt5bap83jl.feishu.cn/space/api/box/stream/download/asynccode/?code=NzE3NzJiNGJmMDdlMzFiMjFkMWViODM4MGY5NThlNDhfRWEzTG45N1NtZm5qZldPQjB6MGk2b21rSE16OUpPcFpfVG9rZW46RDR5b2JtOWZEb1IyaHB4VkRlM2NHbUx4blpjXzE3MjE4NDEzNjY6MTcyMTg0NDk2Nl9WNA" alt=""></p>
+<p>HASHTABLE查询一个元素的性能很高，能O(1)时间就能找到一个元素是否存在</p>
+<h3 id="4hash">4.Hash</h3>
+<h4 id="hash是什么">Hash是什么</h4>
+<p>Redis Hash是一个field、value都为String的哈希表，存储在Redis内存中</p>
+<p>redis中每个hash可以存储（ 2^32-1 ）键值对</p>
+<h4 id="使用场景">使用场景</h4>
+<p>适用于O(1)时间字典查找某个field对应数据的场景，例如任务信息的配置，可以任务类型为field，任务配置参数为value</p>
+<h4 id="在redis中怎么使用-2">在redis中怎么使用</h4>
+<p>常见操作：创建，查询，更新，删除</p>
+<ul>
+<li>
+<p>创建：HSET, HSETNX</p>
+<ul>
+<li>
+<p><strong>HSET</strong> key field value 为集合对于field设置value，可以一次设置多个field-value</p>
+</li>
+<li>
+<p><strong>HSETNX</strong> key field value 如果field不存在，则为集合对应field设置value数据</p>
+</li>
+</ul>
+</li>
+<li>
+<p>查询：HGETALL, HGET, HLEN, HSCAN</p>
+<ul>
+<li>
+<p><strong>HGETALL</strong> key 查找全部数据</p>
+</li>
+<li>
+<p><strong>HGET</strong> key field 查找某个key（field）</p>
+</li>
+<li>
+<p><strong>HLEN</strong> key 查找Hash中元素总数</p>
+</li>
+<li>
+<p><strong>HSCAN</strong> key cursor [MATCH pattern] [COUNT count] 从指定位置查询一定数量的数据，这里注意如果是小数据量下，处于ZIPLIST时，COUNT不管填多少，都是返回全部，因为ZIPLIST本身就用于小集合，没必要切分几段返回</p>
+</li>
+</ul>
+</li>
+<li>
+<p>更新：HSET, HSETNX, HDEL</p>
+<ul>
+<li><strong>HDEL</strong> key field [field &hellip;] 删除指定field，可以一次删除多个</li>
+</ul>
+</li>
+<li>
+<p>删除：DEL</p>
+<ul>
+<li><strong>DEL</strong> key [key &hellip;] 删除Hash对象</li>
+</ul>
+</li>
+</ul>
+<h4 id="底层原理">底层原理</h4>
+<p>Hash底层有两种编码格式，一个是压缩列表（ZIPLIST），一个是HASHTABLE，满足以下两个条件，用压缩列表：</p>
+<ol>
+<li>
+<p>Hash对象保存的所有值和键的长度都小于64字节</p>
+</li>
+<li>
+<p>Hash对象元素个数少于512个</p>
+</li>
+</ol>
+<p>当Hash的底层编码为ZIPLIST时，即数据量较少时将数据紧凑排列，对应到Hash，就是<strong>将field-value当作entry放入ZIPLIST</strong></p>
+<p>如果Hash的底层编码为HASHTABLE时，与上面的Set（无序列表）使用HASHTABLE，区别在于在Set中Value始终为null，但是在HSet中，是有对应的值</p>
+<h3 id="41底层结构--hashtable">4.1底层结构&ndash;HASHTABLE</h3>
+<h4 id="hashtable概述">HASHTABLE概述</h4>
+<p>通过HASHTABLE可以使用O(1)时间复杂度能够快速找到key对应的value，简单理解，HASHTABLE是一个目录，可以帮助我们快速找到需要内容</p>
+<h4 id="hashtable结构">HASHTABLE结构</h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="k">typedef</span> <span class="k">struct</span> <span class="n">dictht</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">dictEntry</span> <span class="o">**</span><span class="n">table</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">size</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">sizemask</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">used</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span> <span class="n">dictht</span><span class="p">;</span>
+</span></span></code></pre></div><p>最外层封装一个<strong>dictht</strong>结构，字段含义如下：</p>
+<ul>
+<li>
+<p>Table: 指向实际hash存储。存储可以看做一个数组</p>
+</li>
+<li>
+<p>Size: 哈希表大小，实际就是dictEntry有多少元素空间</p>
+</li>
+<li>
+<p>Sizemask: 哈希表大小的掩码表示，总是等于size-1. 这个属性和哈希值一起决定一个键应该放到table数组的那个索引上面，规则Index=hash&amp;sizemask.</p>
+</li>
+<li>
+<p>Used: 表示已经使用的节点数量。通过这个字段可以查询目前HASHTABLE元素总量</p>
+</li>
+</ul>
+<p><img src="https://rt5bap83jl.feishu.cn/space/api/box/stream/download/asynccode/?code=YmIyOWI5ZDM0ZjJkNmUxNTdiZmQ5NzI4MjE3MzM0OGVfYTFuOTdRZ3gwUzhGNkFtWnFuYkl0bFZ5emx6aVlLN1JfVG9rZW46S2JZcmI4S0I0b01wTDR4RUV6cWNPNUR5blFmXzE3MjE4NDEzNjY6MTcyMTg0NDk2Nl9WNA" alt=""></p>
+<h4 id="hash表渐进式扩容">Hash表渐进式扩容</h4>
+<p>渐进式扩容就是一点一点扩大HASHTABLE的容量，默认值为4（#define DICT_HT_INTTIAL_SIZE 4）</p>
+<p>为了实现渐进式扩容，Redis没有直接把dictht暴露给上层，而是再封装了一层</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="k">typedef</span> <span class="k">struct</span> <span class="n">dict</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">dictType</span> <span class="o">*</span><span class="n">type</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="o">*</span><span class="n">privdata</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">dictht</span> <span class="n">ht</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">long</span> <span class="n">rehashidx</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">iterators</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span> <span class="n">dict</span><span class="p">;</span>
+</span></span></code></pre></div><p>dict结构里面，包含了2个dictht结构，也就是2个HASHTABLE结构。</p>
+<p>dictEntry是链表结构，用拉链法解决Hash冲突，用的是头插法</p>
+<p>实际上，平时使用的时候就是一个HASHTABLE，在触发扩容之后，就会有两个HASHTABLE同时使用，详细过程如下：</p>
+<p>当向字典添加元素时，需要扩容时会进行rehash</p>
+<p>Rehash流程分以下三步：</p>
+<ol>
+<li>
+<p>为新Hash表ht[1]分配空间，新表大小为第一个大于等于原表ht[0]的2倍used的2次幂。例如，原表used=500，2*used=1000，第一个大于1000的2次幂为1024，因此新表的大小为1024. 此时，字典同时持有ht[0]和ht[1]两个哈希表，字典的偏移索引rehashidx从静默状态-1，设置为0，表示Rehash正式开始工作。</p>
+</li>
+<li>
+<p>迁移ht[0]数据到ht[1]<strong>在Rehash进行期间</strong>，每次对字典执行增删改查操作，程序会顺带迁移当前rehashidx在ht[0]上的对应数据，并更新<strong>偏移索引(rehashidx)</strong>。</p>
+</li>
+<li>
+<p>随着字典操作的不断执行，最终在某个节点，ht[0]的所有键值对会被Rehash到ht[1]，此时再将ht[1]和ht[0]两个指针对象互换，同时把偏移索引的值设置为-1，表示Rehash操作已经完成。</p>
+</li>
+</ol>
+<p>小总结：渐进式扩容的核心是操作时顺带迁移</p>
+<h4 id="扩容时机">扩容时机</h4>
+<p>redis提出一个负载因子的概念，负载因子表示目前Redia HASHTABLE的负载情况</p>
+<p>用k表示负载因子：k=ht[0].used/ht[0].size，也就是使用空间和总空间大小的比例，redis会根据负载因子的情况来扩容：</p>
+<ol>
+<li>
+<p>负载因子k大于1时，说明此时空间非常紧张，新数据在链表上叠加，越来越多的数据导致查询无法在O(1)时间复杂度找到，还要遍历链表，如果此时服务器没有执行BGSAVE或BGREWRITEAOF两个命令，就会发生扩容。</p>
+</li>
+<li>
+<p>负载因子k大于5时，说明HASHTABLE已经不堪重负，此时即使有复制命令在，也要进行扩容</p>
+</li>
+</ol>
+<h4 id="缩容">缩容</h4>
+<p>当有了多余的空间，如果不释放，就会导致多余的空间被浪费</p>
+<p>缩容过程和扩容是相似的，也是渐进式缩容，同样缩容时机也是用负载因子来控制的</p>
+<p>当负载因子小于0.1，此时进行缩容，新表的大小为第一个大于等于used的2次幂</p>
+<p>使用BGSAVE或BGREWRITEAOF两个复制命令，缩容也会受影响，不会进行</p>
+<h3 id="5-zset">5. ZSet</h3>
+<h4 id="zset是什么">ZSet是什么</h4>
+<p>ZSet是有序集合，也叫做Sorted Set，是一组按照关联积分有序的字符串集合，这个分数是抽象概念，任何指标都可以抽象为粉丝，以满足不同场景</p>
+<p>积分相同的情况下，按字典序排序</p>
+<h4 id="适用场景-3">适用场景</h4>
+<p>用于需要排序集合的场景，（例如经典的游戏排行榜）</p>
+<h4 id="常用操作-1">常用操作</h4>
+<ul>
+<li>
+<p>创建：ZADD</p>
+<ul>
+<li>
+<p>ZADD key score member [score member] 向Sorted Set增加数据，如果key已经存在的Key，则更新对应的数据</p>
+<ul>
+<li>扩展参数：XX, NX, LT, GT</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>查询：ZRANGE, ZCOUNT, ZRANK, ZCARD, ZSCORE</p>
+<ul>
+<li>
+<p>ZCARD key 查看ZSet中的成员</p>
+</li>
+<li>
+<p>ZRANGE key start stop [WITHSCORES] 查询从start到stop范围的ZSet数据，WITHSCORES选填，不写输出里只有key，没有score值</p>
+</li>
+<li>
+<p>ZREVRANGE key start stop [WITHSCORES] 即reverse range，从大到小遍历，WITHSCORES选项，不写不会输出score</p>
+</li>
+<li>
+<p>ZCOUNT key min max 计算min-max积分范围的成员</p>
+</li>
+<li>
+<p>ZRANK key member 查看ZSet中member的排名索引，索引从0开始，所以排名是第一，索引就是0</p>
+</li>
+<li>
+<p>ZSCORE key member 查询ZSet成员的分数</p>
+</li>
+</ul>
+</li>
+<li>
+<p>更新：ZADD, ZREM</p>
+<ul>
+<li>ZREM key member [member &hellip;] 删除ZSet中的元素</li>
+</ul>
+</li>
+<li>
+<p>删除：DEL, UNLINK</p>
+</li>
+</ul>
+<h4 id="底层实现-1">底层实现</h4>
+<p>ZSet底层编码有两种，一个是ZIPLIST，另一种是SKIPLIST+HASHTABLE</p>
+<p>在ZSet中，ZIPLIST也是用于数据量比较小的时候节省内存，结构如下</p>
+<p><img src="https://rt5bap83jl.feishu.cn/space/api/box/stream/download/asynccode/?code=YmI0OTcwZjczM2IzOTFiNWM3YjFlZGE5YTI3ZWM2M2RfUXVWUEFzSThqN0lEaFp3S3BIck5kdmVWbzBQTHdPbzRfVG9rZW46VmpRbGJZWVo5b0RVMjh4OXEzamNJVnFabmxjXzE3MjE4NDEzNjY6MTcyMTg0NDk2Nl9WNA" alt=""></p>
+<p>如果满足如下规则，ZSet就用ZIPLIST编码：</p>
+<ol>
+<li>
+<p>列表对象保存的所有字符串对象长度都小于64字节</p>
+</li>
+<li>
+<p>列表对象元素个数少于128个</p>
+</li>
+</ol>
+<p>当上面条件任何一条不满足，编码就用SKIPLIST+HASHTABLE</p>
+<p>SKIPLIST是一种可以快速查找的多级链表结构，通过SKIPLIST可以快速定位到数据所在，它的排名操作、范围查询性能都很高</p>
+<h3 id="6底层数据结构--跳表">6.底层数据结构&ndash;跳表</h3>
+<h4 id="跳表是什么">跳表是什么</h4>
+<p>跳表是Redis有序集合ZSet底层的数据结构</p>
+<p>redis中跳表的两处应用：1. 实现有序集合键、2. 在集群节点中作为内部数据结构</p>
+<p>从本质上看是<strong>链表</strong>，这种结构虽然简单清晰，但是查询某个节点的效率比较低，而在有序集合场景，无论是查找还是添加删除元素，我们是需要快速通过score定位到具体位置，如果是链表的话时间复杂度是O(N)</p>
+<p>为了提高查找的性能，Redis引入跳表，跳表在链表的基础上，给链表增加了多级的索引，通过索引可以一次实现多个节点的跳跃，提高性能</p>
+<h4 id="跳表的结构">跳表的结构</h4>
+<blockquote>
+<p>标准的跳表有如下限制：</p>
+<ol>
+<li>
+<p>score值不能重复；</p>
+</li>
+<li>
+<p>只有向前指针，没有回退指针</p>
+</li>
+</ol>
+</blockquote>
+<p><strong>在Redis中，使用的不是标准的跳表，其对跳表做了一些优化，包括score可以重复，增加回退指针</strong></p>
+<h4 id="redis的跳表实现">Redis的跳表实现</h4>
+<p>redis中的跳表，score可以重复，并且每个节点多一个回退指针</p>
+<p><img src="https://rt5bap83jl.feishu.cn/space/api/box/stream/download/asynccode/?code=MmViMjNmZjdlYTcyN2VkN2RkZDk3NzQ3NTQ4Nzc2ZmVfQWtqRExDS0FvNk1LNGZMUzh3UmpoUk14OHJ4eXlpMk9fVG9rZW46VFA5aGJzbXJXb3dQcEh4TWFkbWNCS2t5bjNDXzE3MjE4NDEzNjY6MTcyMTg0NDk2Nl9WNA" alt=""></p>
+<p>结合源码，Redis跳表单个节点的定义：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="k">typedef</span> <span class="k">struct</span> <span class="n">zskiplistNode</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">sds</span> <span class="n">ele</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">double</span> <span class="n">score</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">struct</span> <span class="n">zskiplistNode</span> <span class="o">*</span><span class="n">backward</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">struct</span> <span class="n">zskiplistLevel</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">        <span class="k">struct</span> <span class="n">zskiplistNode</span> <span class="o">*</span><span class="n">forward</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">        <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">span</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">}</span> <span class="n">level</span><span class="p">[];</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span> <span class="n">zskiplistNode</span><span class="p">;</span>
+</span></span></code></pre></div><p>字段的定义：</p>
+<ul>
+<li>
+<p>Ele: SDS结构，用来存储数据</p>
+</li>
+<li>
+<p>Score: 节点的分数，浮点型数据</p>
+</li>
+<li>
+<p>Backward: 指向上一个节点的回退指针，支持从表尾向表头遍历，也就是ZREVRANGE这个命令</p>
+</li>
+<li>
+<p>level: 是个zskiplistLevel结构体数组，包含两个字段，一个是forward，指向该层下个能跳到的节点，span记录距离下个节点的步数，数组结构表示每个节点可能是多层结构</p>
+</li>
+</ul>
+<h4 id="跳表关键的细节">跳表关键的细节</h4>
+<h5 id="redis跳表单个节点有几层">Redis跳表单个节点有几层？</h5>
+<p>层次的决定，需要比较随机，才能在各个场景表现出较平均的性能，这里Redis使用概率均衡的思路来确定插入节点的层数：</p>
+<p>Redis跳表决定每一个节点，是否能增加一层的概率为25%，而最大层数限制在Redis 5.0是64层，在Redis 7.0是32层</p>
+<h5 id="redis跳表的性能优化了多少">Redis跳表的性能优化了多少？</h5>
+<p>平均时间复杂度为O(logn)，跳表的最坏平均时间复杂度是O(N)，当然实际的生产过程中，体现出来的基本是跳表的平均时间复杂度</p>
+<h3 id="7stream不重要基本不考">7.Stream(不重要，基本不考)</h3>
+<p><a href="https://ls8sck0zrg.feishu.cn/wiki/wikcnD4ZGdQ1RJ2E0t6iIVoZJqT">Stream（不重要，基本不考）</a></p>
+<h3 id="8其他操作对象不重要基本不考">8.其他操作对象（不重要，基本不考）</h3>
+<p><a href="https://ls8sck0zrg.feishu.cn/wiki/wikcnNZKYofaOkDNhtQd3x1ZoQe">其它操作对象（不重要，基本不考）</a></p>
+<blockquote>
+<p>各对象对应的编码</p>
+</blockquote>
+<p>暂时无法在飞书文档外展示此内容</p>
+<h3 id="9对象过期时间">9.对象过期时间</h3>
+<h4 id="过期时间是什么">过期时间是什么</h4>
+<p>redis的过期时间是给一个key，指定一个时间点，等达到这个时间，数据就会被认为是过期时间，可以redis进行回收</p>
+<h4 id="为什么要过期时间">为什么要过期时间</h4>
+<p>如果不需要常驻的数据，设置过期时间，可以有效地节约内存。另外，有些场景功能也需要过期时间支持，比如缓存、分布式锁</p>
+<h4 id="怎么设置过期时间">怎么设置过期时间</h4>
+<p>如果是简单字符串对象，使用以下语法：</p>
+<p>SET key value EX seconds；</p>
+<p>SET key value PX milliseconds；设置毫秒</p>
+<p>TTL key；查看还有多少时间过期</p>
+<p><strong>设置过期时间之后会有个字典，专门记录Key和过期时间的关系</strong></p>
+<h4 id="键过期多少时间后多久会删除">键过期多少时间后多久会删除</h4>
+<p>过期之后的键实际上不是立即删除的，一般过期键清除策略有三种：</p>
+<ol>
+<li>
+<p>定时删除</p>
+</li>
+<li>
+<p>定期删除</p>
+</li>
+<li>
+<p>惰性删除</p>
+</li>
+</ol>
+<h5 id="定时删除">定时删除</h5>
+<p>是在设置键的过期时间的时候，创建一个定时器，让定时器在键过期时间立即执行对键删除操作，定时删除对内存友好，但是对CPU不友好，如果某个时间段比较多的Key过期，可能会影响命令处理性能</p>
+<h5 id="惰性删除">惰性删除</h5>
+<p>是指使用的时候，发现key过期了，此时再进行删除，这个策略的思路是对应用而言，只要不访问，过期不过期业务都无所谓，但是这样的代价是如果某些key一直不访问，那些本该过期的key变成了常驻的key。这种策略对CPU最友好，但是对内存不太友好</p>
+<h5 id="定期删除">定期删除</h5>
+<p>每过一段时间，程序就对数据库进行一次检查，每次删除一部分过期键，这属于一种渐进式兜底策略</p>
+<p>Redis过期键采用的是惰性删除+定期删除二者结合的方式进行删除</p>
+<p>惰性删除：Redis每次访问Key前都会进行检查，如已过期就删除</p>
+<p>定期删除：</p>
+<ol>
+<li>定期删除的频率</li>
+</ol>
+<p>这个决定于Redis周期任务的执行频率，周期任务里面会关闭过期客户端、删除过期key的一系列任务，可以用INFO查看周期任务</p>
+<p>:: hz:10</p>
+<p>hz频率默认是10，也就是1s 10次触发周期任务</p>
+<ol start="2">
+<li>每次删除的数量</li>
+</ol>
+<p>每次检查的数量是写死在代码里面的，每次20个，但是会有一个循环会检查过期key数量占比，大于25%，则再抽查20个来检查</p>
+<p>Redis为了保证定期不会出现循环过度，导致线程卡死，为此增加了了定期删除循环流程的时间上限，默认不超过25ms</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="cp">#define ACTIVE_EXPIRE_CYCLE_LOOKUPS_PER_LOOP 20
+</span></span></span></code></pre></div>
+
+        
+          <div class="blog-tags">
+            
+              
+              <a href="https://ahang7.github.io/tags/redis/">redis</a>&nbsp;
+            
+          </div>
+        
+
+        
+            <hr/>
+            <section id="social-share">
+              <div class="list-inline footer-links">
+                
+
+<div class="share-box" aria-hidden="true">
+    <ul class="share">
+      
+      <li>
+        <a href="//twitter.com/share?url=https%3a%2f%2fahang7.github.io%2fpost%2fbasic%2fredis%2f2-redis%25E5%25AF%25B9%25E8%25B1%25A1%2f&amp;text=%5bredis%5d%20redis%20%e5%af%b9%e8%b1%a1&amp;via=" target="_blank" title="Share on Twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </li>
+  
+      
+      <li>
+        <a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fahang7.github.io%2fpost%2fbasic%2fredis%2f2-redis%25E5%25AF%25B9%25E8%25B1%25A1%2f" target="_blank" title="Share on Facebook">
+          <i class="fab fa-facebook"></i>
+        </a>
+      </li>
+  
+      
+      <li>
+        <a href="//reddit.com/submit?url=https%3a%2f%2fahang7.github.io%2fpost%2fbasic%2fredis%2f2-redis%25E5%25AF%25B9%25E8%25B1%25A1%2f&amp;title=%5bredis%5d%20redis%20%e5%af%b9%e8%b1%a1" target="_blank" title="Share on Reddit">
+          <i class="fab fa-reddit"></i>
+        </a>
+      </li>
+  
+      
+      <li>
+        <a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fahang7.github.io%2fpost%2fbasic%2fredis%2f2-redis%25E5%25AF%25B9%25E8%25B1%25A1%2f&amp;title=%5bredis%5d%20redis%20%e5%af%b9%e8%b1%a1" target="_blank" title="Share on LinkedIn">
+          <i class="fab fa-linkedin"></i>
+        </a>
+      </li>
+  
+      
+      <li>
+        <a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fahang7.github.io%2fpost%2fbasic%2fredis%2f2-redis%25E5%25AF%25B9%25E8%25B1%25A1%2f&amp;title=%5bredis%5d%20redis%20%e5%af%b9%e8%b1%a1" target="_blank" title="Share on StumbleUpon">
+          <i class="fab fa-stumbleupon"></i>
+        </a>
+      </li>
+  
+      
+      <li>
+        <a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fahang7.github.io%2fpost%2fbasic%2fredis%2f2-redis%25E5%25AF%25B9%25E8%25B1%25A1%2f&amp;description=%5bredis%5d%20redis%20%e5%af%b9%e8%b1%a1" target="_blank" title="Share on Pinterest">
+          <i class="fab fa-pinterest"></i>
+        </a>
+      </li>
+    </ul>
+  </div>
+  
+
+              </div>
+            </section>
+        
+
+        
+          
+            
+          
+
+          
+                  <h4 class="see-also">See also</h4>
+                  <ul>
+                
+                
+                    <li><a href="/post/basic/redis/6-redis%E9%9B%86%E7%BE%A4/">[redis] 集群</a></li>
+                
+                    <li><a href="/post/basic/redis/5-redis%E5%9C%BA%E6%99%AF/">[redis] 场景</a></li>
+                
+                    <li><a href="/post/basic/redis/4-redis%E6%8C%81%E4%B9%85%E5%8C%96/">[redis] 持久化</a></li>
+                
+                    <li><a href="/post/basic/redis/3-redis%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B/">[redis] 执行流程</a></li>
+                
+                    <li><a href="/post/basic/redis/1-redis-base%E7%90%86%E8%AE%BA/">[redis] Base理论</a></li>
+                
+              </ul>
+
+          
+        
+      </article>
+
+      
+        <ul class="pager blog-pager">
+          
+            <li class="previous">
+              <a href="https://ahang7.github.io/post/basic/redis/1-redis-base%E7%90%86%E8%AE%BA/" data-toggle="tooltip" data-placement="top" title="[redis] Base理论">&larr; Previous Post</a>
+            </li>
+          
+          
+            <li class="next">
+              <a href="https://ahang7.github.io/post/basic/mysql/1.-mysql%E7%B4%A2%E5%BC%95/" data-toggle="tooltip" data-placement="top" title="[MySQL] MySQL索引">Next Post &rarr;</a>
+            </li>
+          
+        </ul>
+      
+
+
+      
+      
+      
+      
+      
+        
+      
+
+    </div>
+  </div>
+</div>
+
+      <footer>
+  <div class="container">
+    
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+              <li>
+		
+		  <a href="mailto:ch1447571882@qq.com" title="Email me">
+		
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+		
+		  <a href="https://github.com/ahang7" title="GitHub">
+		
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+		
+		  <a href="https://gitlab.com/username" title="GitLab">
+		
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-gitlab fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+          
+          
+        </ul>
+        <p class="credits copyright text-muted">
+          
+            
+              <a href="yourwebsite.com">ch</a>
+            
+          
+
+          &nbsp;&bull;&nbsp;&copy;
+          
+            2024
+          
+
+          
+            &nbsp;&bull;&nbsp;
+            <a href="https://ahang7.github.io/">Beautiful Hugo</a>
+          
+        </p>
+        
+        <p class="credits theme-by text-muted">
+          <a href="https://gohugo.io">Hugo v0.136.0</a> powered &nbsp;&bull;&nbsp; Theme <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a> adapted from <a href="https://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</footer><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.js" integrity="sha384-G0zcxDFp5LWZtDuRMnBkk3EphCK1lhEf4UEyEM693ka574TZGwo4IWwS6QLzM/2t" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
+<script src="https://code.jquery.com/jquery-3.7.0.slim.min.js" integrity="sha384-w5y/xIeYixWvfM+A1cEbmHPURnvyqmVg5eVENruEdDjcyRLUSNej7512JQGspFUr" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+
+<script src="https://ahang7.github.io/js/main.js"></script>
+<script src="https://ahang7.github.io/js/highlight.min.js"></script>
+<script> hljs.initHighlightingOnLoad(); </script>
+<script> $(document).ready(function() {$("pre.chroma").css("padding","0");}); </script><script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.js" integrity="sha384-QELNnmcmU8IR9ZAykt67vGr9/rZJdHbiWi64V88fCPaOohUlHCqUD/unNN0BXSqy" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe-ui-default.min.js" integrity="sha384-m67o7SkQ1ALzKZIFh4CiTA8tmadaujiTa9Vu+nqPSwDOqHrDmxLezTdFln8077+q" crossorigin="anonymous"></script><script src="https://ahang7.github.io/js/load-photoswipe.js"></script>
+
+
+
+
+
+
+
+
+
+
+    
+  </body>
+</html>
+

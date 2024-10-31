@@ -1,0 +1,789 @@
+
+
+<!DOCTYPE html>
+<html lang="en" itemscope itemtype="http://schema.org/WebPage">
+  <head>
+    
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+ 
+
+
+      <title>[MySQL] MySQL锁 - </title>
+
+  <meta name="description" content="MySQL 锁类型，加锁与死锁">
+  <meta name="author" content="ch"/><script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "WebSite",
+    "name": "Beautiful Hugo",
+    
+    "url": "https:\/\/ahang7.github.io\/"
+}
+</script><script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Organization",
+  "name": "",
+  "url": "https:\/\/ahang7.github.io\/"
+  
+  
+  
+  
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [{
+        "@type": "ListItem",
+        "position": 1,
+        "item": {
+          "@id": "https:\/\/ahang7.github.io\/",
+          "name": "home"
+        }
+    },{
+        "@type": "ListItem",
+        "position": 3,
+        "item": {
+          "@id": "https:\/\/ahang7.github.io\/post\/basic\/mysql\/3.-mysql%E9%94%81\/",
+          "name": "[ my sql] my sql锁"
+        }
+    }]
+}
+</script><script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Article",
+  "author": {
+    "name" : "ch"
+  },
+  "headline": "[MySQL] MySQL锁",
+  "description" : "锁的类型 Mysql的锁，根据加锁的范围可以分为全局锁、表级锁和行锁三类\n全局锁 要使用全局锁，执行下面这条命令：\nflush tables with read lock 执行之后，整个数据库就处于只读状态，这时其他线程执行以下操作，就会被阻塞\n对数据的增删改，比如insert、delete、update等\n对表结构的更改操作，比如alter table、drop table等\n要释放全局锁，执行下面的命令：\nunlock tables 全局锁的应用场景：\n全局锁主要用于做全库逻辑备份，这样在备份数据库期间，不会因为数据或者结构的更新，而出现备份文件的数据与预期的不一样\n加全局锁带来的缺点：会导致业务停滞，因为加全局锁之后，整个数据库都只是只读状态，不能更新数据\n可以通过开启事务，在可重复读的隔离级别下，即使其他事务更新了表的数据，也不会影响备份数据库时的Read View，\n备份数据库的工具是mysqldump ，在使用mysqldump时加上-single-transaction 参数的时候，就会在备份数据库之前开启事务\n表级锁 MySQL里面表级锁有以下几种：\n表锁\n元数据锁（MDL）\n意向锁\nAUTO-INC锁\n表锁 使用下面的命令对表加锁和释放锁\n\/\/ 加读锁 lock tables \u0026lt;table_name\u0026gt; read; \/\/ 写锁 lock tables \u0026lt;table_name\u0026gt; write; \/\/ 释放锁 unlock tables; 表锁会影响别的线程和本线程的读写操作\n元数据锁（MDL） 对于MDL，我们不需要显示使用，因为当我们在对数据库进行操作时，会自动给这个表上加MDL：\n对一张表进行CURD操作时，加的是MDL读锁\n对一张表做结构变更操作的时候，加的是MDL写锁\nMDL是为了保证当前用户对表执行CRUD操作时，防止其他线程对这个表结构做了变更\nMDL是在事务提交之后才会释放，这意味着事务执行期间，MDL是一直持有\n需要注意的是，在事务启用之后，如果事务A没有提交，此时如果有表结构的修改请求发起，就会发生阻塞，这个阻塞也会导致其他CURD的请求被阻塞住\n这是因为申请MDL锁的操作会形成一个队列，队列中写锁获取优先级大于读锁，一旦出现MDL写锁等待，会阻塞该表后续的CRUD操作\n意向锁 在使用InnoDB引擎的表里对某些记录加上共享锁之前，需要先在表级别加上一个意向共享锁\n在使用InnoDB引擎的表里对某些记录加上独占锁之前，需要先在表级别加上一个意向独占锁\n在执行insert、update、delete操作时，需要先对表上加 意向独占锁，然后对该记录加独占锁\n而普通的select是不会加行级锁，普通的select语句是利用MVCC实现一致性读，是无锁的\n\/\/ select也是可以对记录加共享锁和独占锁， \/\/ 先在表上加上意向共享锁，然后对读取的记录加共享锁 select ... lock in share mode; \/\/ 先表上加上意向锁，然后再读取记录加独占锁 select ... for update 意向锁的目的是为了快速判断表里是否有记录被加锁\nAUTO-INC锁 表里面的主键通常设置成自增的，在插入数据时，可以不指定主键的值，数据库会自动给主键赋值递增的值，这主要是通过AUTO-INC锁实现的\nAuto-Inc锁是特殊的表锁机制，不是在一个事务提交后才释放，而是再执行完插入语句后就会立即释放\n行级锁 InnoDB引擎是支持行级锁的，而MyISAM引擎并不支持行级锁\n行级锁的类型主要有三类：\n",
+  "inLanguage" : "en",
+  "wordCount":  487 ,
+  "datePublished" : "2024-10-28T00:00:00\u002b00:00",
+  "dateModified" : "2024-10-28T00:00:00\u002b00:00",
+  "image" : "https:\/\/ahang7.github.io\/img\/avatar-icon.png",
+  "keywords" : [ "mysql" ],
+  "mainEntityOfPage" : "https:\/\/ahang7.github.io\/post\/basic\/mysql\/3.-mysql%E9%94%81\/",
+  "publisher" : {
+    "@type": "Organization",
+    "name" : "https:\/\/ahang7.github.io\/",
+    "logo" : {
+        "@type" : "ImageObject",
+        "url" : "https:\/\/ahang7.github.io\/img\/avatar-icon.png",
+        "height" :  60 ,
+        "width" :  60
+    }
+  }
+}
+</script>
+
+
+<meta property="og:title" content="[MySQL] MySQL锁" />
+<meta property="og:description" content="MySQL 锁类型，加锁与死锁">
+<meta property="og:image" content="https://ahang7.github.io/img/avatar-icon.png" />
+<meta property="og:url" content="https://ahang7.github.io/post/basic/mysql/3.-mysql%E9%94%81/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Beautiful Hugo" />
+
+  <meta name="twitter:title" content="[MySQL] MySQL锁" />
+  <meta name="twitter:description" content="MySQL 锁类型，加锁与死锁">
+  <meta name="twitter:image" content="https://ahang7.github.io/img/avatar-icon.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link href='https://ahang7.github.io/img/favicon.ico' rel='icon' type='image/x-icon'/>
+  <meta name="generator" content="Hugo 0.136.0">
+  <link rel="alternate" href="https://ahang7.github.io/index.xml" type="application/rss+xml" title="Beautiful Hugo"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.css" integrity="sha384-3UiQGuEI4TTMaFmGIZumfRPtfKQ3trwQE2JgosJxCnGmQpL/lJdjpcHkaaFwHlcI" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous"><link rel="stylesheet" href="https://ahang7.github.io/css/main.css" /><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+  <link rel="stylesheet" href="https://ahang7.github.io/css/highlight.min.css" /><link rel="stylesheet" href="https://ahang7.github.io/css/codeblock.css" /><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.css" integrity="sha384-h/L2W9KefUClHWaty3SLE5F/qvc4djlyR4qY3NUV5HGQBBW7stbcfff1+I/vmsHh" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/default-skin/default-skin.min.css" integrity="sha384-iD0dNku6PYSIQLyfTOpB06F2KCZJAKLOThS5HRe8b3ibhdEQ6eKsFf/EeFxdOt5R" crossorigin="anonymous">
+
+
+  </head>
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://ahang7.github.io/">Beautiful Hugo</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li>
+              <a title="Blog" href="/">Blog</a>
+            </li>
+          
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent" role="button" tabindex="0">Samples</a>
+              <div class="navlinks-children">
+                
+                  <a href="/post/2017-03-07-bigimg-sample">Big Image Sample</a>
+                
+                  <a href="/post/2017-03-05-math-sample">Math Sample</a>
+                
+                  <a href="/post/2016-03-08-code-sample">Code Sample</a>
+                
+              </div>
+            </li>
+          
+        
+          
+            <li>
+              <a title="About" href="/page/about/">About</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="Tags" href="/tags">Tags</a>
+            </li>
+          
+        
+
+        
+
+        
+      </ul>
+    </div>
+
+    
+      <div class="avatar-container">
+        <div class="avatar-img-border">
+          <a title="Beautiful Hugo" href="https://ahang7.github.io/">
+            <img class="avatar-img" src="https://ahang7.github.io/img/avatar-icon.png" alt="Beautiful Hugo" />
+           
+          </a>
+        </div>
+      </div>
+    
+
+  </div>
+</nav>
+
+
+
+
+    
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+
+  
+  
+  
+
+
+
+
+
+
+  
+
+  <header class="header-section ">
+    
+    
+    <div class="intro-header no-img">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <div class="post-heading">
+              
+                <h1>[MySQL] MySQL锁</h1>
+              
+              
+              
+                
+                  <h2 class="post-subheading">MySQL 锁类型，加锁与死锁</h2>
+                
+              
+              
+                <span class="post-meta">
+  
+  
+  <i class="fas fa-calendar"></i>&nbsp;Posted on October 28, 2024
+  
+  
+    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;3&nbsp;minutes
+  
+  
+    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;487&nbsp;words
+  
+  
+    
+      &nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;ch
+    
+  
+  
+</span>
+
+
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+  </header>
+
+
+    
+<div class="container" role="main">
+  <div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+      <article role="main" class="blog-post">
+        <h2 id="锁的类型">锁的类型</h2>
+<p>Mysql的锁，根据加锁的范围可以分为全局锁、表级锁和行锁三类</p>
+<h3 id="全局锁">全局锁</h3>
+<p>要使用全局锁，执行下面这条命令：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="n">flush</span> <span class="n">tables</span> <span class="n">with</span> <span class="n">read</span> <span class="n">lock</span>
+</span></span></code></pre></div><p>执行之后，整个数据库就处于只读状态，这时其他线程执行以下操作，就会被阻塞</p>
+<ul>
+<li>
+<p>对数据的增删改，比如insert、delete、update等</p>
+</li>
+<li>
+<p>对表结构的更改操作，比如alter table、drop table等</p>
+</li>
+</ul>
+<p>要释放全局锁，执行下面的命令：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="n">unlock</span> <span class="n">tables</span>
+</span></span></code></pre></div><blockquote>
+<p>全局锁的应用场景：</p>
+<p>全局锁主要用于做<strong>全库逻辑备份</strong>，这样在备份数据库期间，不会因为数据或者结构的更新，而出现备份文件的数据与预期的不一样</p>
+</blockquote>
+<p>加全局锁带来的缺点：会导致业务停滞，因为加全局锁之后，整个数据库都只是只读状态，不能更新数据</p>
+<p>可以通过开启事务，在可重复读的隔离级别下，即使其他事务更新了表的数据，也不会影响备份数据库时的Read View，</p>
+<p>备份数据库的工具是<code>mysqldump</code> ，在使用mysqldump时加上<code>-single-transaction</code> 参数的时候，就会在备份数据库之前开启事务</p>
+<h3 id="表级锁">表级锁</h3>
+<p>MySQL里面表级锁有以下几种：</p>
+<ul>
+<li>
+<p>表锁</p>
+</li>
+<li>
+<p>元数据锁（MDL）</p>
+</li>
+<li>
+<p>意向锁</p>
+</li>
+<li>
+<p>AUTO-INC锁</p>
+</li>
+</ul>
+<h4 id="表锁">表锁</h4>
+<p>使用下面的命令对表加锁和释放锁</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="c1">// 加读锁
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">lock</span> <span class="n">tables</span> <span class="o">&lt;</span><span class="n">table_name</span><span class="o">&gt;</span> <span class="n">read</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 写锁
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">lock</span> <span class="n">tables</span> <span class="o">&lt;</span><span class="n">table_name</span><span class="o">&gt;</span> <span class="n">write</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 释放锁
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">unlock</span> <span class="n">tables</span><span class="p">;</span>
+</span></span></code></pre></div><p>表锁会影响别的线程和本线程的读写操作</p>
+<h4 id="元数据锁mdl">元数据锁（MDL）</h4>
+<p>对于MDL，我们不需要显示使用，因为当我们在对数据库进行操作时，会自动给这个表上加MDL：</p>
+<ul>
+<li>
+<p>对一张表进行CURD操作时，加的是MDL读锁</p>
+</li>
+<li>
+<p>对一张表做结构变更操作的时候，加的是MDL写锁</p>
+</li>
+</ul>
+<p>MDL是为了保证当前用户对表执行CRUD操作时，防止其他线程对这个表结构做了变更</p>
+<p>MDL是在事务提交之后才会释放，这意味着<strong>事务执行期间，MDL是一直持有</strong></p>
+<p>需要注意的是，在事务启用之后，如果事务A没有提交，此时如果有表结构的修改请求发起，就会发生阻塞，这个阻塞也会导致其他CURD的请求被阻塞住</p>
+<p>这是因为申请MDL锁的操作会形成一个队列，队列中<strong>写锁<strong><strong>获取优先级大于</strong></strong>读锁</strong>，一旦出现MDL写锁等待，会阻塞该表后续的CRUD操作</p>
+<h4 id="意向锁">意向锁</h4>
+<ul>
+<li>
+<p>在使用InnoDB引擎的表里对某些记录加上共享锁之前，需要先在表级别加上一个意向共享锁</p>
+</li>
+<li>
+<p>在使用InnoDB引擎的表里对某些记录加上独占锁之前，需要先在表级别加上一个意向独占锁</p>
+</li>
+</ul>
+<p>在执行insert、update、delete操作时，需要先对表上加 意向独占锁，然后对该记录加独占锁</p>
+<p>而普通的select是不会加行级锁，普通的select语句是利用MVCC实现一致性读，是无锁的</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="c1">// select也是可以对记录加共享锁和独占锁，
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 先在表上加上意向共享锁，然后对读取的记录加共享锁
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">select</span> <span class="p">...</span> <span class="n">lock</span> <span class="n">in</span> <span class="n">share</span> <span class="n">mode</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 先表上加上意向锁，然后再读取记录加独占锁
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">select</span> <span class="p">...</span> <span class="k">for</span> <span class="n">update</span>
+</span></span></code></pre></div><p>意向锁的目的是为了快速判断表里是否有记录被加锁</p>
+<h4 id="auto-inc锁">AUTO-INC锁</h4>
+<p>表里面的主键通常设置成自增的，在插入数据时，可以不指定主键的值，数据库会自动给主键赋值递增的值，这主要是通过<strong>AUTO-INC锁</strong>实现的</p>
+<p>Auto-Inc锁是特殊的表锁机制，不是在一个事务提交后才释放，而是再执行完插入语句后就会立即释放</p>
+<h3 id="行级锁">行级锁</h3>
+<p>InnoDB引擎是支持行级锁的，而MyISAM引擎并不支持行级锁</p>
+<p>行级锁的类型主要有三类：</p>
+<ul>
+<li>
+<p>Record Lock，记录锁，也就是仅仅一条记录锁上</p>
+</li>
+<li>
+<p>Gap Lock，间隙锁，锁定一个范围，但不包含记录本身</p>
+</li>
+<li>
+<p>Next-key Lock，Rocord Lock + Gap Lock的组合，锁定一个范围，并且锁定记录本身</p>
+</li>
+</ul>
+<h4 id="record-lock-记录锁">Record Lock 记录锁</h4>
+<p>Record Lock称为记录锁，锁住的是一条记录。而且记录锁也有s锁和x锁之分</p>
+<h4 id="gap-lock-间隙锁">Gap Lock 间隙锁</h4>
+<p>Gap Lock称为i而间隙锁，只存在于可重复隔离级别，目的是为了解决可重复读级别下幻读的现象</p>
+<p>间隙锁之间是兼容的，即两个事务可以同时持有包含共同间隙范围的间隙锁，并不会存在互斥关系，因为间隙锁的目的是防止插入幻影记录而提出</p>
+<h4 id="next-key">Next-key</h4>
+<p>Next-key Lock成为临键锁，是Record Lock + Gap Lock的组合，锁定一个范围，并且锁定记录本身</p>
+<p>Next-key Lock是包含间隙锁+记录锁，如果一个事务获取了X型的next-key lock，那么另外一个事务在获取相同范围的X型的next-key lock时，是会被阻塞的</p>
+<h4 id="插入意向锁">插入意向锁</h4>
+<p>在一个事务插入一条记录的时候，需要判断插入的位置释放已被其他事务加了间隙锁（next-key lock 也包含间隙锁）。</p>
+<p>如果有，插入操作就会阻塞，直到间隙锁被释放，在此期间会生成一个插入意向锁，表明有事务想在某区域插入新记录，但是处于等待状态</p>
+<h2 id="mysql加锁">MySQL加锁</h2>
+<p>InnoDB引擎是支持行级锁，而MyISAM是不支持行级锁，了解Mysql是怎么加行级锁，其实也是说InnoDB引擎是怎么加锁的。</p>
+<p>普通select语句是不会对记录加锁（除了串行化隔离级别），因为它属于快照读，是通过MVCC（多版本并发控制）实现的</p>
+<p>对查询时对记录加行级锁，可以使用下面两种方式，这两种查询会加锁的语句叫做锁定读</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="c1">// s lock
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">select</span> <span class="p">...</span> <span class="n">lock</span> <span class="n">in</span> <span class="n">share</span> <span class="n">mode</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// x lock
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">select</span> <span class="p">...</span> <span class="k">for</span> <span class="n">update</span><span class="p">;</span>
+</span></span></code></pre></div><p>上面两个语句必须在事务中，因为当事务提交了，锁就释放。</p>
+<p>除了上面两条锁定读语句会加行级锁之外，update和delete操作都会加行级锁，且锁定类型都是独占锁(X)</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="n">update</span> <span class="n">table</span> <span class="p">...</span>
+</span></span><span class="line"><span class="cl"><span class="n">delete</span> <span class="n">from</span> <span class="n">table</span> <span class="p">...</span>
+</span></span></code></pre></div><p>x型锁和s型锁之间的兼容型未读读共享，读写互斥</p>
+<table>
+  <thead>
+      <tr>
+          <th></th>
+          <th></th>
+          <th></th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td></td>
+          <td>X</td>
+          <td>S</td>
+      </tr>
+      <tr>
+          <td>X</td>
+          <td>不兼容</td>
+          <td>不兼容</td>
+      </tr>
+      <tr>
+          <td>S</td>
+          <td>不兼容</td>
+          <td>兼容</td>
+      </tr>
+  </tbody>
+</table>
+<ul>
+<li>
+<p>行级锁</p>
+<ul>
+<li>
+<p>读已提交隔离级别下，行级锁的种类只有记录锁，也就是仅仅一条记录锁上</p>
+</li>
+<li>
+<p>可重复读隔离级别下，行级锁的种类除了记录锁，还有间隙锁（目前是为了避免幻读</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>在执行commit后，事务过程中生成的锁都会被释放</p>
+<h3 id="mysql是怎么加行级锁的">MySQL是怎么加行级锁的？</h3>
+<p>行级锁加锁规则复杂，目前仅保留了解程度</p>
+<p><a href="https://xiaolincoding.com/mysql/lock/how_to_lock.html#mysql-%E6%98%AF%E6%80%8E%E4%B9%88%E5%8A%A0%E8%A1%8C%E7%BA%A7%E9%94%81%E7%9A%84">MySQL 是怎么加锁的？</a></p>
+<p>总结1：在能够使用记录锁或者间隙锁就能避免幻读的现象的场景下，next-key lock就会退化成为记录锁或间隙锁</p>
+<h2 id="mysql死锁">Mysql死锁</h2>
+<p>使用引擎为InnoDB，隔离级别为可重复读（RR）</p>
+<h3 id="死锁的发生">死锁的发生</h3>
+<p>有表如下：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-SQL" data-lang="SQL"><span class="line"><span class="cl"><span class="k">create</span><span class="w"> </span><span class="k">table</span><span class="w"> </span><span class="o">`</span><span class="n">t_order</span><span class="o">`</span><span class="w"> </span><span class="p">(</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="o">`</span><span class="n">id</span><span class="o">`</span><span class="w"> </span><span class="nb">int</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="k">null</span><span class="w"> </span><span class="n">auto_increment</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="o">`</span><span class="n">order_no</span><span class="o">`</span><span class="w"> </span><span class="nb">int</span><span class="w"> </span><span class="k">default</span><span class="w"> </span><span class="k">null</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="o">`</span><span class="n">create_date</span><span class="o">`</span><span class="w"> </span><span class="n">datetime</span><span class="w"> </span><span class="k">default</span><span class="w"> </span><span class="k">null</span><span class="p">,</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">primary</span><span class="w"> </span><span class="k">key</span><span class="p">(</span><span class="o">`</span><span class="n">id</span><span class="o">`</span><span class="p">),</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="k">key</span><span class="w"> </span><span class="o">`</span><span class="n">index_order</span><span class="o">`</span><span class="w"> </span><span class="p">(</span><span class="o">`</span><span class="n">order_no</span><span class="o">`</span><span class="p">)</span><span class="w"> </span><span class="k">using</span><span class="w"> </span><span class="n">btree</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">)</span><span class="w"> </span><span class="n">engine</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">InnoDB</span><span class="p">;</span><span class="w">
+</span></span></span></code></pre></div><p>有两个事务，一个事务要插入订单1007，另外一个事务也要插入订单1008，因为需要对订单做幂等性校验，所以两个事务先要查询订单是否存在，不存在才插入记录</p>
+<p><img src="https://rt5bap83jl.feishu.cn/space/api/box/stream/download/asynccode/?code=MmJiOGNmNWJiMTM5NzQyMTY0ODkzMmVhZDA1YmExYThfb3lZOUdkVWNia0FMOFllSWlMWnlUM3dKY2JUekFvVDJfVG9rZW46UGl6aGJaY0Izb2JzNFF4SUVGWWNKWnB4bkF6XzE3MjE4NDExMTQ6MTcyMTg0NDcxNF9WNA" alt=""></p>
+<p>这里两个事务都陷入阻塞（<em><strong>前提是没有打开死锁检测</strong></em>），也就是发生了死锁，都在互相等待对方释放锁</p>
+<h3 id="死锁的产生">死锁的产生</h3>
+<p>可重复隔离级别下，是存在幻读的问题</p>
+<p>InnoDB引擎为了解决可重复读隔离级别下的幻读问题，就引出了next-key锁，它是<strong>记录锁和间隙锁的组合</strong></p>
+<ul>
+<li>
+<p>Record Lock，记录锁，锁的是记录本身</p>
+</li>
+<li>
+<p>Gap Lock，间隙锁，锁的是两个值之间的空隙，以防止其他事务在这个空隙间插入新的数据，从而避免幻读</p>
+</li>
+</ul>
+<p>普通的select是通过mvcc实现的快照读，不会对记录进行加锁，如果要在查询的时候加行锁，可以使用下面的两种方式</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Plain" data-lang="Plain"><span class="line"><span class="cl"> begin;
+</span></span><span class="line"><span class="cl"> // 对读取的记录加共享锁
+</span></span><span class="line"><span class="cl"> select ... lock in share mode;
+</span></span><span class="line"><span class="cl"> commit;
+</span></span><span class="line"><span class="cl"> 
+</span></span><span class="line"><span class="cl"> begin;
+</span></span><span class="line"><span class="cl"> // 对读取的记录加排他锁
+</span></span><span class="line"><span class="cl"> select ... for update;
+</span></span><span class="line"><span class="cl"> commit;
+</span></span></code></pre></div><p><strong>行锁的释放时机是在事务提交（commit）后，锁才会释放</strong>，并不是在一条语句执行完毕之后释放锁</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-SQL" data-lang="SQL"><span class="line"><span class="cl"><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">performance_schema</span><span class="p">.</span><span class="n">data_lock</span><span class="err">\</span><span class="k">G</span><span class="p">;</span><span class="w">
+</span></span></span></code></pre></div><p>执行以上的语句，可以查看事务执行SQL过程中加了什么锁</p>
+<p><code>LOCK_TYPE</code> 中的RECORD表示行级锁，通过<code>LOCK_MODE</code> 可以确认是next-key锁，间隙锁还是记录锁</p>
+<ul>
+<li>
+<p>LOCK_MODE: <code>X</code> ，说明是X型的next-key锁；</p>
+</li>
+<li>
+<p>LOCK_MODE: <code>X, REC_NOT_GAP</code> ，说明是X型的记录锁；</p>
+</li>
+<li>
+<p>LOCK_MODE: <code>X, GAP</code> ，说明是X型的间隙锁；</p>
+</li>
+</ul>
+<p>当事务B往事务A next-key锁的范围插入记录时，就会被锁住</p>
+<p><strong>执行插入语句时，会在插入间隙上获取插入<strong><strong>意向锁</strong></strong>，而插入意向锁与间隙锁是冲突的，所以当其它事务持有该间隙的间隙锁时，需要等待其它事务释放间隙锁之后，才能获取到插入意向锁。而间隙锁与间隙锁之间是兼容的，所以两个事务中</strong>**<code>select ... for update</code>** <strong>语句并不会相互影响。</strong></p>
+<p>这样，事务A和事务B在执行完<code>select ... for update</code> 语句之后都持有了间隙锁，而接下来的<code>insert</code> 操作为了获取到插入意向锁，都在等待对方事务的间隙锁释放，于是就造成了循环等待，导致死锁。</p>
+<blockquote>
+<p>为什么间隙锁和间隙锁之间是兼容的？</p>
+<p>MySQL官网上有描述：</p>
+<p><em>Gap</em> <em>locks in InnoDB are “purely inhibitive”, which means that their only purpose is to prevent other transactions from Inserting to the gap. Gap locks can co-exist. A gap lock taken by one transaction does not prevent another transaction from taking a gap lock on the same gap. There is no difference between shared and exclusive gap locks. They do not conflict with each other, and they perform the same function.</em></p>
+<p>间隙锁的意义只在于阻止区间被插入，因此可以共存。**一个事务获取的间隙锁不会阻止另外一个事务获取同一个间隙范围的间隙锁，**共享和排他的间隙锁是没有区别的，它们相互不冲突，且功能相同，即两个事务可以共同持有包含共同间隙的间隙锁</p>
+</blockquote>
+<p>共同间隙包括两种场景：</p>
+<ul>
+<li>
+<p>两个间隙锁的间隙区间完全一样</p>
+</li>
+<li>
+<p>一个间隙包含的间隙区间是另外一个间隙锁区间的子集</p>
+</li>
+</ul>
+<p>注意：next-key lock是包含间隙锁+记录锁的，如果一个事务获取了X型的next-key lock，那么另外一个事务在获取相同范围的X型的next-key lock时，是会被阻塞的</p>
+<p>再注意：对于右区间为+∞的next-key lock，因为+∞并不是一个真实的记录，所以我不需要考虑X型和S型</p>
+<blockquote>
+<p>插入意向锁是什么？</p>
+<p>MySQL的描述：</p>
+<p><em>An Insert</em> <em>intention lock</em> <em>is a type of gap lock set by Insert operations prior to row Insertion. This lock signals the intent to Insert in such a way that multiple transactions Inserting into the same index gap need not wait for each other if they are not Inserting at the same position within the gap. Suppose that there are index records with values of 4 and 7. Separate transactions that attempt to Insert values of 5 and 6, respectively, each lock the gap between 4 and 7 with Insert intention locks prior to obtaining the exclusive lock on the Inserted row, but do not block each other because the rows are nonconflicting.</em></p>
+<p>这段话表明尽管<strong>插入<strong><strong>意向锁</strong></strong>是一种特殊的间隙锁，但不同于间隙锁的是，该锁只用于并发插入操作。</strong></p>
+<p>如果说间隙锁锁住的是一个区间，那么插入意向锁锁住的是一个点，因而从这个角度来说，插入意向锁确实是一种特殊的间隙锁</p>
+</blockquote>
+<p>插入意向锁的生成时机：</p>
+<ul>
+<li>每插入一条新纪录，都需要看一下待插入记录的下一条记录上是否已经被加了间隙锁，如果已加间隙锁，此时会生成一个插入意向锁，如何锁的状态设置为等待状态，现象就是Insert语句会被阻塞（_PS：_<em>MySQL</em> <em>加锁时，是先生成锁结构，然后设置锁的状态，如果锁状态是等待状态，并不是意味着事务成功获取到了锁，只有当锁状态为正常状态时，才代表事务成功获取到了锁</em>）</li>
+</ul>
+<h3 id="insert语句是怎么加行级锁的">Insert语句是怎么加行级锁的？</h3>
+<p>Insert语句在正常执行时是不会生成锁结构的，它是靠聚簇索引记录自待的<code>trx_id</code> 隐藏列来作为<strong>隐式锁</strong>来保护记录的</p>
+<blockquote>
+<p>什么是隐式锁？</p>
+</blockquote>
+<p>当事务需要加锁时，如果这个锁不可能发生冲突，InnoDB会跳过加锁环节，这种机制称为隐式锁</p>
+<p>隐式锁是InnoDB实现的一种延迟加锁机制</p>
+<h3 id="如何避免死锁">如何避免死锁？</h3>
+<p>死锁的四个必要条件：</p>
+<ul>
+<li>
+<p>互斥</p>
+</li>
+<li>
+<p>占有且等待</p>
+</li>
+<li>
+<p>不可强占用</p>
+</li>
+<li>
+<p>循环等待</p>
+</li>
+</ul>
+<p>只要发生死锁，这些条件必然成立，但是只要破环其中一个条件死锁就不会成立</p>
+<p>在数据库层面，有两种策略通过打破循环等待条件来解除死锁状态：</p>
+<ul>
+<li>
+<p>设置事务等待锁的超时时间：当一个事务的等待时间超过该值后，就对这个事务进行混滚，于是锁就释放了，另外一个事务就可以继续执行了。在InnoDB中，参数<code>innodb_lock_wait_timeout</code> 是用来设置超时时间的，默认时间为50s</p>
+</li>
+<li>
+<p>开启主动死锁检测：主动死锁检测在发现死锁后，主动回滚死锁链条中的某一个事务，让其他事务得以继续执行。将<code>innodb_deadlock_detect</code> 设置为on，表示开启这个逻辑，默认就开启。</p>
+</li>
+<li>
+<p>#MySQL</p>
+</li>
+</ul>
+
+
+        
+          <div class="blog-tags">
+            
+              
+              <a href="https://ahang7.github.io/tags/mysql/">mysql</a>&nbsp;
+            
+          </div>
+        
+
+        
+            <hr/>
+            <section id="social-share">
+              <div class="list-inline footer-links">
+                
+
+<div class="share-box" aria-hidden="true">
+    <ul class="share">
+      
+      <li>
+        <a href="//twitter.com/share?url=https%3a%2f%2fahang7.github.io%2fpost%2fbasic%2fmysql%2f3.-mysql%25E9%2594%2581%2f&amp;text=%5bMySQL%5d%20MySQL%e9%94%81&amp;via=" target="_blank" title="Share on Twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </li>
+  
+      
+      <li>
+        <a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fahang7.github.io%2fpost%2fbasic%2fmysql%2f3.-mysql%25E9%2594%2581%2f" target="_blank" title="Share on Facebook">
+          <i class="fab fa-facebook"></i>
+        </a>
+      </li>
+  
+      
+      <li>
+        <a href="//reddit.com/submit?url=https%3a%2f%2fahang7.github.io%2fpost%2fbasic%2fmysql%2f3.-mysql%25E9%2594%2581%2f&amp;title=%5bMySQL%5d%20MySQL%e9%94%81" target="_blank" title="Share on Reddit">
+          <i class="fab fa-reddit"></i>
+        </a>
+      </li>
+  
+      
+      <li>
+        <a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fahang7.github.io%2fpost%2fbasic%2fmysql%2f3.-mysql%25E9%2594%2581%2f&amp;title=%5bMySQL%5d%20MySQL%e9%94%81" target="_blank" title="Share on LinkedIn">
+          <i class="fab fa-linkedin"></i>
+        </a>
+      </li>
+  
+      
+      <li>
+        <a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fahang7.github.io%2fpost%2fbasic%2fmysql%2f3.-mysql%25E9%2594%2581%2f&amp;title=%5bMySQL%5d%20MySQL%e9%94%81" target="_blank" title="Share on StumbleUpon">
+          <i class="fab fa-stumbleupon"></i>
+        </a>
+      </li>
+  
+      
+      <li>
+        <a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fahang7.github.io%2fpost%2fbasic%2fmysql%2f3.-mysql%25E9%2594%2581%2f&amp;description=%5bMySQL%5d%20MySQL%e9%94%81" target="_blank" title="Share on Pinterest">
+          <i class="fab fa-pinterest"></i>
+        </a>
+      </li>
+    </ul>
+  </div>
+  
+
+              </div>
+            </section>
+        
+
+        
+          
+            
+          
+
+          
+                  <h4 class="see-also">See also</h4>
+                  <ul>
+                
+                
+                    <li><a href="/post/basic/mysql/6.-mysql%E9%80%BB%E8%BE%91%E6%9E%B6%E6%9E%84/">[MySQL] MySQL逻辑架构</a></li>
+                
+                    <li><a href="/post/basic/mysql/5.-mysql%E5%86%85%E5%AD%98/">[MySQL] MySQL内存</a></li>
+                
+                    <li><a href="/post/basic/mysql/4.-mysql%E6%97%A5%E5%BF%97/">[MySQL] MySQL日志</a></li>
+                
+                    <li><a href="/post/basic/mysql/2.-mysql%E4%BA%8B%E5%8A%A1/">[MySQL] MySQL事务</a></li>
+                
+                    <li><a href="/post/basic/mysql/1.-mysql%E7%B4%A2%E5%BC%95/">[MySQL] MySQL索引</a></li>
+                
+              </ul>
+
+          
+        
+      </article>
+
+      
+        <ul class="pager blog-pager">
+          
+            <li class="previous">
+              <a href="https://ahang7.github.io/post/basic/redis/4-redis%E6%8C%81%E4%B9%85%E5%8C%96/" data-toggle="tooltip" data-placement="top" title="[redis] 持久化">&larr; Previous Post</a>
+            </li>
+          
+          
+            <li class="next">
+              <a href="https://ahang7.github.io/post/basic/redis/5-redis%E5%9C%BA%E6%99%AF/" data-toggle="tooltip" data-placement="top" title="[redis] 场景">Next Post &rarr;</a>
+            </li>
+          
+        </ul>
+      
+
+
+      
+      
+      
+      
+      
+        
+      
+
+    </div>
+  </div>
+</div>
+
+      <footer>
+  <div class="container">
+    
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+              <li>
+		
+		  <a href="mailto:ch1447571882@qq.com" title="Email me">
+		
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+		
+		  <a href="https://github.com/ahang7" title="GitHub">
+		
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+		
+		  <a href="https://gitlab.com/username" title="GitLab">
+		
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-gitlab fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+          
+          
+        </ul>
+        <p class="credits copyright text-muted">
+          
+            
+              <a href="yourwebsite.com">ch</a>
+            
+          
+
+          &nbsp;&bull;&nbsp;&copy;
+          
+            2024
+          
+
+          
+            &nbsp;&bull;&nbsp;
+            <a href="https://ahang7.github.io/">Beautiful Hugo</a>
+          
+        </p>
+        
+        <p class="credits theme-by text-muted">
+          <a href="https://gohugo.io">Hugo v0.136.0</a> powered &nbsp;&bull;&nbsp; Theme <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a> adapted from <a href="https://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</footer><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.js" integrity="sha384-G0zcxDFp5LWZtDuRMnBkk3EphCK1lhEf4UEyEM693ka574TZGwo4IWwS6QLzM/2t" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
+<script src="https://code.jquery.com/jquery-3.7.0.slim.min.js" integrity="sha384-w5y/xIeYixWvfM+A1cEbmHPURnvyqmVg5eVENruEdDjcyRLUSNej7512JQGspFUr" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+
+<script src="https://ahang7.github.io/js/main.js"></script>
+<script src="https://ahang7.github.io/js/highlight.min.js"></script>
+<script> hljs.initHighlightingOnLoad(); </script>
+<script> $(document).ready(function() {$("pre.chroma").css("padding","0");}); </script><script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.js" integrity="sha384-QELNnmcmU8IR9ZAykt67vGr9/rZJdHbiWi64V88fCPaOohUlHCqUD/unNN0BXSqy" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe-ui-default.min.js" integrity="sha384-m67o7SkQ1ALzKZIFh4CiTA8tmadaujiTa9Vu+nqPSwDOqHrDmxLezTdFln8077+q" crossorigin="anonymous"></script><script src="https://ahang7.github.io/js/load-photoswipe.js"></script>
+
+
+
+
+
+
+
+
+
+
+    
+  </body>
+</html>
+

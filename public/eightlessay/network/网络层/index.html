@@ -1,0 +1,497 @@
+
+
+<!DOCTYPE html>
+<html lang="en" itemscope itemtype="http://schema.org/WebPage">
+  <head>
+    
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+ 
+
+
+      <title>Beautiful Hugo - </title>
+
+  <meta name="description" content="ping的原理简述：
+ping命令是用来探测目标ip地址是否可以访问
+Ping是通过ICMP协议实现的，ping的时候，会向接收方发送回送请求的ICMP报文，对方接收到后，会回复类型为回送应答的ICMP报文
+交换机和路由器有什么区别？
+
+交换机工作在MAC层，称为二层网络设备，主要负责数据帧的转发和交换，交换机会根据MAC地址来转发数据包，是实现局域网内设备的通信
+路由器工作在IP层，称为三层网络设备，主要负责IP数据包的转发和路由选择，路由器会根据IP地址来转发数据包，实现不同网络间的通信
+
+IP地址和MAC地址有什么区别？
+
+IP地址用于网络中唯一标识和定位设备，它是网络层使用的地址，用于实现不同网络之间的通信
+MAC地址用于局域网中唯一标识和定位设备，它在数据链路层使用的地址，实现局域网内设备之间的通信
+
+NAT协议
+网络地址转换协议NAT功能详解及NAT基础知识介绍
+5.1 IP 基础知识全家桶
+192.168.1.100/24中斜杠代表什么意思？
+斜杠（/）后面的数字表示子网掩码的位数
+比如，192.168.1.100/24中的斜杠后面数字表示子网掩码的位数，子网掩码用于划分IP地址中的网络部分和主机部分。将子网掩码和IP地址进行与运算，就可以得到网络号
+具体来说：192.168.1.100/24表示前24位是网络部分，后8位是主机部分">
+  <meta name="author" content="ch"/><script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "WebSite",
+    "name": "Beautiful Hugo",
+    
+    "url": "https:\/\/ahang7.github.io\/"
+}
+</script><script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Organization",
+  "name": "",
+  "url": "https:\/\/ahang7.github.io\/"
+  
+  
+  
+  
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [{
+        "@type": "ListItem",
+        "position": 1,
+        "item": {
+          "@id": "https:\/\/ahang7.github.io\/",
+          "name": "home"
+        }
+    },{
+        "@type": "ListItem",
+        "position": 3,
+        "item": {
+          "@id": "https:\/\/ahang7.github.io\/eightlessay\/network\/%E7%BD%91%E7%BB%9C%E5%B1%82\/",
+          "name": ""
+        }
+    }]
+}
+</script><script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Article",
+  "author": {
+    "name" : "ch"
+  },
+  "headline": "",
+  "description" : "ping的原理简述： ping命令是用来探测目标ip地址是否可以访问 Ping是通过ICMP协议实现的，ping的时候，会向接收方发送回送请求的ICMP报文，对方接收到后，会回复类型为回送应答的ICMP报文\n交换机和路由器有什么区别？ 交换机工作在MAC层，称为二层网络设备，主要负责数据帧的转发和交换，交换机会根据MAC地址来转发数据包，是实现局域网内设备的通信 路由器工作在IP层，称为三层网络设备，主要负责IP数据包的转发和路由选择，路由器会根据IP地址来转发数据包，实现不同网络间的通信 IP地址和MAC地址有什么区别？ IP地址用于网络中唯一标识和定位设备，它是网络层使用的地址，用于实现不同网络之间的通信 MAC地址用于局域网中唯一标识和定位设备，它在数据链路层使用的地址，实现局域网内设备之间的通信 NAT协议 网络地址转换协议NAT功能详解及NAT基础知识介绍\n5.1 IP 基础知识全家桶\n192.168.1.100\/24中斜杠代表什么意思？ 斜杠（\/）后面的数字表示子网掩码的位数\n比如，192.168.1.100\/24中的斜杠后面数字表示子网掩码的位数，子网掩码用于划分IP地址中的网络部分和主机部分。将子网掩码和IP地址进行与运算，就可以得到网络号\n具体来说：192.168.1.100\/24表示前24位是网络部分，后8位是主机部分\n",
+  "inLanguage" : "en",
+  "wordCount":  18 ,
+  "datePublished" : "0001-01-01T00:00:00\u002b00:00",
+  "dateModified" : "0001-01-01T00:00:00\u002b00:00",
+  "image" : "https:\/\/ahang7.github.io\/img\/avatar-icon.png",
+  "keywords" : [ "" ],
+  "mainEntityOfPage" : "https:\/\/ahang7.github.io\/eightlessay\/network\/%E7%BD%91%E7%BB%9C%E5%B1%82\/",
+  "publisher" : {
+    "@type": "Organization",
+    "name" : "https:\/\/ahang7.github.io\/",
+    "logo" : {
+        "@type" : "ImageObject",
+        "url" : "https:\/\/ahang7.github.io\/img\/avatar-icon.png",
+        "height" :  60 ,
+        "width" :  60
+    }
+  }
+}
+</script>
+
+
+<meta property="og:title" content="Beautiful Hugo" />
+<meta property="og:description" content="ping的原理简述：
+ping命令是用来探测目标ip地址是否可以访问
+Ping是通过ICMP协议实现的，ping的时候，会向接收方发送回送请求的ICMP报文，对方接收到后，会回复类型为回送应答的ICMP报文
+交换机和路由器有什么区别？
+
+交换机工作在MAC层，称为二层网络设备，主要负责数据帧的转发和交换，交换机会根据MAC地址来转发数据包，是实现局域网内设备的通信
+路由器工作在IP层，称为三层网络设备，主要负责IP数据包的转发和路由选择，路由器会根据IP地址来转发数据包，实现不同网络间的通信
+
+IP地址和MAC地址有什么区别？
+
+IP地址用于网络中唯一标识和定位设备，它是网络层使用的地址，用于实现不同网络之间的通信
+MAC地址用于局域网中唯一标识和定位设备，它在数据链路层使用的地址，实现局域网内设备之间的通信
+
+NAT协议
+网络地址转换协议NAT功能详解及NAT基础知识介绍
+5.1 IP 基础知识全家桶
+192.168.1.100/24中斜杠代表什么意思？
+斜杠（/）后面的数字表示子网掩码的位数
+比如，192.168.1.100/24中的斜杠后面数字表示子网掩码的位数，子网掩码用于划分IP地址中的网络部分和主机部分。将子网掩码和IP地址进行与运算，就可以得到网络号
+具体来说：192.168.1.100/24表示前24位是网络部分，后8位是主机部分">
+<meta property="og:image" content="https://ahang7.github.io/img/avatar-icon.png" />
+<meta property="og:url" content="https://ahang7.github.io/eightlessay/network/%E7%BD%91%E7%BB%9C%E5%B1%82/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Beautiful Hugo" />
+
+  <meta name="twitter:title" content="Beautiful Hugo" />
+  <meta name="twitter:description" content="ping的原理简述：
+ping命令是用来探测目标ip地址是否可以访问
+Ping是通过ICMP协议实现的，ping的时候，会向接收方发送回送请求的ICMP报文，对方接收到后，会回复类型为回送应答的ICMP报文
+交换机和路由器有什么区别？
+
+交换机工作在MAC层，称为二层网络设备，主要负责数据帧的转发和交换，交换机会根据MAC地址来转发数据包，是实现局域网内设备的通信
+路由器工作在IP层，称为三层网络 …">
+  <meta name="twitter:image" content="https://ahang7.github.io/img/avatar-icon.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link href='https://ahang7.github.io/img/favicon.ico' rel='icon' type='image/x-icon'/>
+  <meta name="generator" content="Hugo 0.136.0">
+  <link rel="alternate" href="https://ahang7.github.io/index.xml" type="application/rss+xml" title="Beautiful Hugo"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.css" integrity="sha384-3UiQGuEI4TTMaFmGIZumfRPtfKQ3trwQE2JgosJxCnGmQpL/lJdjpcHkaaFwHlcI" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous"><link rel="stylesheet" href="https://ahang7.github.io/css/main.css" /><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+  <link rel="stylesheet" href="https://ahang7.github.io/css/highlight.min.css" /><link rel="stylesheet" href="https://ahang7.github.io/css/codeblock.css" /><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.css" integrity="sha384-h/L2W9KefUClHWaty3SLE5F/qvc4djlyR4qY3NUV5HGQBBW7stbcfff1+I/vmsHh" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/default-skin/default-skin.min.css" integrity="sha384-iD0dNku6PYSIQLyfTOpB06F2KCZJAKLOThS5HRe8b3ibhdEQ6eKsFf/EeFxdOt5R" crossorigin="anonymous">
+
+
+  </head>
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://ahang7.github.io/">Beautiful Hugo</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li>
+              <a title="Blog" href="/">Blog</a>
+            </li>
+          
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent" role="button" tabindex="0">Samples</a>
+              <div class="navlinks-children">
+                
+                  <a href="/post/2017-03-07-bigimg-sample">Big Image Sample</a>
+                
+                  <a href="/post/2017-03-05-math-sample">Math Sample</a>
+                
+                  <a href="/post/2016-03-08-code-sample">Code Sample</a>
+                
+              </div>
+            </li>
+          
+        
+          
+            <li>
+              <a title="About" href="/page/about/">About</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="Tags" href="/tags">Tags</a>
+            </li>
+          
+        
+
+        
+
+        
+      </ul>
+    </div>
+
+    
+      <div class="avatar-container">
+        <div class="avatar-img-border">
+          <a title="Beautiful Hugo" href="https://ahang7.github.io/">
+            <img class="avatar-img" src="https://ahang7.github.io/img/avatar-icon.png" alt="Beautiful Hugo" />
+           
+          </a>
+        </div>
+      </div>
+    
+
+  </div>
+</nav>
+
+
+
+
+    
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+
+  
+  
+  
+
+
+
+
+
+
+  <div class="intro-header"></div>
+
+
+    
+<div class="container" role="main">
+  <div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+      <article role="main" class="blog-post">
+        <h2 id="ping的原理简述">ping的原理简述：</h2>
+<p>ping命令是用来探测目标ip地址是否可以访问
+Ping是通过ICMP协议实现的，ping的时候，会向接收方发送回送请求的ICMP报文，对方接收到后，会回复类型为回送应答的ICMP报文</p>
+<h2 id="交换机和路由器有什么区别">交换机和路由器有什么区别？</h2>
+<ul>
+<li>交换机工作在MAC层，称为二层网络设备，主要负责数据帧的转发和交换，交换机会根据MAC地址来转发数据包，是实现局域网内设备的通信</li>
+<li>路由器工作在IP层，称为三层网络设备，主要负责IP数据包的转发和路由选择，路由器会根据IP地址来转发数据包，实现不同网络间的通信</li>
+</ul>
+<h2 id="ip地址和mac地址有什么区别">IP地址和MAC地址有什么区别？</h2>
+<ul>
+<li>IP地址用于网络中唯一标识和定位设备，它是网络层使用的地址，用于实现不同网络之间的通信</li>
+<li>MAC地址用于局域网中唯一标识和定位设备，它在数据链路层使用的地址，实现局域网内设备之间的通信</li>
+</ul>
+<h2 id="nat协议">NAT协议</h2>
+<p><a href="https://zhuanlan.zhihu.com/p/26992935">网络地址转换协议NAT功能详解及NAT基础知识介绍</a></p>
+<p><a href="https://xiaolincoding.com/network/4_ip/ip_base.html">5.1 IP 基础知识全家桶</a></p>
+<h2 id="192168110024中斜杠代表什么意思">192.168.1.100/24中斜杠代表什么意思？</h2>
+<p>斜杠（/）后面的数字表示子网掩码的位数</p>
+<p>比如，192.168.1.100/24中的斜杠后面数字表示子网掩码的位数，子网掩码用于划分IP地址中的网络部分和主机部分。将子网掩码和IP地址进行与运算，就可以得到网络号</p>
+<p>具体来说：192.168.1.100/24表示前24位是网络部分，后8位是主机部分</p>
+
+
+        
+
+        
+            <hr/>
+            <section id="social-share">
+              <div class="list-inline footer-links">
+                
+
+<div class="share-box" aria-hidden="true">
+    <ul class="share">
+      
+      <li>
+        <a href="//twitter.com/share?url=https%3a%2f%2fahang7.github.io%2feightlessay%2fnetwork%2f%25E7%25BD%2591%25E7%25BB%259C%25E5%25B1%2582%2f&amp;text=&amp;via=" target="_blank" title="Share on Twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </li>
+  
+      
+      <li>
+        <a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fahang7.github.io%2feightlessay%2fnetwork%2f%25E7%25BD%2591%25E7%25BB%259C%25E5%25B1%2582%2f" target="_blank" title="Share on Facebook">
+          <i class="fab fa-facebook"></i>
+        </a>
+      </li>
+  
+      
+      <li>
+        <a href="//reddit.com/submit?url=https%3a%2f%2fahang7.github.io%2feightlessay%2fnetwork%2f%25E7%25BD%2591%25E7%25BB%259C%25E5%25B1%2582%2f&amp;title=" target="_blank" title="Share on Reddit">
+          <i class="fab fa-reddit"></i>
+        </a>
+      </li>
+  
+      
+      <li>
+        <a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fahang7.github.io%2feightlessay%2fnetwork%2f%25E7%25BD%2591%25E7%25BB%259C%25E5%25B1%2582%2f&amp;title=" target="_blank" title="Share on LinkedIn">
+          <i class="fab fa-linkedin"></i>
+        </a>
+      </li>
+  
+      
+      <li>
+        <a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fahang7.github.io%2feightlessay%2fnetwork%2f%25E7%25BD%2591%25E7%25BB%259C%25E5%25B1%2582%2f&amp;title=" target="_blank" title="Share on StumbleUpon">
+          <i class="fab fa-stumbleupon"></i>
+        </a>
+      </li>
+  
+      
+      <li>
+        <a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fahang7.github.io%2feightlessay%2fnetwork%2f%25E7%25BD%2591%25E7%25BB%259C%25E5%25B1%2582%2f&amp;description=" target="_blank" title="Share on Pinterest">
+          <i class="fab fa-pinterest"></i>
+        </a>
+      </li>
+    </ul>
+  </div>
+  
+
+              </div>
+            </section>
+        
+
+        
+          
+
+          
+        
+      </article>
+
+      
+        <ul class="pager blog-pager">
+          
+            <li class="previous">
+              <a href="https://ahang7.github.io/eightlessay/network/%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/" data-toggle="tooltip" data-placement="top" title="">&larr; Previous Post</a>
+            </li>
+          
+          
+            <li class="next">
+              <a href="https://ahang7.github.io/eightlessay/network/tcp/" data-toggle="tooltip" data-placement="top" title="">Next Post &rarr;</a>
+            </li>
+          
+        </ul>
+      
+
+
+      
+      
+      
+      
+      
+        
+      
+
+    </div>
+  </div>
+</div>
+
+      <footer>
+  <div class="container">
+    
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+              <li>
+		
+		  <a href="mailto:ch1447571882@qq.com" title="Email me">
+		
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+		
+		  <a href="https://github.com/ahang7" title="GitHub">
+		
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+		
+		  <a href="https://gitlab.com/username" title="GitLab">
+		
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-gitlab fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+          
+          
+        </ul>
+        <p class="credits copyright text-muted">
+          
+            
+              <a href="yourwebsite.com">ch</a>
+            
+          
+
+          &nbsp;&bull;&nbsp;&copy;
+          
+            2024
+          
+
+          
+            &nbsp;&bull;&nbsp;
+            <a href="https://ahang7.github.io/">Beautiful Hugo</a>
+          
+        </p>
+        
+        <p class="credits theme-by text-muted">
+          <a href="https://gohugo.io">Hugo v0.136.0</a> powered &nbsp;&bull;&nbsp; Theme <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a> adapted from <a href="https://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</footer><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.js" integrity="sha384-G0zcxDFp5LWZtDuRMnBkk3EphCK1lhEf4UEyEM693ka574TZGwo4IWwS6QLzM/2t" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
+<script src="https://code.jquery.com/jquery-3.7.0.slim.min.js" integrity="sha384-w5y/xIeYixWvfM+A1cEbmHPURnvyqmVg5eVENruEdDjcyRLUSNej7512JQGspFUr" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+
+<script src="https://ahang7.github.io/js/main.js"></script>
+<script src="https://ahang7.github.io/js/highlight.min.js"></script>
+<script> hljs.initHighlightingOnLoad(); </script>
+<script> $(document).ready(function() {$("pre.chroma").css("padding","0");}); </script><script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.js" integrity="sha384-QELNnmcmU8IR9ZAykt67vGr9/rZJdHbiWi64V88fCPaOohUlHCqUD/unNN0BXSqy" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe-ui-default.min.js" integrity="sha384-m67o7SkQ1ALzKZIFh4CiTA8tmadaujiTa9Vu+nqPSwDOqHrDmxLezTdFln8077+q" crossorigin="anonymous"></script><script src="https://ahang7.github.io/js/load-photoswipe.js"></script>
+
+
+
+
+
+
+
+
+
+
+    
+  </body>
+</html>
+

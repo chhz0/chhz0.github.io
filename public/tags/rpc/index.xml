@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Rpc on Beautiful Hugo</title>
+    <link>https://ahang7.github.io/tags/rpc/</link>
+    <description>Recent content in Rpc on Beautiful Hugo</description>
+    <generator>Hugo</generator>
+    <language>en</language>
+    <managingEditor>ch1447571882@qq.com (ch)</managingEditor>
+    <webMaster>ch1447571882@qq.com (ch)</webMaster>
+    <lastBuildDate>Thu, 31 Oct 2024 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://ahang7.github.io/tags/rpc/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>[go-rpc] 从零搭建rpc框架</title>
+      <link>https://ahang7.github.io/backend-project/go-rpc/1.-rpc-basic/</link>
+      <pubDate>Thu, 31 Oct 2024 00:00:00 +0000</pubDate><author>ch1447571882@qq.com (ch)</author>
+      <guid>https://ahang7.github.io/backend-project/go-rpc/1.-rpc-basic/</guid>
+      <description>&lt;h2 id=&#34;rpc-基础&#34;&gt;RPC 基础&lt;/h2&gt;&#xA;&lt;p&gt;RPC（Remote Procedure Call），即远程过程调用。，允许计算机调用另外一台远程计算机上的程序&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

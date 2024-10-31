@@ -1,0 +1,713 @@
+
+
+<!DOCTYPE html>
+<html lang="en" itemscope itemtype="http://schema.org/WebPage">
+  <head>
+    
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+ 
+
+
+      <title>[MySQL] MySQL内存 - </title>
+
+  <meta name="description" content="MySQL buffer pool">
+  <meta name="author" content="ch"/><script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "WebSite",
+    "name": "Beautiful Hugo",
+    
+    "url": "https:\/\/ahang7.github.io\/"
+}
+</script><script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Organization",
+  "name": "",
+  "url": "https:\/\/ahang7.github.io\/"
+  
+  
+  
+  
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [{
+        "@type": "ListItem",
+        "position": 1,
+        "item": {
+          "@id": "https:\/\/ahang7.github.io\/",
+          "name": "home"
+        }
+    },{
+        "@type": "ListItem",
+        "position": 3,
+        "item": {
+          "@id": "https:\/\/ahang7.github.io\/post\/basic\/mysql\/5.-mysql%E5%86%85%E5%AD%98\/",
+          "name": "[ my sql] my sql内存"
+        }
+    }]
+}
+</script><script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Article",
+  "author": {
+    "name" : "ch"
+  },
+  "headline": "[MySQL] MySQL内存",
+  "description" : "为什么要有Buffer Pool MySQL的数据存储在磁盘的，如果每次都从磁盘里面读取数据，这样性能是很差的\n提高性能，就需要加入缓存。当数据从磁盘中取出来之后，缓存内存中，下次查询同样的数据，直接从内存中读取\n为此InnoDB存储引擎设计了一个缓存池（Buffer Pool），来提高数据库的读写性能\n有了缓冲池后：\n读取数据时，如果数据存在于Buffer Pool中，客户端就会直接读取Buffer Pool中的数据，否则再去磁盘中读取 当修改数据时，首先修改Buffer Pool中数据所在的数据页，然后将该页设置为脏页，最后由后台线程将脏页写入到磁盘 Buffer Pool有多大？ Buffer Pool在MySQL启动的时候，向操作系统申请的一片连续的内存空间，默认配置下Buffer Pool只有128MB\n可以通过调整innodb_buffer_pool_size 参数来设置Buffer Pool的大小，一般建议设置为可用物理内存的60%~80%\nBuffer Pool缓存什么？ InnoDB会把存储的数据分为若干个页，以页作为磁盘和内存交互的基本单位，一个页的默认大小为**16kb，**因此Buffer Pool同样需要按页来划分\n在MySQL启动的时候，**InnoDB会为Buffer Pool申请一片连续的内存空间，然后按照默认的16kb的大小划分出一个个的页，Buffer Pool中的页就叫做缓存页。**这些缓存页都是空的，之后随着程序的运行，才会有磁盘上的页被缓存到Buffer Pool中\n所以，MySQL刚启动的时候，其使用的虚拟内存空间很大，而使用到的物理内存空间很小，这时因为这些虚拟内存被访问后，操作系统才会触发缺页中断，接着将虚拟地址和物理地址建立映射关系\nBuffer Pool缓存了以下的：\n索引页 数据页 插入缓存页 Undo页 自适应哈希索引 锁信息 为了更好管理Buffer Pool中的缓存页，InnoDB为每一个缓存页都创建了一个**控制块，**控制块包括缓存页的表空间，页号，缓存页地址，链表节点等，控制块也占据内存空间，它是在Buffer Pool的最前面，接着才是缓存页\n暂时无法在飞书文档外展示此内容\n上面的控制块和缓存页之间的空白空间称为碎片空间\n碎片空间：每一个控制块对应一个缓存页，在分配足够多的控制块和缓存页后，可能剩余的空间不足够一个控制块和缓存页的大小，那么这块空间就不被使用，剩下的这块空间就被称为碎片\n当Buffer Pool的大小设置的刚刚好，就不会产生碎片\n查询一条记录时，InnoDB会把整个页的数据加载到Buffer Pool中，通过索引只能定位到磁盘中的页，而不能定位到页中一条记录。\nmp.weixin.qq.com(从数据页的角度看B\u002b树——InnoDB存储引擎)\n记录是按照行来存储的，但是数据库的读取并不是以行为单位，否则一次读取（一次IO操作）只能处理一行数据，效率会非常低，因此，InnoDB的数据是按照数据页为单位来读写的\n数据页的结构分为7个部分\nFile Header(38) 文件头，表示页的信息 Page Header(56) 页头，表示页的状态信息 infimum\u002bsupermun(26) 两个虚拟伪记录，分别表示页中最小记录和最大记录 User Records(unclear) 存储行记录内容 Free Space(unclear) 页中还没被使用的 Page Directory(unclear) 页目录，存储用户记录的相对位置，对记录起索引作用 File Tailer(8) 校验页是否完整 其中，行记录由infimum\u002bsupremum 和 User Records构成\n",
+  "inLanguage" : "en",
+  "wordCount":  185 ,
+  "datePublished" : "2024-10-30T00:00:00\u002b00:00",
+  "dateModified" : "2024-10-30T00:00:00\u002b00:00",
+  "image" : "https:\/\/ahang7.github.io\/img\/avatar-icon.png",
+  "keywords" : [ "mysql" ],
+  "mainEntityOfPage" : "https:\/\/ahang7.github.io\/post\/basic\/mysql\/5.-mysql%E5%86%85%E5%AD%98\/",
+  "publisher" : {
+    "@type": "Organization",
+    "name" : "https:\/\/ahang7.github.io\/",
+    "logo" : {
+        "@type" : "ImageObject",
+        "url" : "https:\/\/ahang7.github.io\/img\/avatar-icon.png",
+        "height" :  60 ,
+        "width" :  60
+    }
+  }
+}
+</script>
+
+
+<meta property="og:title" content="[MySQL] MySQL内存" />
+<meta property="og:description" content="MySQL buffer pool">
+<meta property="og:image" content="https://ahang7.github.io/img/avatar-icon.png" />
+<meta property="og:url" content="https://ahang7.github.io/post/basic/mysql/5.-mysql%E5%86%85%E5%AD%98/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Beautiful Hugo" />
+
+  <meta name="twitter:title" content="[MySQL] MySQL内存" />
+  <meta name="twitter:description" content="MySQL buffer pool">
+  <meta name="twitter:image" content="https://ahang7.github.io/img/avatar-icon.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link href='https://ahang7.github.io/img/favicon.ico' rel='icon' type='image/x-icon'/>
+  <meta name="generator" content="Hugo 0.136.0">
+  <link rel="alternate" href="https://ahang7.github.io/index.xml" type="application/rss+xml" title="Beautiful Hugo"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.css" integrity="sha384-3UiQGuEI4TTMaFmGIZumfRPtfKQ3trwQE2JgosJxCnGmQpL/lJdjpcHkaaFwHlcI" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous"><link rel="stylesheet" href="https://ahang7.github.io/css/main.css" /><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+  <link rel="stylesheet" href="https://ahang7.github.io/css/highlight.min.css" /><link rel="stylesheet" href="https://ahang7.github.io/css/codeblock.css" /><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.css" integrity="sha384-h/L2W9KefUClHWaty3SLE5F/qvc4djlyR4qY3NUV5HGQBBW7stbcfff1+I/vmsHh" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/default-skin/default-skin.min.css" integrity="sha384-iD0dNku6PYSIQLyfTOpB06F2KCZJAKLOThS5HRe8b3ibhdEQ6eKsFf/EeFxdOt5R" crossorigin="anonymous">
+
+
+  </head>
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://ahang7.github.io/">Beautiful Hugo</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li>
+              <a title="Blog" href="/">Blog</a>
+            </li>
+          
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent" role="button" tabindex="0">Samples</a>
+              <div class="navlinks-children">
+                
+                  <a href="/post/2017-03-07-bigimg-sample">Big Image Sample</a>
+                
+                  <a href="/post/2017-03-05-math-sample">Math Sample</a>
+                
+                  <a href="/post/2016-03-08-code-sample">Code Sample</a>
+                
+              </div>
+            </li>
+          
+        
+          
+            <li>
+              <a title="About" href="/page/about/">About</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="Tags" href="/tags">Tags</a>
+            </li>
+          
+        
+
+        
+
+        
+      </ul>
+    </div>
+
+    
+      <div class="avatar-container">
+        <div class="avatar-img-border">
+          <a title="Beautiful Hugo" href="https://ahang7.github.io/">
+            <img class="avatar-img" src="https://ahang7.github.io/img/avatar-icon.png" alt="Beautiful Hugo" />
+           
+          </a>
+        </div>
+      </div>
+    
+
+  </div>
+</nav>
+
+
+
+
+    
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+
+  
+  
+  
+
+
+
+
+
+
+  
+
+  <header class="header-section ">
+    
+    
+    <div class="intro-header no-img">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <div class="post-heading">
+              
+                <h1>[MySQL] MySQL内存</h1>
+              
+              
+              
+                
+                  <h2 class="post-subheading">MySQL buffer pool</h2>
+                
+              
+              
+                <span class="post-meta">
+  
+  
+  <i class="fas fa-calendar"></i>&nbsp;Posted on October 30, 2024
+  
+  
+    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;1&nbsp;minutes
+  
+  
+    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;185&nbsp;words
+  
+  
+    
+      &nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;ch
+    
+  
+  
+</span>
+
+
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+  </header>
+
+
+    
+<div class="container" role="main">
+  <div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+      <article role="main" class="blog-post">
+        <h2 id="为什么要有buffer-pool">为什么要有Buffer Pool</h2>
+<p>MySQL的数据存储在磁盘的，如果每次都从磁盘里面读取数据，这样性能是很差的</p>
+<p>提高性能，就需要加入缓存。当数据从磁盘中取出来之后，缓存内存中，下次查询同样的数据，直接从内存中读取</p>
+<p>为此InnoDB存储引擎设计了<strong>一个缓存池（Buffer Pool），来提高数据库的读写性能</strong></p>
+<p>有了缓冲池后：</p>
+<ul>
+<li>读取数据时，如果数据存在于Buffer Pool中，客户端就会直接读取Buffer Pool中的数据，否则再去磁盘中读取</li>
+<li>当修改数据时，首先修改Buffer Pool中数据所在的数据页，然后将该页设置为脏页，最后由后台线程将脏页写入到磁盘</li>
+</ul>
+<h2 id="buffer-pool有多大">Buffer Pool有多大？</h2>
+<p>Buffer Pool在MySQL启动的时候，向操作系统申请的一片连续的内存空间，默认配置下Buffer Pool只有<code>128MB</code></p>
+<p>可以通过调整<code>innodb_buffer_pool_size</code> 参数来设置Buffer Pool的大小，一般建议设置为可用物理内存的60%~80%</p>
+<h2 id="buffer-pool缓存什么">Buffer Pool缓存什么？</h2>
+<p>InnoDB会把存储的数据分为若干个<strong>页</strong>，以页作为磁盘和内存交互的基本单位，一个页的默认大小为**16kb，**因此Buffer Pool同样需要按页来划分</p>
+<p>在MySQL启动的时候，**InnoDB会为Buffer Pool申请一片连续的<strong><strong>内存</strong></strong>空间，然后按照默认的16<strong><strong>kb</strong></strong>的大小划分出一个个的页，Buffer Pool中的页就叫做缓存页。**这些缓存页都是空的，之后随着程序的运行，才会有磁盘上的页被缓存到Buffer Pool中</p>
+<p>所以，MySQL刚启动的时候，其使用的虚拟内存空间很大，而使用到的物理内存空间很小，这时因为这些虚拟内存被访问后，操作系统才会触发缺页中断，接着将虚拟地址和物理地址建立映射关系</p>
+<p>Buffer Pool缓存了以下的：</p>
+<ul>
+<li>索引页</li>
+<li>数据页</li>
+<li>插入缓存页</li>
+<li>Undo页</li>
+<li>自适应哈希索引</li>
+<li>锁信息</li>
+</ul>
+<p>为了更好管理Buffer Pool中的缓存页，InnoDB为每一个缓存页都创建了一个**控制块，**控制块包括缓存页的表空间，页号，缓存页地址，链表节点等，控制块也占据内存空间，它是在Buffer Pool的最前面，接着才是缓存页</p>
+<p>暂时无法在飞书文档外展示此内容</p>
+<p>上面的控制块和缓存页之间的空白空间称为<strong>碎片空间</strong></p>
+<blockquote>
+<p>碎片空间：每一个控制块对应一个缓存页，在分配足够多的控制块和缓存页后，可能剩余的空间不足够一个控制块和缓存页的大小，那么这块空间就不被使用，剩下的这块空间就被称为碎片</p>
+<p>当Buffer Pool的大小设置的刚刚好，就不会产生碎片</p>
+</blockquote>
+<p>查询一条记录时，InnoDB会把整个页的数据加载到Buffer Pool中，通过索引只能定位到磁盘中的页，而不能定位到页中一条记录。</p>
+<p><a href="https://mp.weixin.qq.com/s/A5gNVXMNE-iIlY3oofXtLw">mp.weixin.qq.com</a>(从数据页的角度看B+树——InnoDB存储引擎)</p>
+<p>记录是按照行来存储的，但是数据库的读取并不是以<strong>行</strong>为单位，否则一次读取（一次IO操作）只能处理一行数据，效率会非常低，因此，<strong>InnoDB的数据是按照数据页为单位来读写的</strong></p>
+<p>数据页的结构分为7个部分</p>
+<table>
+  <thead>
+      <tr>
+          <th></th>
+          <th></th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>File Header(38)</td>
+          <td>文件头，表示页的信息</td>
+      </tr>
+      <tr>
+          <td>Page Header(56)</td>
+          <td>页头，表示页的状态信息</td>
+      </tr>
+      <tr>
+          <td>infimum+supermun(26)</td>
+          <td>两个虚拟伪记录，分别表示页中最小记录和最大记录</td>
+      </tr>
+      <tr>
+          <td>User Records(unclear)</td>
+          <td>存储行记录内容</td>
+      </tr>
+      <tr>
+          <td>Free Space(unclear)</td>
+          <td>页中还没被使用的</td>
+      </tr>
+      <tr>
+          <td>Page Directory(unclear)</td>
+          <td>页目录，存储用户记录的相对位置，对记录起索引作用</td>
+      </tr>
+      <tr>
+          <td>File Tailer(8)</td>
+          <td>校验页是否完整</td>
+      </tr>
+  </tbody>
+</table>
+<p>其中，行记录由<code>infimum+supremum</code> 和 <code>User Records</code>构成</p>
+<p>在<code>File Header</code> 中有两个指针，分别指向上一个数据页和下一个数据页，连接起来的页相当于一个双向链表</p>
+<p><img src="https://rt5bap83jl.feishu.cn/space/api/box/stream/download/asynccode/?code=NmFkOTdjOTNkNzBmNGQ3ZmRiODRjNjk0ZGQ2YWRhMzhfSUZVZkZ1c3hOdjZtejZvaFBzRHBQbDdqZVZFYnExZGpfVG9rZW46Q3R6TmJEMnNmb1Ewc2p4bEVwa2N1UW9TbmliXzE3MjE4NDExNDM6MTcyMTg0NDc0M19WNA" alt=""></p>
+<p>采用链表结构是让<strong>数据页之间不需要物理上的连续，而是逻辑上的连续</strong></p>
+<h3 id="数据页中user-records是怎么组织数据的">数据页中User Records是怎么组织数据的？</h3>
+<p>**数据页中的记录按照<strong><strong>主键</strong></strong>顺序组成<strong><strong>单向链表</strong></strong>，**单向链表的特点是插入、删除非常方便，但是检索效率不高</p>
+<p>因此，在数据页中有一个页目录（Page Directory），起记录的索引作用，可以快速找到记录</p>
+<p>页目录创建过程如下：</p>
+<ol>
+<li>
+<p>将所有记录划分为几个组，这些记录包括最小记录和最大记录，但不包括标记已删除的记录</p>
+</li>
+<li>
+<p>每个记录组的最后一条记录是组内最大的那条记录，并且<strong>最后一条记录</strong>的头信息都会存储该组一共多少条记录，作为n_owned字段</p>
+</li>
+<li>
+<p>页目录用来存储每组最后一条记录的地址偏移量，这些地址偏移量会按照先后顺序存储起来，每组的地址偏移量也被称为槽（slot），每个槽相当于指针指向了不同组的最后一个记录</p>
+</li>
+</ol>
+<p><strong>页目录就是由多个槽组成，槽相当于分组记录的索引</strong>。因为<strong>记录是按照<strong><strong>主键</strong></strong>值大小从小到大排序，所以通过槽查找记录时，可以使用<strong><strong>二分查找</strong></strong>法快速定位要查询的记录在哪个槽（哪个记录分组），定位到槽后，在遍历槽内的所有记录，找到对应的记录</strong></p>
+<blockquote>
+<p>InnoDB里的B+树中的每个节点都是一个数据页</p>
+</blockquote>
+<p><img src="https://rt5bap83jl.feishu.cn/space/api/box/stream/download/asynccode/?code=ZGU2NWUzOWYzYTM2OTI4Mzk4MTZhMjU5ODIzNmE0NzVfREdRU1pMcDFsWm9iQk9oV2doWnFxWjlGYzJaOWlIRXdfVG9rZW46V0VHcGJ4WnhBb1UzdkZ4dzU0ZGNzanh1bk5xXzE3MjE4NDExNDM6MTcyMTg0NDc0M19WNA" alt=""></p>
+<p>InnoDB对每个分组中的记录条数是有规定的，槽内的记录就有几条：</p>
+<ul>
+<li>
+<p>第一个分组中的记录只能由1条</p>
+</li>
+<li>
+<p>最后一个分组的记录条数范围只能在1-8条之间</p>
+</li>
+<li>
+<p>剩下的分组中记录条数范围只能在4-8条之间</p>
+</li>
+</ul>
+<h2 id="如何管理buffer-pool">如何管理Buffer Pool？</h2>
+<ol>
+<li>
+<h3 id="空闲页的管理">空闲页的管理</h3>
+</li>
+</ol>
+<p>为了能够快速找到空闲的缓存页，可以使用链表结构，<strong>将空闲缓存页的<strong><strong>控制块</strong></strong>作为链表的节点</strong>，这个链表称为<strong>Free链表</strong>（空闲链表）</p>
+<p><img src="https://rt5bap83jl.feishu.cn/space/api/box/stream/download/asynccode/?code=OWViYTY2N2U4YWZkMDJhZTVjMWJiZTBhYzNhYTE3MjBfVkRuWkh6OFdqME9TdG84SlJxbFp0N0dKVXNPZEUzNWxfVG9rZW46RGxDcWI1RnBOb3RNUzh4U0dTbGM4Q0hxbjBjXzE3MjE4NDExNDM6MTcyMTg0NDc0M19WNA" alt=""></p>
+<p>Free链表上除了控制块，还有一个<strong>头结点</strong>，该头结点包含该链表的头结点地址，尾节点地址，以及当前链表中节点的数量等信息</p>
+<p>Free链表节点是一个个的控制块，而每个控制块包含着对应缓存页的地址，所以相当于Free链表节点都对应一个空闲缓存页</p>
+<p>有了Free链表后，每当需要从磁盘中加载一个页到Buffer Pool中，就从Free链表中取一个空闲的缓存页，并且把该缓存页对应的控制块的信息填上，然后把该缓存页对应的控制块从Free链表中移除</p>
+<ol start="2">
+<li>
+<h3 id="脏页的管理">脏页的管理</h3>
+</li>
+</ol>
+<p>Buffer Pool除了提高读性能，还能提高写性能，就是更新数据的时候，不需要每次都写入磁盘，而将Buffer Pool对应的缓存页标记为<strong>脏页</strong>，然后由后台线程将脏页写入到磁盘</p>
+<p>innodb设计出了Flush链表，跟Free链表类似，链表的节点是控制块，区别是Flush链表的元素是脏页</p>
+<p><img src="https://rt5bap83jl.feishu.cn/space/api/box/stream/download/asynccode/?code=NWU2YzcyZmEwY2QzOWJlMTMwY2ViZTQ2Njg3M2RmNTZfWnpuN3Vpd1hsN01KeGNicVpTem5na3I1ckxURkhFcjVfVG9rZW46WERkVGJlTTM3b0dXU3N4MHZDNGN3YTlRbnFlXzE3MjE4NDExNDM6MTcyMTg0NDc0M19WNA" alt=""></p>
+<p>有了Flush链表，后台线程可以遍历Flush链表，将脏页写入磁盘</p>
+<h2 id="如何提高缓存命中率">如何提高缓存命中率</h2>
+<p>Buffer Pool的大小是有限的，所以需要使用一些策略，保证常用数据留在Buffer Pool，少用的数据在某个时机可以淘汰掉</p>
+<p>最常见的是<strong>LRU算法（Least recently used）</strong></p>
+<p>这个算法的思路是，链表头部的节点是最近使用的，而链表末尾的节点是最久没有使用的，那么当空间不够时，就淘汰最久没有使用的节点</p>
+<p>简短的LRU算法实现思路如下：</p>
+<ul>
+<li>
+<p>当访问的页在Buffer Pool中，就直接将该页对于的LRU链表节点移动到链表的头部</p>
+</li>
+<li>
+<p>当访问的页不在Buffer Pool中，除了把页放入到LRU链表的头部，还要淘汰LRU链表末尾的节点</p>
+</li>
+</ul>
+<p>至此，Buffer Pool里有三种页和链表来管理数据：</p>
+<ul>
+<li>
+<p>Free Page（空闲页）：表示此页未被使用，位于Free链表</p>
+</li>
+<li>
+<p>Clean Page（干净页）：表示此页已经被使用，但是页面未发生修改，位于LRU链表</p>
+</li>
+<li>
+<p>Dirty Page（脏页）：表示此页已经被修改，其数据和磁盘上的数据已经不一致。当脏页上的数据写入磁盘后，内存数据和磁盘数据一致，那么该页就变成干净页。脏页同时存在于LRU链表和FLUSH链表</p>
+</li>
+</ul>
+<p>简短LRU算法没有被MySQL使用，因为简短LRU算法无法避免一些两个问题：</p>
+<ul>
+<li>
+<p>预读失效</p>
+</li>
+<li>
+<p>Buffer Pool污染</p>
+</li>
+</ul>
+<h3 id="怎么解决预读失效而导致缓存命中率减低的问题">怎么解决预读失效而导致缓存命中率减低的问题？</h3>
+<blockquote>
+<p>预读失效：</p>
+<p>MySQL的预读机制。程序有空间局部性，靠近当前被访问数据的数据，在未来大概率被访问</p>
+<p>MySQL在加载数据页的时候，会提前把相邻的数据页一并加载，减少磁盘IO</p>
+<p>但是这些被提前加载进来的数据页，并没有被访问，相当于预读是白做，这个就是<strong>预读失效</strong></p>
+<p>如果使用简单的LRU算法，就会把预读页放到LRU链表头部，而当Buffer Pool空间不够，还需要淘汰末尾的页</p>
+<p>这里会出现一个奇怪的问题，预读页可能一直不会被访问到，却会占用LRU链表前排的位置，而末尾淘汰的页可能是频繁访问的页，这样就大大降低了缓存命中率</p>
+</blockquote>
+<p>避免预读失效带来的影响，最好就是<strong>让预读的页停留在Buffer Pool里时间尽可能的短，让真正被访问的页才移动到LRU<strong><strong>链表</strong></strong>的头部，从而保证真正被读取的热数据留在Buffer Pool里的时间尽可能长</strong></p>
+<p>MySQL做了以下修改：将LRU划分了2个区域：<strong>old区域和young区域</strong></p>
+<p><img src="https://rt5bap83jl.feishu.cn/space/api/box/stream/download/asynccode/?code=OTVjZDQ2MjUxMzExMWEzMjQ0YmYzODA5NzUyNzBkMzZfWWdta2ZyelFMNTBIS2NpMTcxaU1jQ0Z4THFQOVUwUnZfVG9rZW46Ull4amJuZ213b3pqSk94VHBZN2NteGVZbjRJXzE3MjE4NDExNDM6MTcyMTg0NDc0M19WNA" alt=""></p>
+<p>young区域在LRU链表的前半部分，old区域则是在后半部分，old区域占整个LRU链表长度比例可以通过<code>innodb_old_blocks_pct</code> 参数来设置，默认是37，代表整个LRU链表中young区域和old区域比例是63:37</p>
+<p><strong>划分两个区域后，预读的页只需要加入到old区域的头部，当页被真正访问到时候，才将页插入到young区域。</strong></p>
+<p>MySQL改进后的LRU算法，通过划分young区域和old区域避免了预读失效带来的影响，但是没有解决Buffer Pool污染的问题</p>
+<h3 id="怎么解决出现buffer-pool污染而导致缓存命中率减低的问题">怎么解决出现Buffer Pool污染而导致缓存命中率减低的问题？</h3>
+<blockquote>
+<p>Buffer Pool污染：</p>
+<p>当某个SQL语句扫描了大量的数据，在Buffer Pool空间比较有限的情况下，可能会将<strong>Buffer Pool里的所有页都替换出去，导致大量热数据被淘汰</strong>，等这些热数据又再被访问的时候，由于缓存未命中，就会产生大量的磁盘IO，MySQL性能就会急剧下降，这个过程为<strong>Buffer Pool污染</strong></p>
+</blockquote>
+<p>像全表扫描的查询，很多缓存页其实只会被访问一次，但是它却因为被访问一次而进入到young区域，从而导致热点数据被替换</p>
+<p>为了解决这个问题，MySQL提高了进入young区域的门槛，这样就能有效保障young区域里的热点数据不会被替换掉</p>
+<p><strong>想要进去young区域条件增加了一个停留在old区域的时间判断</strong></p>
+<p>具体过程如下，在对某个处在old区域的缓存页进行第一次访问时，就在它对应的控制块中记录下来这个访问时间：</p>
+<ul>
+<li>如果后续的访问时间与第一次访问的时间在<strong>某个时间间隔内</strong>，那么<strong>该缓存页就不会被从old区域移动到young区域的头部</strong></li>
+<li>如果后续的访问时间与第一次访问的时间<strong>不在某个时间间隔内</strong>，那么<strong>该缓存页移动到young区域的头部</strong></li>
+</ul>
+<p>这个间隔时间是由<code>innodb_old_blocks_time</code> 控制的，默认是1000ms</p>
+<p>也就是说，只有同时满足<strong>被访问</strong>与<strong>old区域停留时间超过1s</strong>两个条件，才会被插入到young区域的头部，这样就解决了Buffer Pool污染问题</p>
+<p>另外，MySQL针对young区域其实做了一个优化，为了防止young区域节点频繁移动到头部，young区域前面1/4被访问不会移动到链表头部，只有后面的3/4被访问了才会</p>
+<h2 id="脏页什么时候会被刷入磁盘">脏页什么时候会被刷入磁盘？</h2>
+<p>引入Buffer Pool后，当修改数据时，首先修改Buffer Pool中数据所在的页，然后将其页设置为脏页，但是磁盘中还是原数据</p>
+<p>因此，脏页需要刷入磁盘，保证缓存和磁盘数据一致，但是若每次修改数据都刷入磁盘，则性能会变差，因此一般都会在一定时机进行批量刷盘</p>
+<p>但是如果脏页在还没来得急刷入磁盘时，MySQL宕机了，数据会丢失吗？</p>
+<p>不会，InnoDB的更新操作采用的是Write Ahead Log策略，即先写日志，在写入磁盘，通过redo log日志让MySQL拥有崩溃恢复能力</p>
+<p>下面几种情况会触发脏页的刷新：</p>
+<ul>
+<li>当redo log日志满了的情况下，会主动触发脏页刷新到磁盘</li>
+<li>Buffer Pool空间不足时，需要将一部分数据页淘汰掉，如果淘汰的脏页，需要先将脏页同步到磁盘</li>
+<li>MySQL认为空闲时，后台线程会定期将适量的脏页刷入到磁盘</li>
+<li>MySQL正常关闭时，会把所有的脏页刷入磁盘</li>
+</ul>
+
+
+        
+          <div class="blog-tags">
+            
+              
+              <a href="https://ahang7.github.io/tags/mysql/">mysql</a>&nbsp;
+            
+          </div>
+        
+
+        
+            <hr/>
+            <section id="social-share">
+              <div class="list-inline footer-links">
+                
+
+<div class="share-box" aria-hidden="true">
+    <ul class="share">
+      
+      <li>
+        <a href="//twitter.com/share?url=https%3a%2f%2fahang7.github.io%2fpost%2fbasic%2fmysql%2f5.-mysql%25E5%2586%2585%25E5%25AD%2598%2f&amp;text=%5bMySQL%5d%20MySQL%e5%86%85%e5%ad%98&amp;via=" target="_blank" title="Share on Twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </li>
+  
+      
+      <li>
+        <a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fahang7.github.io%2fpost%2fbasic%2fmysql%2f5.-mysql%25E5%2586%2585%25E5%25AD%2598%2f" target="_blank" title="Share on Facebook">
+          <i class="fab fa-facebook"></i>
+        </a>
+      </li>
+  
+      
+      <li>
+        <a href="//reddit.com/submit?url=https%3a%2f%2fahang7.github.io%2fpost%2fbasic%2fmysql%2f5.-mysql%25E5%2586%2585%25E5%25AD%2598%2f&amp;title=%5bMySQL%5d%20MySQL%e5%86%85%e5%ad%98" target="_blank" title="Share on Reddit">
+          <i class="fab fa-reddit"></i>
+        </a>
+      </li>
+  
+      
+      <li>
+        <a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fahang7.github.io%2fpost%2fbasic%2fmysql%2f5.-mysql%25E5%2586%2585%25E5%25AD%2598%2f&amp;title=%5bMySQL%5d%20MySQL%e5%86%85%e5%ad%98" target="_blank" title="Share on LinkedIn">
+          <i class="fab fa-linkedin"></i>
+        </a>
+      </li>
+  
+      
+      <li>
+        <a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fahang7.github.io%2fpost%2fbasic%2fmysql%2f5.-mysql%25E5%2586%2585%25E5%25AD%2598%2f&amp;title=%5bMySQL%5d%20MySQL%e5%86%85%e5%ad%98" target="_blank" title="Share on StumbleUpon">
+          <i class="fab fa-stumbleupon"></i>
+        </a>
+      </li>
+  
+      
+      <li>
+        <a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fahang7.github.io%2fpost%2fbasic%2fmysql%2f5.-mysql%25E5%2586%2585%25E5%25AD%2598%2f&amp;description=%5bMySQL%5d%20MySQL%e5%86%85%e5%ad%98" target="_blank" title="Share on Pinterest">
+          <i class="fab fa-pinterest"></i>
+        </a>
+      </li>
+    </ul>
+  </div>
+  
+
+              </div>
+            </section>
+        
+
+        
+          
+            
+          
+
+          
+                  <h4 class="see-also">See also</h4>
+                  <ul>
+                
+                
+                    <li><a href="/post/basic/mysql/6.-mysql%E9%80%BB%E8%BE%91%E6%9E%B6%E6%9E%84/">[MySQL] MySQL逻辑架构</a></li>
+                
+                    <li><a href="/post/basic/mysql/4.-mysql%E6%97%A5%E5%BF%97/">[MySQL] MySQL日志</a></li>
+                
+                    <li><a href="/post/basic/mysql/3.-mysql%E9%94%81/">[MySQL] MySQL锁</a></li>
+                
+                    <li><a href="/post/basic/mysql/2.-mysql%E4%BA%8B%E5%8A%A1/">[MySQL] MySQL事务</a></li>
+                
+                    <li><a href="/post/basic/mysql/1.-mysql%E7%B4%A2%E5%BC%95/">[MySQL] MySQL索引</a></li>
+                
+              </ul>
+
+          
+        
+      </article>
+
+      
+        <ul class="pager blog-pager">
+          
+            <li class="previous">
+              <a href="https://ahang7.github.io/post/basic/redis/6-redis%E9%9B%86%E7%BE%A4/" data-toggle="tooltip" data-placement="top" title="[redis] 集群">&larr; Previous Post</a>
+            </li>
+          
+          
+            <li class="next">
+              <a href="https://ahang7.github.io/post/basic/network/2.-%E9%94%AE%E5%85%A5%E7%BD%91%E5%9D%80%E7%9A%84%E8%BF%87%E7%A8%8B/" data-toggle="tooltip" data-placement="top" title="[计网] 键入网址的过程">Next Post &rarr;</a>
+            </li>
+          
+        </ul>
+      
+
+
+      
+      
+      
+      
+      
+        
+      
+
+    </div>
+  </div>
+</div>
+
+      <footer>
+  <div class="container">
+    
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+              <li>
+		
+		  <a href="mailto:ch1447571882@qq.com" title="Email me">
+		
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+		
+		  <a href="https://github.com/ahang7" title="GitHub">
+		
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+		
+		  <a href="https://gitlab.com/username" title="GitLab">
+		
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-gitlab fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+          
+          
+        </ul>
+        <p class="credits copyright text-muted">
+          
+            
+              <a href="yourwebsite.com">ch</a>
+            
+          
+
+          &nbsp;&bull;&nbsp;&copy;
+          
+            2024
+          
+
+          
+            &nbsp;&bull;&nbsp;
+            <a href="https://ahang7.github.io/">Beautiful Hugo</a>
+          
+        </p>
+        
+        <p class="credits theme-by text-muted">
+          <a href="https://gohugo.io">Hugo v0.136.0</a> powered &nbsp;&bull;&nbsp; Theme <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a> adapted from <a href="https://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</footer><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.js" integrity="sha384-G0zcxDFp5LWZtDuRMnBkk3EphCK1lhEf4UEyEM693ka574TZGwo4IWwS6QLzM/2t" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
+<script src="https://code.jquery.com/jquery-3.7.0.slim.min.js" integrity="sha384-w5y/xIeYixWvfM+A1cEbmHPURnvyqmVg5eVENruEdDjcyRLUSNej7512JQGspFUr" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+
+<script src="https://ahang7.github.io/js/main.js"></script>
+<script src="https://ahang7.github.io/js/highlight.min.js"></script>
+<script> hljs.initHighlightingOnLoad(); </script>
+<script> $(document).ready(function() {$("pre.chroma").css("padding","0");}); </script><script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.js" integrity="sha384-QELNnmcmU8IR9ZAykt67vGr9/rZJdHbiWi64V88fCPaOohUlHCqUD/unNN0BXSqy" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe-ui-default.min.js" integrity="sha384-m67o7SkQ1ALzKZIFh4CiTA8tmadaujiTa9Vu+nqPSwDOqHrDmxLezTdFln8077+q" crossorigin="anonymous"></script><script src="https://ahang7.github.io/js/load-photoswipe.js"></script>
+
+
+
+
+
+
+
+
+
+
+    
+  </body>
+</html>
+

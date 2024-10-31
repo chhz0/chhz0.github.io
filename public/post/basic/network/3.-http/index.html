@@ -1,0 +1,751 @@
+
+
+<!DOCTYPE html>
+<html lang="en" itemscope itemtype="http://schema.org/WebPage">
+  <head>
+    
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+ 
+
+
+      <title>[计网] HTTP - </title>
+
+  <meta name="description" content="接下来将从以下6个方面，逐渐学习和了解HTTP
+
+HTTP基本概念
+Get与Post
+HTTP特征
+HTTP缓存
+HTTPS与HTTP
+HTTP/1.1、HTTP/2、HTTP/3演变
+
+
+HTTP基本概念
+
+1.HTTP是什么？
+
+HTTP是超文本传输协议，也就是HyperText Transfer Protocol
+
+HTTP的名字【超文本传输协议】，可以拆成三个部分：
+
+
+超文本
+
+
+传输
+
+
+协议
+
+
+
+针对 HTTP 协议，我们可以这么理解。
+
+「协议」
+
+HTTP 是一个用在计算机世界里的协议。它使用计算机能够理解的语言确立了一种计算机之间交流通信的规范（两个以上的参与者），以及相关的各种控制和错误处理方式（行为约定和规范）。
+
+「传输」
+
+HTTP 协议是一个双向协议。
+针对传输，我们可以进一步理解了 HTTP。
+HTTP 是一个在计算机世界里专门用来在两点之间传输数据的约定和规范。
+
+「超文本」
+
+HTTP 传输的内容是「超文本」。
+理解「超文本」，它就是超越了普通文本的文本，它是文字、图片、视频等的混合体，最关键有超链接，能从一个超文本跳转到另外一个超文本。
+HTTP 是一个在计算机世界里专门在「两点」之间「传输」文字、图片、音频、视频等「超文本」数据的「约定和规范」。
+
+HTTP是用于从互联网服务器传输超文本到本地浏览器的协议，这个说法是错误的，因为HTTP也可以服务于【服务器&lt;&mdash;&gt;服务器】，所有采用两点之间的描述比较准确
+
+2.HTTP常见的状态码
+
+1xx 类状态码属于提示信息，是协议处理中的一种中间状态，实际用到的比较少。
+2xx 类状态码表示服务器成功处理了客户端的请求，也是我们最愿意看到的状态。
+
+
+「200 OK」是最常见的成功状态码，表示一切正常。如果是非 HEAD 请求，服务器返回的响应头都会有 body 数据。
+
+
+「204 No Content」也是常见的成功状态码，与 200 OK 基本相同，但响应头没有 body 数据。
+
+
+「206 Partial Content」是应用于 HTTP 分块下载或断点续传，表示响应返回的 body 数据并不是资源的全部，而是其中的一部分，也是服务器处理成功的状态。
+
+
+3xx 类状态码表示客户端请求的资源发生了变动，需要客户端用新的 URL 重新发送请求获取资源，也就是重定向。
+
+
+「301 Moved Permanently」表示永久重定向，说明请求的资源已经不存在了，需改用新的 URL 再次访问。">
+  <meta name="author" content="ch"/><script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "WebSite",
+    "name": "Beautiful Hugo",
+    
+    "url": "https:\/\/ahang7.github.io\/"
+}
+</script><script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Organization",
+  "name": "",
+  "url": "https:\/\/ahang7.github.io\/"
+  
+  
+  
+  
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [{
+        "@type": "ListItem",
+        "position": 1,
+        "item": {
+          "@id": "https:\/\/ahang7.github.io\/",
+          "name": "home"
+        }
+    },{
+        "@type": "ListItem",
+        "position": 3,
+        "item": {
+          "@id": "https:\/\/ahang7.github.io\/post\/basic\/network\/3.-http\/",
+          "name": "[计网] HTTP"
+        }
+    }]
+}
+</script><script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Article",
+  "author": {
+    "name" : "ch"
+  },
+  "headline": "[计网] HTTP",
+  "description" : "接下来将从以下6个方面，逐渐学习和了解HTTP\nHTTP基本概念 Get与Post HTTP特征 HTTP缓存 HTTPS与HTTP HTTP\/1.1、HTTP\/2、HTTP\/3演变 HTTP基本概念 1.HTTP是什么？ HTTP是超文本传输协议，也就是HyperText Transfer Protocol\nHTTP的名字【超文本传输协议】，可以拆成三个部分：\n超文本\n传输\n协议\n针对 HTTP 协议，我们可以这么理解。\n「协议」 HTTP 是一个用在计算机世界里的协议。它使用计算机能够理解的语言确立了一种计算机之间交流通信的规范（两个以上的参与者），以及相关的各种控制和错误处理方式（行为约定和规范）。\n「传输」 HTTP 协议是一个双向协议。\n针对传输，我们可以进一步理解了 HTTP。\nHTTP 是一个在计算机世界里专门用来在两点之间传输数据的约定和规范。\n「超文本」 HTTP 传输的内容是「超文本」。\n理解「超文本」，它就是超越了普通文本的文本，它是文字、图片、视频等的混合体，最关键有超链接，能从一个超文本跳转到另外一个超文本。\nHTTP 是一个在计算机世界里专门在「两点」之间「传输」文字、图片、音频、视频等「超文本」数据的「约定和规范」。\nHTTP是用于从互联网服务器传输超文本到本地浏览器的协议，这个说法是错误的，因为HTTP也可以服务于【服务器\u0026lt;\u0026mdash;\u0026gt;服务器】，所有采用两点之间的描述比较准确\n2.HTTP常见的状态码 1xx 类状态码属于提示信息，是协议处理中的一种中间状态，实际用到的比较少。\n2xx 类状态码表示服务器成功处理了客户端的请求，也是我们最愿意看到的状态。\n「200 OK」是最常见的成功状态码，表示一切正常。如果是非 HEAD 请求，服务器返回的响应头都会有 body 数据。\n「204 No Content」也是常见的成功状态码，与 200 OK 基本相同，但响应头没有 body 数据。\n「206 Partial Content」是应用于 HTTP 分块下载或断点续传，表示响应返回的 body 数据并不是资源的全部，而是其中的一部分，也是服务器处理成功的状态。\n3xx 类状态码表示客户端请求的资源发生了变动，需要客户端用新的 URL 重新发送请求获取资源，也就是重定向。\n「301 Moved Permanently」表示永久重定向，说明请求的资源已经不存在了，需改用新的 URL 再次访问。\n",
+  "inLanguage" : "en",
+  "wordCount":  114 ,
+  "datePublished" : "2024-10-31T00:00:00\u002b00:00",
+  "dateModified" : "2024-10-31T00:00:00\u002b00:00",
+  "image" : "https:\/\/ahang7.github.io\/img\/avatar-icon.png",
+  "keywords" : [ "计算机网络" ],
+  "mainEntityOfPage" : "https:\/\/ahang7.github.io\/post\/basic\/network\/3.-http\/",
+  "publisher" : {
+    "@type": "Organization",
+    "name" : "https:\/\/ahang7.github.io\/",
+    "logo" : {
+        "@type" : "ImageObject",
+        "url" : "https:\/\/ahang7.github.io\/img\/avatar-icon.png",
+        "height" :  60 ,
+        "width" :  60
+    }
+  }
+}
+</script>
+
+
+<meta property="og:title" content="[计网] HTTP" />
+<meta property="og:description" content="接下来将从以下6个方面，逐渐学习和了解HTTP
+
+HTTP基本概念
+Get与Post
+HTTP特征
+HTTP缓存
+HTTPS与HTTP
+HTTP/1.1、HTTP/2、HTTP/3演变
+
+
+HTTP基本概念
+
+1.HTTP是什么？
+
+HTTP是超文本传输协议，也就是HyperText Transfer Protocol
+
+HTTP的名字【超文本传输协议】，可以拆成三个部分：
+
+
+超文本
+
+
+传输
+
+
+协议
+
+
+
+针对 HTTP 协议，我们可以这么理解。
+
+「协议」
+
+HTTP 是一个用在计算机世界里的协议。它使用计算机能够理解的语言确立了一种计算机之间交流通信的规范（两个以上的参与者），以及相关的各种控制和错误处理方式（行为约定和规范）。
+
+「传输」
+
+HTTP 协议是一个双向协议。
+针对传输，我们可以进一步理解了 HTTP。
+HTTP 是一个在计算机世界里专门用来在两点之间传输数据的约定和规范。
+
+「超文本」
+
+HTTP 传输的内容是「超文本」。
+理解「超文本」，它就是超越了普通文本的文本，它是文字、图片、视频等的混合体，最关键有超链接，能从一个超文本跳转到另外一个超文本。
+HTTP 是一个在计算机世界里专门在「两点」之间「传输」文字、图片、音频、视频等「超文本」数据的「约定和规范」。
+
+HTTP是用于从互联网服务器传输超文本到本地浏览器的协议，这个说法是错误的，因为HTTP也可以服务于【服务器&lt;&mdash;&gt;服务器】，所有采用两点之间的描述比较准确
+
+2.HTTP常见的状态码
+
+1xx 类状态码属于提示信息，是协议处理中的一种中间状态，实际用到的比较少。
+2xx 类状态码表示服务器成功处理了客户端的请求，也是我们最愿意看到的状态。
+
+
+「200 OK」是最常见的成功状态码，表示一切正常。如果是非 HEAD 请求，服务器返回的响应头都会有 body 数据。
+
+
+「204 No Content」也是常见的成功状态码，与 200 OK 基本相同，但响应头没有 body 数据。
+
+
+「206 Partial Content」是应用于 HTTP 分块下载或断点续传，表示响应返回的 body 数据并不是资源的全部，而是其中的一部分，也是服务器处理成功的状态。
+
+
+3xx 类状态码表示客户端请求的资源发生了变动，需要客户端用新的 URL 重新发送请求获取资源，也就是重定向。
+
+
+「301 Moved Permanently」表示永久重定向，说明请求的资源已经不存在了，需改用新的 URL 再次访问。">
+<meta property="og:image" content="https://ahang7.github.io/img/avatar-icon.png" />
+<meta property="og:url" content="https://ahang7.github.io/post/basic/network/3.-http/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Beautiful Hugo" />
+
+  <meta name="twitter:title" content="[计网] HTTP" />
+  <meta name="twitter:description" content="接下来将从以下6个方面，逐渐学习和了解HTTP
+
+HTTP基本概念
+Get与Post
+HTTP特征
+HTTP缓存
+HTTPS与HTTP
+HTTP/1.1、HTTP/2、HTTP/3演变
+
+
+HTTP基本概念
+
+1.HTTP是什么？
+
+HTTP是超文本传输协议，也就是HyperText Transfer Protocol
+
+HTTP的名字【超文本传输协议】，可以拆成三个部分： …">
+  <meta name="twitter:image" content="https://ahang7.github.io/img/avatar-icon.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link href='https://ahang7.github.io/img/favicon.ico' rel='icon' type='image/x-icon'/>
+  <meta name="generator" content="Hugo 0.136.0">
+  <link rel="alternate" href="https://ahang7.github.io/index.xml" type="application/rss+xml" title="Beautiful Hugo"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.css" integrity="sha384-3UiQGuEI4TTMaFmGIZumfRPtfKQ3trwQE2JgosJxCnGmQpL/lJdjpcHkaaFwHlcI" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous"><link rel="stylesheet" href="https://ahang7.github.io/css/main.css" /><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+  <link rel="stylesheet" href="https://ahang7.github.io/css/highlight.min.css" /><link rel="stylesheet" href="https://ahang7.github.io/css/codeblock.css" /><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.css" integrity="sha384-h/L2W9KefUClHWaty3SLE5F/qvc4djlyR4qY3NUV5HGQBBW7stbcfff1+I/vmsHh" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/default-skin/default-skin.min.css" integrity="sha384-iD0dNku6PYSIQLyfTOpB06F2KCZJAKLOThS5HRe8b3ibhdEQ6eKsFf/EeFxdOt5R" crossorigin="anonymous">
+
+
+  </head>
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://ahang7.github.io/">Beautiful Hugo</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li>
+              <a title="Blog" href="/">Blog</a>
+            </li>
+          
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent" role="button" tabindex="0">Samples</a>
+              <div class="navlinks-children">
+                
+                  <a href="/post/2017-03-07-bigimg-sample">Big Image Sample</a>
+                
+                  <a href="/post/2017-03-05-math-sample">Math Sample</a>
+                
+                  <a href="/post/2016-03-08-code-sample">Code Sample</a>
+                
+              </div>
+            </li>
+          
+        
+          
+            <li>
+              <a title="About" href="/page/about/">About</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="Tags" href="/tags">Tags</a>
+            </li>
+          
+        
+
+        
+
+        
+      </ul>
+    </div>
+
+    
+      <div class="avatar-container">
+        <div class="avatar-img-border">
+          <a title="Beautiful Hugo" href="https://ahang7.github.io/">
+            <img class="avatar-img" src="https://ahang7.github.io/img/avatar-icon.png" alt="Beautiful Hugo" />
+           
+          </a>
+        </div>
+      </div>
+    
+
+  </div>
+</nav>
+
+
+
+
+    
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+
+  
+  
+  
+
+
+
+
+
+
+  
+
+  <header class="header-section ">
+    
+    
+    <div class="intro-header no-img">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <div class="post-heading">
+              
+                <h1>[计网] HTTP</h1>
+              
+              
+              
+              
+                <span class="post-meta">
+  
+  
+  <i class="fas fa-calendar"></i>&nbsp;Posted on October 31, 2024
+  
+  
+    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;1&nbsp;minutes
+  
+  
+    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;114&nbsp;words
+  
+  
+    
+      &nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;ch
+    
+  
+  
+</span>
+
+
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+  </header>
+
+
+    
+<div class="container" role="main">
+  <div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+      <article role="main" class="blog-post">
+        <p>接下来将从以下6个方面，逐渐学习和了解HTTP</p>
+<ol>
+<li>HTTP基本概念</li>
+<li>Get与Post</li>
+<li>HTTP特征</li>
+<li>HTTP缓存</li>
+<li>HTTPS与HTTP</li>
+<li>HTTP/1.1、HTTP/2、HTTP/3演变</li>
+</ol>
+<p><img src="https://rt5bap83jl.feishu.cn/space/api/box/stream/download/asynccode/?code=YzgxNTk2MGIwMjM0ODdhZWNiYjM1YTdhNTM0NTMwOTJfaDdMekY5THZXQ0plelVaR2lCV1ZWWGptTUZISUMzcElfVG9rZW46TU5pOWJ0elBEbzVIa0p4bzdvTGM1N1VybkxoXzE3MjE4Mzk5Nzc6MTcyMTg0MzU3N19WNA" alt=""></p>
+<h2 id="http基本概念"><strong>HTTP基本概念</strong></h2>
+<hr>
+<h3 id="1http是什么"><strong>1.HTTP是什么？</strong></h3>
+<blockquote>
+<p>HTTP是超文本传输协议，也就是<strong>HyperText</strong> <strong>Transfer Protocol</strong></p>
+</blockquote>
+<p>HTTP的名字【超文本传输协议】，可以拆成三个部分：</p>
+<ul>
+<li>
+<p>超文本</p>
+</li>
+<li>
+<p>传输</p>
+</li>
+<li>
+<p>协议</p>
+</li>
+</ul>
+<p><img src="https://rt5bap83jl.feishu.cn/space/api/box/stream/download/asynccode/?code=MWVjMWE4ZmI3M2M3YjczMWRmMDE3OWVmZjUwYTE0ODBfRXhVcm5qbEUxNlZaVGpid3I5Z25sQTJzV1ZlSVpGUTdfVG9rZW46UHhGZGJVNFI2b25hWDl4TmlsS2NoaVI2bjJpXzE3MjE4Mzk5Nzc6MTcyMTg0MzU3N19WNA" alt=""></p>
+<p>针对 HTTP <strong>协议</strong>，我们可以这么理解。</p>
+<ol start="7">
+<li><em>「协议」</em></li>
+</ol>
+<p>HTTP 是一个用在计算机世界里的<strong>协议</strong>。它使用计算机能够理解的语言确立了一种计算机之间交流通信的规范（<strong>两个以上的参与者</strong>），以及相关的各种控制和错误处理方式（<strong>行为约定和规范</strong>）。</p>
+<ol start="8">
+<li><em>「传输」</em></li>
+</ol>
+<p>HTTP 协议是一个<strong>双向协议</strong>。</p>
+<p>针对<strong>传输</strong>，我们可以进一步理解了 HTTP。</p>
+<p>HTTP 是一个在计算机世界里专门用来在<strong>两点之间传输数据</strong>的约定和规范。</p>
+<ol start="9">
+<li><em>「超文本」</em></li>
+</ol>
+<p>HTTP 传输的内容是「超文本」。</p>
+<p>理解「超文本」，它就是<strong>超越了普通文本的文本</strong>，它是文字、图片、视频等的混合体，最关键有超链接，能从一个超文本跳转到另外一个超文本。</p>
+<p><strong>HTTP 是一个在计算机世界里专门在「两点」之间「传输」文字、图片、音频、视频等「超文本」数据的「约定和规范」。</strong></p>
+<blockquote>
+<p>HTTP是用于从互联网服务器传输超文本到本地浏览器的协议，这个说法是错误的，因为HTTP也可以服务于【服务器&lt;&mdash;&gt;服务器】，所有采用<strong>两点之间</strong>的描述比较准确</p>
+</blockquote>
+<h3 id="2http常见的状态码"><strong>2.HTTP常见的状态码</strong></h3>
+<p><img src="https://rt5bap83jl.feishu.cn/space/api/box/stream/download/asynccode/?code=NzMzNjU4MzA0ZWM3ZGY0ZWRjM2MzOWQyMzA1NmIyMjJfN01YaTBhejQ1RVlOMFdWcWphQXNXaHNLYUhGekNOWFdfVG9rZW46WFRQcGJWUWdBb1VYdVp4YmM2ZWNWdmd0bnJjXzE3MjE4Mzk5Nzc6MTcyMTg0MzU3N19WNA" alt=""></p>
+<p><code>1xx</code> 类状态码属于<strong>提示信息</strong>，是协议处理中的一种中间状态，实际用到的比较少。</p>
+<p><code>2xx</code> 类状态码表示服务器<strong>成功</strong>处理了客户端的请求，也是我们最愿意看到的状态。</p>
+<ul>
+<li>
+<p>「<strong>200 OK</strong>」是最常见的成功状态码，表示一切正常。如果是非 <code>HEAD</code> 请求，服务器返回的响应头都会有 body 数据。</p>
+</li>
+<li>
+<p>「<strong>204 No Content</strong>」也是常见的成功状态码，与 200 OK 基本相同，但响应头没有 body 数据。</p>
+</li>
+<li>
+<p>「<strong>206 Partial Content</strong>」是应用于 HTTP 分块下载或断点续传，表示响应返回的 body 数据并不是资源的全部，而是其中的一部分，也是服务器处理成功的状态。</p>
+</li>
+</ul>
+<p><code>3xx</code> 类状态码表示客户端请求的资源发生了变动，需要客户端用新的 URL 重新发送请求获取资源，也就是<strong>重定向</strong>。</p>
+<ul>
+<li>
+<p>「<strong>301 Moved Permanently</strong>」表示永久重定向，说明请求的资源已经不存在了，需改用新的 URL 再次访问。</p>
+</li>
+<li>
+<p>「<strong>302 Found</strong>」表示临时重定向，说明请求的资源还在，但暂时需要用另一个 URL 来访问。</p>
+</li>
+</ul>
+<p>301 和 302 都会在响应头里使用字段 <code>Location</code>，指明后续要跳转的 URL，浏览器会自动重定向新的 URL。</p>
+<ul>
+<li>「<strong>304 Not Modified</strong>」不具有跳转的含义，表示资源未修改，重定向已存在的缓冲文件，也称缓存重定向，也就是告诉客户端可以继续使用缓存资源，用于缓存控制。</li>
+</ul>
+<p><code>4xx</code> 类状态码表示客户端发送的<strong>报文有误</strong>，服务器无法处理，也就是错误码的含义。</p>
+<ul>
+<li>
+<p>「<strong>400 Bad Request</strong>」表示客户端请求的报文有错误，但只是个笼统的错误。</p>
+</li>
+<li>
+<p>「<strong>403 Forbidden</strong>」表示服务器禁止访问资源，并不是客户端的请求出错。</p>
+</li>
+<li>
+<p>「<strong>404 Not Found</strong>」表示请求的资源在服务器上不存在或未找到，所以无法提供给客户端。</p>
+</li>
+</ul>
+<p><code>5xx</code> 类状态码表示客户端请求报文正确，但是<strong>服务器处理时内部发生了错误</strong>，属于服务器端的错误码。</p>
+<ul>
+<li>
+<p>「<strong>500 Internal Server Error</strong>」与 400 类型，是个笼统通用的错误码，服务器发生了什么错误，我们并不知道。</p>
+</li>
+<li>
+<p>「<strong>501 Not Implemented</strong>」表示客户端请求的功能还不支持，类似“即将开业，敬请期待”的意思。</p>
+</li>
+<li>
+<p>「<strong>502 Bad Gateway</strong>」通常是服务器作为网关或代理时返回的错误码，表示服务器自身工作正常，访问后端服务器发生了错误。</p>
+</li>
+<li>
+<p>「<strong>503 Service Unavailable</strong>」表示服务器当前很忙，暂时无法响应客户端，类似“网络服务正忙，请稍后重试”的意思。</p>
+</li>
+</ul>
+<h3 id="3http-常见字段有哪些"><strong>3.HTTP 常见字段有哪些？</strong></h3>
+
+
+        
+          <div class="blog-tags">
+            
+              
+              <a href="https://ahang7.github.io/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">计算机网络</a>&nbsp;
+            
+          </div>
+        
+
+        
+            <hr/>
+            <section id="social-share">
+              <div class="list-inline footer-links">
+                
+
+<div class="share-box" aria-hidden="true">
+    <ul class="share">
+      
+      <li>
+        <a href="//twitter.com/share?url=https%3a%2f%2fahang7.github.io%2fpost%2fbasic%2fnetwork%2f3.-http%2f&amp;text=%5b%e8%ae%a1%e7%bd%91%5d%20HTTP&amp;via=" target="_blank" title="Share on Twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </li>
+  
+      
+      <li>
+        <a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fahang7.github.io%2fpost%2fbasic%2fnetwork%2f3.-http%2f" target="_blank" title="Share on Facebook">
+          <i class="fab fa-facebook"></i>
+        </a>
+      </li>
+  
+      
+      <li>
+        <a href="//reddit.com/submit?url=https%3a%2f%2fahang7.github.io%2fpost%2fbasic%2fnetwork%2f3.-http%2f&amp;title=%5b%e8%ae%a1%e7%bd%91%5d%20HTTP" target="_blank" title="Share on Reddit">
+          <i class="fab fa-reddit"></i>
+        </a>
+      </li>
+  
+      
+      <li>
+        <a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fahang7.github.io%2fpost%2fbasic%2fnetwork%2f3.-http%2f&amp;title=%5b%e8%ae%a1%e7%bd%91%5d%20HTTP" target="_blank" title="Share on LinkedIn">
+          <i class="fab fa-linkedin"></i>
+        </a>
+      </li>
+  
+      
+      <li>
+        <a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fahang7.github.io%2fpost%2fbasic%2fnetwork%2f3.-http%2f&amp;title=%5b%e8%ae%a1%e7%bd%91%5d%20HTTP" target="_blank" title="Share on StumbleUpon">
+          <i class="fab fa-stumbleupon"></i>
+        </a>
+      </li>
+  
+      
+      <li>
+        <a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fahang7.github.io%2fpost%2fbasic%2fnetwork%2f3.-http%2f&amp;description=%5b%e8%ae%a1%e7%bd%91%5d%20HTTP" target="_blank" title="Share on Pinterest">
+          <i class="fab fa-pinterest"></i>
+        </a>
+      </li>
+    </ul>
+  </div>
+  
+
+              </div>
+            </section>
+        
+
+        
+          
+            
+          
+
+          
+                  <h4 class="see-also">See also</h4>
+                  <ul>
+                
+                
+                    <li><a href="/post/basic/network/1.-tcpip%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/">[计网] TCP/IP网络模型</a></li>
+                
+                    <li><a href="/post/basic/network/2.-%E9%94%AE%E5%85%A5%E7%BD%91%E5%9D%80%E7%9A%84%E8%BF%87%E7%A8%8B/">[计网] 键入网址的过程</a></li>
+                
+              </ul>
+
+          
+        
+      </article>
+
+      
+        <ul class="pager blog-pager">
+          
+            <li class="previous">
+              <a href="https://ahang7.github.io/post/basic/network/1.-tcpip%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/" data-toggle="tooltip" data-placement="top" title="[计网] TCP/IP网络模型">&larr; Previous Post</a>
+            </li>
+          
+          
+            <li class="next">
+              <a href="https://ahang7.github.io/post/basic/middlewares/http%E5%8E%8B%E6%B5%8B%E5%B7%A5%E5%85%B7wrk/" data-toggle="tooltip" data-placement="top" title="[wrk] http压测工具">Next Post &rarr;</a>
+            </li>
+          
+        </ul>
+      
+
+
+      
+      
+      
+      
+      
+        
+      
+
+    </div>
+  </div>
+</div>
+
+      <footer>
+  <div class="container">
+    
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+              <li>
+		
+		  <a href="mailto:ch1447571882@qq.com" title="Email me">
+		
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+		
+		  <a href="https://github.com/ahang7" title="GitHub">
+		
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+		
+		  <a href="https://gitlab.com/username" title="GitLab">
+		
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-gitlab fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+          
+          
+        </ul>
+        <p class="credits copyright text-muted">
+          
+            
+              <a href="yourwebsite.com">ch</a>
+            
+          
+
+          &nbsp;&bull;&nbsp;&copy;
+          
+            2024
+          
+
+          
+            &nbsp;&bull;&nbsp;
+            <a href="https://ahang7.github.io/">Beautiful Hugo</a>
+          
+        </p>
+        
+        <p class="credits theme-by text-muted">
+          <a href="https://gohugo.io">Hugo v0.136.0</a> powered &nbsp;&bull;&nbsp; Theme <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a> adapted from <a href="https://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</footer><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.js" integrity="sha384-G0zcxDFp5LWZtDuRMnBkk3EphCK1lhEf4UEyEM693ka574TZGwo4IWwS6QLzM/2t" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
+<script src="https://code.jquery.com/jquery-3.7.0.slim.min.js" integrity="sha384-w5y/xIeYixWvfM+A1cEbmHPURnvyqmVg5eVENruEdDjcyRLUSNej7512JQGspFUr" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+
+<script src="https://ahang7.github.io/js/main.js"></script>
+<script src="https://ahang7.github.io/js/highlight.min.js"></script>
+<script> hljs.initHighlightingOnLoad(); </script>
+<script> $(document).ready(function() {$("pre.chroma").css("padding","0");}); </script><script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.js" integrity="sha384-QELNnmcmU8IR9ZAykt67vGr9/rZJdHbiWi64V88fCPaOohUlHCqUD/unNN0BXSqy" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe-ui-default.min.js" integrity="sha384-m67o7SkQ1ALzKZIFh4CiTA8tmadaujiTa9Vu+nqPSwDOqHrDmxLezTdFln8077+q" crossorigin="anonymous"></script><script src="https://ahang7.github.io/js/load-photoswipe.js"></script>
+
+
+
+
+
+
+
+
+
+
+    
+  </body>
+</html>
+

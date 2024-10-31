@@ -1,0 +1,688 @@
+
+
+<!DOCTYPE html>
+<html lang="en" itemscope itemtype="http://schema.org/WebPage">
+  <head>
+    
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+ 
+
+
+      <title>[redis] 执行流程 - </title>
+
+  <meta name="description" content="redis是单线程的，数据以键值对形式存储在内存">
+  <meta name="author" content="ch"/><script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "WebSite",
+    "name": "Beautiful Hugo",
+    
+    "url": "https:\/\/ahang7.github.io\/"
+}
+</script><script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Organization",
+  "name": "",
+  "url": "https:\/\/ahang7.github.io\/"
+  
+  
+  
+  
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [{
+        "@type": "ListItem",
+        "position": 1,
+        "item": {
+          "@id": "https:\/\/ahang7.github.io\/",
+          "name": "home"
+        }
+    },{
+        "@type": "ListItem",
+        "position": 3,
+        "item": {
+          "@id": "https:\/\/ahang7.github.io\/post\/basic\/redis\/3-redis%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B\/",
+          "name": "[redis] 执行流程"
+        }
+    }]
+}
+</script><script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Article",
+  "author": {
+    "name" : "ch"
+  },
+  "headline": "[redis] 执行流程",
+  "description" : "四、执行流程 内存结构 核心执行是单线程 多线程负载一些异步任务 1.Redis在内存中是怎么存储的 redis是内存存储，将数据放在redis时，都是以键值对形式存到内存\n数据库结构 redisDb代表Redis数据库结构，各种操作对象，都是存储在dict数据结构里\n\/\/ redisDb 结构 type struct redisDb { dict *dict; \/\/字典 dict *expires; \/\/ 过期键 dict *blocking_keys; dict *ready_keys; dict *watched_keys; int id; long long avg_ttl; list *defrag_later; } redisDb; \/\/ dict 结构 typedef struct dict { dictType *type; void *privdata; dictht ht[2]; long rehashidx; unsigned long iterators; } dict; redisDb即数据库对象，指向了数据字典，字典包含我们平常存储的k-v数据，v支持任意redis对象\n在增加、查询、更新、删除的操作后，分别在内存存储是怎么体现的？\n增删改查在Redis内存中的体现 添加数据 即添加键值对，添加到dict结构字典中，Key必须为String对象，value为任何类型的对象\n添加数据后，会在redisDb里字段dict上添加dict对象\n查询数据 直接在dict找到对应的key，即完成查询\n更新数据 对已经Key对象的任何变更操作，都是更新\n删除数据 删除即把key和value从dict结构里删除\n过期键 Redis可以设置过期键，到达一定时间，这些对象会被自动过期并回收\n**过期键存储在expires字典上，**expires字典中，value就是过期时间\n在redisDb中，dict和expires中Key对象，实际都是存储String对象指针，两个的key都会指向内存相应的字符串地址\n2.Redis是单线程？还是多线程？ redis是一个能高效处理请求的组件\n核心处理逻辑，Redis一直都是单线程，其他辅助模块会有一些多线程、多进程的功能，例如：复制模块用的多进程；某些异步流程从4.0开始用多线程；网络I\/O解包从6.0开始用多线程；\n核心处理逻辑：Redis在处理客户端的请求时，包括获取（socket写）、解析、执行、内容返回等都是由一个顺序串行的主线程处理，这就是所谓的单线程\nRedis为什么选择单线程 redis的定位是内存k-v存储，是做短平快的热点数据处理，一般来说执行会很快，执行本身不会成为瓶颈，瓶颈通常在网络I\/O，处理逻辑多线程并不会有太大收益\n同时Redis本身秉持简洁高效的理念，代码的简单性、可维护性是redis一直依赖的追求，执行本身不应该成为瓶颈，而且多线程本身也会引起额外成本\n1.多线程引入的复杂度是极大的 多线程引入后，redis原来的顺序执行特性就不复存在，为了事务的原子性、隔离性，redis就不得不引入一些很复杂的实现\nredis的数据结构是极其高效，在单线程模式下做了很多特性的优化，如果引入多线程，那么所有底层数据都要改为线性安全，这很复杂\n多线程模式使得程序调试更加复杂和麻烦，会带来额外的开发成本及运营成本\n2.多线程带来额外的成本 除了引入复杂度，多线程还会带来额外成本，包括\n上下文切换成本，多线程调度需要切换线程上下文，这个操作先存储当前线程的本地数据，程序指针，然后载入另一个线程数据，这种内核操作的成本不可忽略\n同步机制的开销，一些公共资源，在单线程模式下直接访问就行，多线程需要通过加锁等方式进行同步\n一个线程本身也占据内存大小，对redis这种内存数据库来说，内存非常珍贵，多线程本身带来的内存使用的成本也需要谨慎决策\n总结 多线程会引入额外的复杂度和成本，而redis是追求简洁高效的存储组件，而且事实也证明，虽然redis是单线程处理架构，redis性能还是经受住了考验\n3.Redis单线程为什么能这么快 Redis单线程 Redis核心的请求处理是单线程，但是Redis却能使用单线程模型达到每秒数万级别的处理能力，这是Redis多方面极致设计的一个综合结果\n",
+  "inLanguage" : "en",
+  "wordCount":  156 ,
+  "datePublished" : "2024-10-27T00:00:00\u002b00:00",
+  "dateModified" : "2024-10-27T00:00:00\u002b00:00",
+  "image" : "https:\/\/ahang7.github.io\/img\/avatar-icon.png",
+  "keywords" : [ "redis" ],
+  "mainEntityOfPage" : "https:\/\/ahang7.github.io\/post\/basic\/redis\/3-redis%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B\/",
+  "publisher" : {
+    "@type": "Organization",
+    "name" : "https:\/\/ahang7.github.io\/",
+    "logo" : {
+        "@type" : "ImageObject",
+        "url" : "https:\/\/ahang7.github.io\/img\/avatar-icon.png",
+        "height" :  60 ,
+        "width" :  60
+    }
+  }
+}
+</script>
+
+
+<meta property="og:title" content="[redis] 执行流程" />
+<meta property="og:description" content="redis是单线程的，数据以键值对形式存储在内存">
+<meta property="og:image" content="https://ahang7.github.io/img/avatar-icon.png" />
+<meta property="og:url" content="https://ahang7.github.io/post/basic/redis/3-redis%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Beautiful Hugo" />
+
+  <meta name="twitter:title" content="[redis] 执行流程" />
+  <meta name="twitter:description" content="redis是单线程的，数据以键值对形式存储在内存">
+  <meta name="twitter:image" content="https://ahang7.github.io/img/avatar-icon.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link href='https://ahang7.github.io/img/favicon.ico' rel='icon' type='image/x-icon'/>
+  <meta name="generator" content="Hugo 0.136.0">
+  <link rel="alternate" href="https://ahang7.github.io/index.xml" type="application/rss+xml" title="Beautiful Hugo"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.css" integrity="sha384-3UiQGuEI4TTMaFmGIZumfRPtfKQ3trwQE2JgosJxCnGmQpL/lJdjpcHkaaFwHlcI" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous"><link rel="stylesheet" href="https://ahang7.github.io/css/main.css" /><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+  <link rel="stylesheet" href="https://ahang7.github.io/css/highlight.min.css" /><link rel="stylesheet" href="https://ahang7.github.io/css/codeblock.css" /><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.css" integrity="sha384-h/L2W9KefUClHWaty3SLE5F/qvc4djlyR4qY3NUV5HGQBBW7stbcfff1+I/vmsHh" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/default-skin/default-skin.min.css" integrity="sha384-iD0dNku6PYSIQLyfTOpB06F2KCZJAKLOThS5HRe8b3ibhdEQ6eKsFf/EeFxdOt5R" crossorigin="anonymous">
+
+
+  </head>
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://ahang7.github.io/">Beautiful Hugo</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li>
+              <a title="Blog" href="/">Blog</a>
+            </li>
+          
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent" role="button" tabindex="0">Samples</a>
+              <div class="navlinks-children">
+                
+                  <a href="/post/2017-03-07-bigimg-sample">Big Image Sample</a>
+                
+                  <a href="/post/2017-03-05-math-sample">Math Sample</a>
+                
+                  <a href="/post/2016-03-08-code-sample">Code Sample</a>
+                
+              </div>
+            </li>
+          
+        
+          
+            <li>
+              <a title="About" href="/page/about/">About</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="Tags" href="/tags">Tags</a>
+            </li>
+          
+        
+
+        
+
+        
+      </ul>
+    </div>
+
+    
+      <div class="avatar-container">
+        <div class="avatar-img-border">
+          <a title="Beautiful Hugo" href="https://ahang7.github.io/">
+            <img class="avatar-img" src="https://ahang7.github.io/img/avatar-icon.png" alt="Beautiful Hugo" />
+           
+          </a>
+        </div>
+      </div>
+    
+
+  </div>
+</nav>
+
+
+
+
+    
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+
+  
+  
+  
+
+
+
+
+
+
+  
+
+  <header class="header-section ">
+    
+    
+    <div class="intro-header no-img">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <div class="post-heading">
+              
+                <h1>[redis] 执行流程</h1>
+              
+              
+              
+                
+                  <h2 class="post-subheading">redis是单线程的，数据以键值对形式存储在内存</h2>
+                
+              
+              
+                <span class="post-meta">
+  
+  
+  <i class="fas fa-calendar"></i>&nbsp;Posted on October 27, 2024
+  
+  
+    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;1&nbsp;minutes
+  
+  
+    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;156&nbsp;words
+  
+  
+    
+      &nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;ch
+    
+  
+  
+</span>
+
+
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+  </header>
+
+
+    
+<div class="container" role="main">
+  <div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+      <article role="main" class="blog-post">
+        <h2 id="四执行流程">四、执行流程</h2>
+<ol>
+<li>内存结构</li>
+<li>核心执行是单线程</li>
+<li>多线程负载一些异步任务</li>
+</ol>
+<h3 id="1redis在内存中是怎么存储的">1.Redis在内存中是怎么存储的</h3>
+<p>redis是内存存储，将数据放在redis时，都是以键值对形式存到内存</p>
+<h4 id="数据库结构">数据库结构</h4>
+<p>redisDb代表Redis数据库结构，各种操作对象，都是存储在dict数据结构里</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="c1">// redisDb 结构
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">type</span> <span class="k">struct</span> <span class="n">redisDb</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">dict</span> <span class="o">*</span><span class="n">dict</span><span class="p">;</span>           <span class="c1">//字典
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">dict</span> <span class="o">*</span><span class="n">expires</span><span class="p">;</span>        <span class="c1">// 过期键
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>    <span class="n">dict</span> <span class="o">*</span><span class="n">blocking_keys</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">dict</span> <span class="o">*</span><span class="n">ready_keys</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">dict</span> <span class="o">*</span><span class="n">watched_keys</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">int</span> <span class="n">id</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">long</span> <span class="kt">long</span> <span class="n">avg_ttl</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">list</span> <span class="o">*</span><span class="n">defrag_later</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span> <span class="n">redisDb</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// dict 结构
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="k">typedef</span> <span class="k">struct</span> <span class="n">dict</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="n">dictType</span> <span class="o">*</span><span class="n">type</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">void</span> <span class="o">*</span><span class="n">privdata</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">dictht</span> <span class="n">ht</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">long</span> <span class="n">rehashidx</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">iterators</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span> <span class="n">dict</span><span class="p">;</span>
+</span></span></code></pre></div><p>redisDb即数据库对象，指向了数据字典，字典包含我们平常存储的k-v数据，v支持任意redis对象</p>
+<p><img src="https://rt5bap83jl.feishu.cn/space/api/box/stream/download/asynccode/?code=ZjUwNmMwNDdlZTRiYmE0ODNjZjNlYWE1M2U2ZjRhZmZfMVhzNEFiWk0xQ2tYMXh0T21yQ045OGgwOVVLSzhDV0NfVG9rZW46VkdtbmJwMEZSb0tqcHF4ckhqVGNrTHI4blBkXzE3MjE4NDE0MjU6MTcyMTg0NTAyNV9WNA" alt=""></p>
+<p>在增加、查询、更新、删除的操作后，分别在内存存储是怎么体现的？</p>
+<h4 id="增删改查在redis内存中的体现">增删改查在Redis内存中的体现</h4>
+<ul>
+<li>添加数据</li>
+</ul>
+<p>即添加键值对，添加到dict结构字典中，Key必须为String对象，value为任何类型的对象</p>
+<p>添加数据后，会在redisDb里字段dict上添加dict对象</p>
+<ul>
+<li>查询数据</li>
+</ul>
+<p>直接在dict找到对应的key，即完成查询</p>
+<ul>
+<li>更新数据</li>
+</ul>
+<p>对已经Key对象的任何变更操作，都是更新</p>
+<ul>
+<li>删除数据</li>
+</ul>
+<p>删除即把key和value从dict结构里删除</p>
+<h4 id="过期键">过期键</h4>
+<p>Redis可以设置过期键，到达一定时间，这些对象会被自动过期并回收</p>
+<p>**过期键存储在<strong><strong>expires</strong></strong>字典上，**expires字典中，value就是过期时间</p>
+<p>在redisDb中，dict和expires中Key对象，实际都是存储String对象指针，两个的key都会指向内存相应的字符串地址</p>
+<h3 id="2redis是单线程还是多线程">2.Redis是单线程？还是多线程？</h3>
+<p>redis是一个能高效处理请求的组件</p>
+<p>核心处理逻辑，Redis一直都是单线程，其他辅助模块会有一些多线程、多进程的功能，例如：复制模块用的多进程；某些异步流程从4.0开始用多线程；网络I/O解包从6.0开始用多线程；</p>
+<blockquote>
+<p>核心处理逻辑：Redis在处理客户端的请求时，包括获取（socket写）、解析、执行、内容返回等都是由一个顺序串行的主线程处理，这就是所谓的单线程</p>
+</blockquote>
+<h4 id="redis为什么选择单线程">Redis为什么选择单线程</h4>
+<p>redis的定位是内存k-v存储，是做短平快的热点数据处理，一般来说执行会很快，执行本身不会成为瓶颈，瓶颈通常在网络I/O，处理逻辑多线程并不会有太大收益</p>
+<p>同时Redis本身秉持简洁高效的理念，代码的简单性、可维护性是redis一直依赖的追求，执行本身不应该成为瓶颈，而且多线程本身也会引起额外成本</p>
+<h4 id="1多线程引入的复杂度是极大的">1.多线程引入的复杂度是极大的</h4>
+<ol>
+<li>
+<p>多线程引入后，redis原来的顺序执行特性就不复存在，为了事务的原子性、隔离性，redis就不得不引入一些很复杂的实现</p>
+</li>
+<li>
+<p>redis的数据结构是极其高效，在单线程模式下做了很多特性的优化，如果引入多线程，那么所有底层数据都要改为线性安全，这很复杂</p>
+</li>
+<li>
+<p>多线程模式使得程序调试更加复杂和麻烦，会带来额外的开发成本及运营成本</p>
+</li>
+</ol>
+<h4 id="2多线程带来额外的成本">2.多线程带来额外的成本</h4>
+<p>除了引入复杂度，多线程还会带来额外成本，包括</p>
+<ol>
+<li>
+<p>上下文切换成本，多线程调度需要切换线程上下文，这个操作先存储当前线程的本地数据，程序指针，然后载入另一个线程数据，这种内核操作的成本不可忽略</p>
+</li>
+<li>
+<p>同步机制的开销，一些公共资源，在单线程模式下直接访问就行，多线程需要通过加锁等方式进行同步</p>
+</li>
+<li>
+<p>一个线程本身也占据内存大小，对redis这种内存数据库来说，内存非常珍贵，多线程本身带来的内存使用的成本也需要谨慎决策</p>
+</li>
+</ol>
+<h4 id="总结">总结</h4>
+<p>多线程会引入额外的复杂度和成本，而redis是追求简洁高效的存储组件，而且事实也证明，虽然redis是单线程处理架构，redis性能还是经受住了考验</p>
+<h3 id="3redis单线程为什么能这么快">3.Redis单线程为什么能这么快</h3>
+<h4 id="redis单线程">Redis单线程</h4>
+<p>Redis核心的请求处理是单线程，但是Redis却能使用单线程模型达到每秒数万级别的处理能力，这是Redis多方面极致设计的一个综合结果</p>
+<ol>
+<li>
+<p>Redis的大部分操作在内存上完成，内存操作本身就特别快</p>
+</li>
+<li>
+<p>Redis选择了很多高效的数据结构，并做了很多优化，比如ziplist，hash，跳表有时候一种对象底层有几种实现以应对不同场景</p>
+</li>
+<li>
+<p>redis采用了多路复用机制，使其在网络IO操作中能并发处理大量的客户端请求，实现高吞并量</p>
+</li>
+</ol>
+<h4 id="io可能的潜在点">I/O可能的潜在点</h4>
+<p>Redis是完全在内存中处理数据，所以我们应该考虑瓶颈是I/O</p>
+<h5 id="io多路复用">I/O多路复用</h5>
+<p>简单理解，就是I/O操作触发的时候，就会产生通知，收到通知，再去处理通知对应的事件，正对I/O多路复用，Redis做了一层包装，叫Reactor模型</p>
+<p>本质就是监听各种事件，当事件发生时，将事件分发给不同的处理器</p>
+<p><img src="https://rt5bap83jl.feishu.cn/space/api/box/stream/download/asynccode/?code=MWY3ZDk5ZWZmZmM1OTE2ZjQyNzUwYjc4OWVhODdkOTdfTDdvMjdnUjJZZzBtb21iTnFBZVFhaXBFbEk0clhhOWNfVG9rZW46R2tVcWJ3WFBnb1VXYWh4cmRrdmNYTVV3bkRmXzE3MjE4NDE0MjU6MTcyMTg0NTAyNV9WNA" alt=""></p>
+<p>这样就不会阻塞到某个操作上，充分发挥性能，可以说I/O多路复用让redis单线程有了较大的并发度，这里是并发，不是并行，这种模式下，Redis单核的性能可以是被充分利用</p>
+<blockquote>
+<p><a href="http://t.csdn.cn/nsVup">http://t.csdn.cn/nsVup</a></p>
+<p><a href="http://t.csdn.cn/RbE7R">http://t.csdn.cn/RbE7R</a></p>
+</blockquote>
+<h4 id="总结-1">总结</h4>
+<p>Redis单线程还快的原因有3点：内存操作、高效的数据结构、I/O多路复用。</p>
+<h3 id="4redis多线程是怎么回事">4.Redis多线程是怎么回事？</h3>
+<h4 id="redis多线程模型">Redis多线程模型</h4>
+<p>redis一开始就是基于单线程模型，Redis里所有的数据结构都是非线程安全，规避了数据竞争问题，使得Redis对各种数据结构的操作非常简单</p>
+<blockquote>
+<p>redis选择单线程的核心原因是Redis都是内存操作，CPU处理都非常快，瓶颈更容易出现在I/O而不是CPU，所以选择了单线程模型</p>
+</blockquote>
+<p>随着数据量的增大，redis的瓶颈更容易出现在I/O而不是CPU</p>
+<p>因为上述情况，Redis选择了引入多线程来处理网络I/O，这样即保持了Redis核心的单线程处理价格，又引入了多线程解决提高网络I/O的性能</p>
+<h3 id="5redis可以存多少数据满了怎么淘汰">5.Redis可以存多少数据，满了怎么淘汰？</h3>
+<p>redis是基于内存存储的</p>
+<p>使用<code>maxmemory</code> 配置，默认是注释掉的也就是默认值是0，在32为操作系统默认是3G，最大支持4GB</p>
+<p>而现在的机器基本都是64位，不做限制内存的使用，maxmemory支持个单位</p>
+<ul>
+<li>
+<p>Maxmemory 1024 (byte)</p>
+</li>
+<li>
+<p>Maxmemory 1024KB</p>
+</li>
+<li>
+<p>Maxmemory 1024MB</p>
+</li>
+<li>
+<p>Maxmemory 1024GB</p>
+</li>
+</ul>
+<p>当Redis存储超过这个配置值，则触发Redis内存淘汰</p>
+<h4 id="怎么淘汰">怎么淘汰</h4>
+<p>Redis有两种淘汰策略，一个是noeviction，默认是这种策略，此时如果内存达到maxmemory，则写入操作会失败，但不会淘汰已有数据</p>
+<p><img src="https://rt5bap83jl.feishu.cn/space/api/box/stream/download/asynccode/?code=ODEyODNhNGM2MTQxMmI1ZGIyOGZiN2VmMjk1MDFkMGZfV2pQRXVpNGkyczVPZ2J1RGJzTWlOcE95MzdBVmlzaGJfVG9rZW46QnFaamJaZFc0b3BFY2R4OVhjNGNtandQbmplXzE3MjE4NDE0MjU6MTcyMTg0NTAyNV9WNA" alt=""></p>
+<p>第二个是多种淘汰策略，主要支持LRU、LFU、RANDOM、TTL这几个方式：</p>
+<ul>
+<li>
+<p>lru：根据LRU（least recently used，最近少使用）算法尝试回收最长时间未使用的</p>
+</li>
+<li>
+<p>lfu：根据LFU（least frequently use，不常使用）驱逐最不常用的键，lfu是在4.0引入的</p>
+</li>
+<li>
+<p>random：回收随机的键使得新添加的数据有空间存放</p>
+</li>
+<li>
+<p>ttl：回收过期集合的键，并且优先回收存活时间（TTL）较短的键，使得新添加的数据有空间存放</p>
+</li>
+</ul>
+<p>这四种策略，可以选择时volatile，也就是设置过期时间的key，或者allkeys，即全部的key，所以一共有8种淘汰策略</p>
+<h4 id="选择哪种淘汰策略">选择哪种淘汰策略</h4>
+<p>淘汰算法根据业务需求决定，</p>
+<h4 id="淘汰时机">淘汰时机：</h4>
+<p>什么时候触发淘汰？实际上每次运行读写命令的时候，都会调用processCommand函数，processCmmand函数会调用freeMemoryIfNeeded，这时候会尝试释放一定内存，使用配置的策略</p>
+<h3 id="6内存淘汰算法--lru">6.内存淘汰算法&ndash;LRU</h3>
+<p>LRU是一种非常流行的资源淘汰算法，为了减少内存消耗，redis使用了近似LRU</p>
+<h4 id="lru算法是什么">LRU算法是什么？</h4>
+<p>最近最久未使用，即记录每个key的最近访问时间，维护一个访问时间的数据</p>
+<h4 id="redis用lru算法有什么问题">Redis用LRU算法有什么问题？</h4>
+<p>维护一个顺序链表，对Redis来说，内存是宝贵的，所以当数据量变大的时候，这个链表对Redsi来说就是巨大的成本</p>
+<p>所以，Redis使用<strong>近似LRU算法</strong></p>
+<h4 id="算法概述">算法概述</h4>
+<p>在LRU模式，redisObject对象中lru字段存储的是key被访问时Redis</p>
+<p>的时钟server.lruclock，当key被访问时，Redis会更新这个key的RedisObject的lru字段</p>
+<blockquote>
+<p>Redis为了保证核心单线程服务性能，缓存了Unix操作系统时钟，默认每100毫秒更新一次，缓存的值是Unxi时间戳取模2^24</p>
+</blockquote>
+<p>近似LRU算法</p>
+
+
+        
+          <div class="blog-tags">
+            
+              
+              <a href="https://ahang7.github.io/tags/redis/">redis</a>&nbsp;
+            
+          </div>
+        
+
+        
+            <hr/>
+            <section id="social-share">
+              <div class="list-inline footer-links">
+                
+
+<div class="share-box" aria-hidden="true">
+    <ul class="share">
+      
+      <li>
+        <a href="//twitter.com/share?url=https%3a%2f%2fahang7.github.io%2fpost%2fbasic%2fredis%2f3-redis%25E6%2589%25A7%25E8%25A1%258C%25E6%25B5%2581%25E7%25A8%258B%2f&amp;text=%5bredis%5d%20%e6%89%a7%e8%a1%8c%e6%b5%81%e7%a8%8b&amp;via=" target="_blank" title="Share on Twitter">
+          <i class="fab fa-twitter"></i>
+        </a>
+      </li>
+  
+      
+      <li>
+        <a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fahang7.github.io%2fpost%2fbasic%2fredis%2f3-redis%25E6%2589%25A7%25E8%25A1%258C%25E6%25B5%2581%25E7%25A8%258B%2f" target="_blank" title="Share on Facebook">
+          <i class="fab fa-facebook"></i>
+        </a>
+      </li>
+  
+      
+      <li>
+        <a href="//reddit.com/submit?url=https%3a%2f%2fahang7.github.io%2fpost%2fbasic%2fredis%2f3-redis%25E6%2589%25A7%25E8%25A1%258C%25E6%25B5%2581%25E7%25A8%258B%2f&amp;title=%5bredis%5d%20%e6%89%a7%e8%a1%8c%e6%b5%81%e7%a8%8b" target="_blank" title="Share on Reddit">
+          <i class="fab fa-reddit"></i>
+        </a>
+      </li>
+  
+      
+      <li>
+        <a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fahang7.github.io%2fpost%2fbasic%2fredis%2f3-redis%25E6%2589%25A7%25E8%25A1%258C%25E6%25B5%2581%25E7%25A8%258B%2f&amp;title=%5bredis%5d%20%e6%89%a7%e8%a1%8c%e6%b5%81%e7%a8%8b" target="_blank" title="Share on LinkedIn">
+          <i class="fab fa-linkedin"></i>
+        </a>
+      </li>
+  
+      
+      <li>
+        <a href="//www.stumbleupon.com/submit?url=https%3a%2f%2fahang7.github.io%2fpost%2fbasic%2fredis%2f3-redis%25E6%2589%25A7%25E8%25A1%258C%25E6%25B5%2581%25E7%25A8%258B%2f&amp;title=%5bredis%5d%20%e6%89%a7%e8%a1%8c%e6%b5%81%e7%a8%8b" target="_blank" title="Share on StumbleUpon">
+          <i class="fab fa-stumbleupon"></i>
+        </a>
+      </li>
+  
+      
+      <li>
+        <a href="//www.pinterest.com/pin/create/button/?url=https%3a%2f%2fahang7.github.io%2fpost%2fbasic%2fredis%2f3-redis%25E6%2589%25A7%25E8%25A1%258C%25E6%25B5%2581%25E7%25A8%258B%2f&amp;description=%5bredis%5d%20%e6%89%a7%e8%a1%8c%e6%b5%81%e7%a8%8b" target="_blank" title="Share on Pinterest">
+          <i class="fab fa-pinterest"></i>
+        </a>
+      </li>
+    </ul>
+  </div>
+  
+
+              </div>
+            </section>
+        
+
+        
+          
+            
+          
+
+          
+                  <h4 class="see-also">See also</h4>
+                  <ul>
+                
+                
+                    <li><a href="/post/basic/redis/6-redis%E9%9B%86%E7%BE%A4/">[redis] 集群</a></li>
+                
+                    <li><a href="/post/basic/redis/5-redis%E5%9C%BA%E6%99%AF/">[redis] 场景</a></li>
+                
+                    <li><a href="/post/basic/redis/4-redis%E6%8C%81%E4%B9%85%E5%8C%96/">[redis] 持久化</a></li>
+                
+                    <li><a href="/post/basic/redis/2-redis%E5%AF%B9%E8%B1%A1/">[redis] redis 对象</a></li>
+                
+                    <li><a href="/post/basic/redis/1-redis-base%E7%90%86%E8%AE%BA/">[redis] Base理论</a></li>
+                
+              </ul>
+
+          
+        
+      </article>
+
+      
+        <ul class="pager blog-pager">
+          
+            <li class="previous">
+              <a href="https://ahang7.github.io/post/basic/mysql/1.-mysql%E7%B4%A2%E5%BC%95/" data-toggle="tooltip" data-placement="top" title="[MySQL] MySQL索引">&larr; Previous Post</a>
+            </li>
+          
+          
+            <li class="next">
+              <a href="https://ahang7.github.io/post/basic/mysql/2.-mysql%E4%BA%8B%E5%8A%A1/" data-toggle="tooltip" data-placement="top" title="[MySQL] MySQL事务">Next Post &rarr;</a>
+            </li>
+          
+        </ul>
+      
+
+
+      
+      
+      
+      
+      
+        
+      
+
+    </div>
+  </div>
+</div>
+
+      <footer>
+  <div class="container">
+    
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+              <li>
+		
+		  <a href="mailto:ch1447571882@qq.com" title="Email me">
+		
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+		
+		  <a href="https://github.com/ahang7" title="GitHub">
+		
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+		
+		  <a href="https://gitlab.com/username" title="GitLab">
+		
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-gitlab fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+          
+          
+        </ul>
+        <p class="credits copyright text-muted">
+          
+            
+              <a href="yourwebsite.com">ch</a>
+            
+          
+
+          &nbsp;&bull;&nbsp;&copy;
+          
+            2024
+          
+
+          
+            &nbsp;&bull;&nbsp;
+            <a href="https://ahang7.github.io/">Beautiful Hugo</a>
+          
+        </p>
+        
+        <p class="credits theme-by text-muted">
+          <a href="https://gohugo.io">Hugo v0.136.0</a> powered &nbsp;&bull;&nbsp; Theme <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a> adapted from <a href="https://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</footer><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.js" integrity="sha384-G0zcxDFp5LWZtDuRMnBkk3EphCK1lhEf4UEyEM693ka574TZGwo4IWwS6QLzM/2t" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
+<script src="https://code.jquery.com/jquery-3.7.0.slim.min.js" integrity="sha384-w5y/xIeYixWvfM+A1cEbmHPURnvyqmVg5eVENruEdDjcyRLUSNej7512JQGspFUr" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+
+<script src="https://ahang7.github.io/js/main.js"></script>
+<script src="https://ahang7.github.io/js/highlight.min.js"></script>
+<script> hljs.initHighlightingOnLoad(); </script>
+<script> $(document).ready(function() {$("pre.chroma").css("padding","0");}); </script><script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.js" integrity="sha384-QELNnmcmU8IR9ZAykt67vGr9/rZJdHbiWi64V88fCPaOohUlHCqUD/unNN0BXSqy" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe-ui-default.min.js" integrity="sha384-m67o7SkQ1ALzKZIFh4CiTA8tmadaujiTa9Vu+nqPSwDOqHrDmxLezTdFln8077+q" crossorigin="anonymous"></script><script src="https://ahang7.github.io/js/load-photoswipe.js"></script>
+
+
+
+
+
+
+
+
+
+
+    
+  </body>
+</html>
+

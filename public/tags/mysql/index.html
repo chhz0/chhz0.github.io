@@ -1,0 +1,1089 @@
+
+
+<!DOCTYPE html>
+<html lang="en" itemscope itemtype="http://schema.org/WebPage">
+  <head>
+    
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+ 
+
+
+      <title>Mysql - </title>
+
+  <meta name="author" content="ch"/><script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "WebSite",
+    "name": "Beautiful Hugo",
+    
+    "url": "https:\/\/ahang7.github.io\/"
+}
+</script><script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Organization",
+  "name": "",
+  "url": "https:\/\/ahang7.github.io\/"
+  
+  
+  
+  
+}
+</script>
+
+<meta property="og:title" content="Mysql" />
+<meta property="og:image" content="https://ahang7.github.io/img/avatar-icon.png" />
+<meta property="og:url" content="https://ahang7.github.io/tags/mysql/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Beautiful Hugo" />
+
+  <meta name="twitter:title" content="Mysql" />
+  <meta name="twitter:image" content="https://ahang7.github.io/img/avatar-icon.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link href='https://ahang7.github.io/img/favicon.ico' rel='icon' type='image/x-icon'/>
+  <meta name="generator" content="Hugo 0.136.0">
+  <link rel="alternate" href="https://ahang7.github.io/index.xml" type="application/rss+xml" title="Beautiful Hugo"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.css" integrity="sha384-3UiQGuEI4TTMaFmGIZumfRPtfKQ3trwQE2JgosJxCnGmQpL/lJdjpcHkaaFwHlcI" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous"><link rel="stylesheet" href="https://ahang7.github.io/css/main.css" /><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" />
+  <link rel="stylesheet" href="https://ahang7.github.io/css/highlight.min.css" /><link rel="stylesheet" href="https://ahang7.github.io/css/codeblock.css" /><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.css" integrity="sha384-h/L2W9KefUClHWaty3SLE5F/qvc4djlyR4qY3NUV5HGQBBW7stbcfff1+I/vmsHh" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/default-skin/default-skin.min.css" integrity="sha384-iD0dNku6PYSIQLyfTOpB06F2KCZJAKLOThS5HRe8b3ibhdEQ6eKsFf/EeFxdOt5R" crossorigin="anonymous">
+
+
+  </head>
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://ahang7.github.io/">Beautiful Hugo</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li>
+              <a title="Blog" href="/">Blog</a>
+            </li>
+          
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent" role="button" tabindex="0">Samples</a>
+              <div class="navlinks-children">
+                
+                  <a href="/post/2017-03-07-bigimg-sample">Big Image Sample</a>
+                
+                  <a href="/post/2017-03-05-math-sample">Math Sample</a>
+                
+                  <a href="/post/2016-03-08-code-sample">Code Sample</a>
+                
+              </div>
+            </li>
+          
+        
+          
+            <li>
+              <a title="About" href="/page/about/">About</a>
+            </li>
+          
+        
+          
+            <li>
+              <a title="Tags" href="/tags">Tags</a>
+            </li>
+          
+        
+
+        
+
+        
+      </ul>
+    </div>
+
+    
+      <div class="avatar-container">
+        <div class="avatar-img-border">
+          <a title="Beautiful Hugo" href="https://ahang7.github.io/">
+            <img class="avatar-img" src="https://ahang7.github.io/img/avatar-icon.png" alt="Beautiful Hugo" />
+           
+          </a>
+        </div>
+      </div>
+    
+
+  </div>
+</nav>
+
+
+
+
+    
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+
+  
+  
+  
+
+
+
+
+
+
+  
+
+  <header class="header-section ">
+    
+    
+    <div class="intro-header no-img">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <div class="tags-heading">
+              
+                <h1>Mysql</h1>
+              
+              
+                <hr class="small">
+              
+              
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+  </header>
+
+
+    
+  <div class="container" role="main">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        
+        <div class="posts-list">
+          
+            <article class="post-preview">
+    <a href="https://ahang7.github.io/post/basic/mysql/6.-mysql%E9%80%BB%E8%BE%91%E6%9E%B6%E6%9E%84/">
+        <h2 class="post-title">[MySQL] MySQL逻辑架构</h2>
+        
+        <h3 class="post-subtitle">
+            MySQL 中SQL的执行过程
+        </h3>
+        
+        
+        
+    </a>
+
+    <p class="post-meta">
+        <span class="post-meta">
+  
+  
+  <i class="fas fa-calendar"></i>&nbsp;Posted on October 31, 2024
+  
+  
+    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;1&nbsp;minutes
+  
+  
+    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;210&nbsp;words
+  
+  
+    
+      &nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;ch
+    
+  
+  
+</span>
+
+
+    </p>
+    <div class="post-entry">
+        
+        <h2 id="61-sql执行过程">6.1 SQL执行过程</h2>
+<p><a href="https://xiaolincoding.com/mysql/base/how_select.html#mysql-%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B%E6%98%AF%E6%80%8E%E6%A0%B7%E7%9A%84">https://xiaolincoding.com/mysql/base/how_select.html#mysql-%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B%E6%98%AF%E6%80%8E%E6%A0%B7%E7%9A%84</a></p>
+<p>MySQL架构分为两层：<strong>server层和存储引擎层</strong></p>
+<ul>
+<li>Server层负责建立连接、分析和执行SQL
+<ul>
+<li>MySQL大多数核心功能模块都在这里：连接器、查询缓存、解析器、预处理器、优化器、执行器等</li>
+<li>还有所有的内置函数</li>
+<li>所有跨存储引擎的功能</li>
+</ul>
+</li>
+<li>存储引擎层负责数据的存储和提取
+<ul>
+<li>支持InnoDB、MyISAM、Memory等多个存储引擎</li>
+</ul>
+</li>
+</ul>
+<h3 id="611-连接器">6.1.1 连接器</h3>
+<p>MySQL是基于TCP协议进行传输的，所以在连接MySQL的时候需要先进行TCP三次握手，在命令行使用命令进行连接</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">mysql -h <span class="nv">$ip</span> -u<span class="nv">$user</span> -p
+</span></span></code></pre></div><p>用户通过用户密码成功连接后，连接器会获取用户的权限，然后保存起来，在后续的此连接的任何操作，都会基于连接开始的时候读取到的权限逻辑进行判断</p>
+<p>建立连接后，即使修改了该用户的权限，也不影响已连接的权限。只有新建的连接才会有新的权限设置</p>
+<h4 id="6111-查看mysql服务的客户端连接">6.1.1.1 查看MySQL服务的客户端连接</h4>
+<p>可以执行<code>show processlist</code> 命令进行查看</p>
+<h4 id="6112-空闲连接会一直占着">6.1.1.2 空闲连接会一直占着</h4>
+<p>不会，MySQL定义了空闲连接的最大空闲时长，由<code>wait_timeout</code> 参数控制，默认值是8小时，超过这个时间，连接器就会把这个连接断开</p>
+<p>使用命令可以查看该值</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">show variables like <span class="s1">&#39;wait_timeout&#39;</span><span class="p">;</span>
+</span></span></code></pre></div><p>可以手动断开空闲的连接，使用的是</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-SQL" data-lang="SQL"><span class="line"><span class="cl"><span class="n">kill</span><span class="w"> </span><span class="k">connection</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">id</span><span class="w">
+</span></span></span></code></pre></div><p>当空闲的连接被服务端主动断开后，这个客户端并不会马上知道，等到客户端在发起下一个请求时，才会收到报错</p>
+<p>“ERROR 2013 (HY000): Lost connection to MySQL server during query”</p>
+<h4 id="6113-mysql的连接限制">6.1.1.3 MySQL的连接限制</h4>
+<p>MySQL服务支持的最大连接数由<code>max_connections</code> 参数控制</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-Bash" data-lang="Bash"><span class="line"><span class="cl">show variables like <span class="s1">&#39;max_connections&#39;</span><span class="p">;</span>
+</span></span></code></pre></div><p>MySQL的连接跟HTTP一样，有短连接和长连接的概念</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-SQL" data-lang="SQL"><span class="line"><span class="cl"><span class="o">//</span><span class="w"> </span><span class="err">短连接</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="err">连接</span><span class="w"> </span><span class="n">mysql</span><span class="w"> </span><span class="err">服务（</span><span class="n">TCP</span><span class="w"> </span><span class="err">三次握手）</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="err">执行</span><span class="k">sql</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="err">断开</span><span class="w"> </span><span class="n">mysql</span><span class="w"> </span><span class="err">服务（</span><span class="n">TCP</span><span class="w"> </span><span class="err">四次挥手）</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="o">//</span><span class="w"> </span><span class="err">长连接</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="err">连接</span><span class="w"> </span><span class="n">mysql</span><span class="w"> </span><span class="err">服务（</span><span class="n">TCP</span><span class="w"> </span><span class="err">三次握手）</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="err">执行</span><span class="k">sql</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="err">执行</span><span class="k">sql</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="err">执行</span><span class="k">sql</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="p">....</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="err">断开</span><span class="w"> </span><span class="n">mysql</span><span class="w"> </span><span class="err">服务（</span><span class="n">TCP</span><span class="w"> </span><span class="err">四次挥手）</span><span class="w">
+</span></span></span></code></pre></div><p>一般推荐长连接，但是使用长连接可能会占用内存增多，因为_MySQL在执行查询过程中临时使用内存管理连接对象__，_只有在连接断开的时候才会释放</p>
+        <a href="https://ahang7.github.io/post/basic/mysql/6.-mysql%E9%80%BB%E8%BE%91%E6%9E%B6%E6%9E%84/" class="post-read-more">[Read More]</a>
+        
+    </div>
+
+    
+    <div class="blog-tags">
+        
+       
+       <a href="https://ahang7.github.io/tags/mysql/">mysql</a>&nbsp;
+         
+    </div>
+    
+
+</article>
+          
+            <article class="post-preview">
+    <a href="https://ahang7.github.io/post/basic/mysql/5.-mysql%E5%86%85%E5%AD%98/">
+        <h2 class="post-title">[MySQL] MySQL内存</h2>
+        
+        <h3 class="post-subtitle">
+            MySQL buffer pool
+        </h3>
+        
+        
+        
+    </a>
+
+    <p class="post-meta">
+        <span class="post-meta">
+  
+  
+  <i class="fas fa-calendar"></i>&nbsp;Posted on October 30, 2024
+  
+  
+    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;1&nbsp;minutes
+  
+  
+    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;185&nbsp;words
+  
+  
+    
+      &nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;ch
+    
+  
+  
+</span>
+
+
+    </p>
+    <div class="post-entry">
+        
+        <h2 id="为什么要有buffer-pool">为什么要有Buffer Pool</h2>
+<p>MySQL的数据存储在磁盘的，如果每次都从磁盘里面读取数据，这样性能是很差的</p>
+<p>提高性能，就需要加入缓存。当数据从磁盘中取出来之后，缓存内存中，下次查询同样的数据，直接从内存中读取</p>
+<p>为此InnoDB存储引擎设计了<strong>一个缓存池（Buffer Pool），来提高数据库的读写性能</strong></p>
+<p>有了缓冲池后：</p>
+<ul>
+<li>读取数据时，如果数据存在于Buffer Pool中，客户端就会直接读取Buffer Pool中的数据，否则再去磁盘中读取</li>
+<li>当修改数据时，首先修改Buffer Pool中数据所在的数据页，然后将该页设置为脏页，最后由后台线程将脏页写入到磁盘</li>
+</ul>
+<h2 id="buffer-pool有多大">Buffer Pool有多大？</h2>
+<p>Buffer Pool在MySQL启动的时候，向操作系统申请的一片连续的内存空间，默认配置下Buffer Pool只有<code>128MB</code></p>
+<p>可以通过调整<code>innodb_buffer_pool_size</code> 参数来设置Buffer Pool的大小，一般建议设置为可用物理内存的60%~80%</p>
+<h2 id="buffer-pool缓存什么">Buffer Pool缓存什么？</h2>
+<p>InnoDB会把存储的数据分为若干个<strong>页</strong>，以页作为磁盘和内存交互的基本单位，一个页的默认大小为**16kb，**因此Buffer Pool同样需要按页来划分</p>
+<p>在MySQL启动的时候，**InnoDB会为Buffer Pool申请一片连续的<strong><strong>内存</strong></strong>空间，然后按照默认的16<strong><strong>kb</strong></strong>的大小划分出一个个的页，Buffer Pool中的页就叫做缓存页。**这些缓存页都是空的，之后随着程序的运行，才会有磁盘上的页被缓存到Buffer Pool中</p>
+<p>所以，MySQL刚启动的时候，其使用的虚拟内存空间很大，而使用到的物理内存空间很小，这时因为这些虚拟内存被访问后，操作系统才会触发缺页中断，接着将虚拟地址和物理地址建立映射关系</p>
+<p>Buffer Pool缓存了以下的：</p>
+<ul>
+<li>索引页</li>
+<li>数据页</li>
+<li>插入缓存页</li>
+<li>Undo页</li>
+<li>自适应哈希索引</li>
+<li>锁信息</li>
+</ul>
+<p>为了更好管理Buffer Pool中的缓存页，InnoDB为每一个缓存页都创建了一个**控制块，**控制块包括缓存页的表空间，页号，缓存页地址，链表节点等，控制块也占据内存空间，它是在Buffer Pool的最前面，接着才是缓存页</p>
+<p>暂时无法在飞书文档外展示此内容</p>
+<p>上面的控制块和缓存页之间的空白空间称为<strong>碎片空间</strong></p>
+<blockquote>
+<p>碎片空间：每一个控制块对应一个缓存页，在分配足够多的控制块和缓存页后，可能剩余的空间不足够一个控制块和缓存页的大小，那么这块空间就不被使用，剩下的这块空间就被称为碎片</p>
+<p>当Buffer Pool的大小设置的刚刚好，就不会产生碎片</p>
+</blockquote>
+<p>查询一条记录时，InnoDB会把整个页的数据加载到Buffer Pool中，通过索引只能定位到磁盘中的页，而不能定位到页中一条记录。</p>
+<p><a href="https://mp.weixin.qq.com/s/A5gNVXMNE-iIlY3oofXtLw">mp.weixin.qq.com</a>(从数据页的角度看B+树——InnoDB存储引擎)</p>
+<p>记录是按照行来存储的，但是数据库的读取并不是以<strong>行</strong>为单位，否则一次读取（一次IO操作）只能处理一行数据，效率会非常低，因此，<strong>InnoDB的数据是按照数据页为单位来读写的</strong></p>
+<p>数据页的结构分为7个部分</p>
+<table>
+  <thead>
+      <tr>
+          <th></th>
+          <th></th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>File Header(38)</td>
+          <td>文件头，表示页的信息</td>
+      </tr>
+      <tr>
+          <td>Page Header(56)</td>
+          <td>页头，表示页的状态信息</td>
+      </tr>
+      <tr>
+          <td>infimum+supermun(26)</td>
+          <td>两个虚拟伪记录，分别表示页中最小记录和最大记录</td>
+      </tr>
+      <tr>
+          <td>User Records(unclear)</td>
+          <td>存储行记录内容</td>
+      </tr>
+      <tr>
+          <td>Free Space(unclear)</td>
+          <td>页中还没被使用的</td>
+      </tr>
+      <tr>
+          <td>Page Directory(unclear)</td>
+          <td>页目录，存储用户记录的相对位置，对记录起索引作用</td>
+      </tr>
+      <tr>
+          <td>File Tailer(8)</td>
+          <td>校验页是否完整</td>
+      </tr>
+  </tbody>
+</table>
+<p>其中，行记录由<code>infimum+supremum</code> 和 <code>User Records</code>构成</p>
+        <a href="https://ahang7.github.io/post/basic/mysql/5.-mysql%E5%86%85%E5%AD%98/" class="post-read-more">[Read More]</a>
+        
+    </div>
+
+    
+    <div class="blog-tags">
+        
+       
+       <a href="https://ahang7.github.io/tags/mysql/">mysql</a>&nbsp;
+         
+    </div>
+    
+
+</article>
+          
+            <article class="post-preview">
+    <a href="https://ahang7.github.io/post/basic/mysql/4.-mysql%E6%97%A5%E5%BF%97/">
+        <h2 class="post-title">[MySQL] MySQL日志</h2>
+        
+        <h3 class="post-subtitle">
+            MySQL undolog、redolog以及binlog
+        </h3>
+        
+        
+        
+    </a>
+
+    <p class="post-meta">
+        <span class="post-meta">
+  
+  
+  <i class="fas fa-calendar"></i>&nbsp;Posted on October 29, 2024
+  
+  
+    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;2&nbsp;minutes
+  
+  
+    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;371&nbsp;words
+  
+  
+    
+      &nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;ch
+    
+  
+  
+</span>
+
+
+    </p>
+    <div class="post-entry">
+        
+        <p>先理解执行一条sql语句，在mysql内部会发生什么？</p>
+<p>以执行一条<code>update</code> 语句为例：</p>
+<ul>
+<li>
+<p>客户端会先通过连接器建立连接，连接器会判断用户身份</p>
+</li>
+<li>
+<p>这里是一条update语句，所以不需要经过查询缓存（注意，当表上有更新语句，会把整个查询缓存清空，所以在Mysql8.0这个功能就被移除了）</p>
+</li>
+<li>
+<p>解析器会通过词法分析识别出关键字，构建出语法树，接着做语法分析，判断输入的语句是否符合MySQL语法</p>
+</li>
+<li>
+<p>预处理器会判断表和字段是否存在</p>
+</li>
+<li>
+<p>优化器确定执行计划（使用索引或者全表查询）</p>
+</li>
+<li>
+<p>执行器负责具体执行，找到这一行然后更新</p>
+</li>
+</ul>
+<p>不过，更新语句的流程会涉及到<strong>undo</strong> <strong>log</strong>**，redo log，binlog**三种日志：</p>
+<ul>
+<li>
+<p>undo log（回滚日志）：是InnoDB存储引擎生成的日志，实现了事务中的<strong>原子性</strong>，主要用于事务回滚和MVCC</p>
+</li>
+<li>
+<p>redo log（重做日志）：是InnoDB存储引擎生成的日志，实现了事务中的<strong>持久性</strong>，主要用于掉电等故障恢复</p>
+</li>
+<li>
+<p>bing log（归档日志）：是Server层生成的日志，主要用于数据备份和主从复制</p>
+</li>
+</ul>
+<h2 id="1为什么需要undo-log">1.为什么需要undo log？</h2>
+<p>在执行一条“增删改”语句的时候，MySQL会隐式开启事务，执行完后自动提交事务</p>
+<blockquote>
+<p>MySQL中执行一条语句后是否自动提交事务，是由<code>autocommit</code> 参数来决定的，默认是开启的</p>
+</blockquote>
+<p>当事务执行过程中，都记录下回滚时需要的信息到一个日志中，那么在事务执行过程中发生MySQL崩溃后，可以通过这个日志回滚到事务之前的数据</p>
+<p>实现这一机制就是 <strong>undo</strong> <strong>log</strong>**（回滚日志），它保证了事务的<strong><strong>ACID</strong></strong>特性中的原子性**</p>
+<p>每当InnoDB引擎对每种操作进行回滚时，进行相反操作就行：</p>
+<ul>
+<li>
+<p>插入 - 删除</p>
+</li>
+<li>
+<p>删除 - 插入</p>
+</li>
+<li>
+<p>更新 - 更新为旧值</p>
+</li>
+</ul>
+<p>一条记录每次进行操作产生的undo log格式都有一个roll_pointer和一个trx_id事务id：</p>
+<ul>
+<li>
+<p>trx_id：记录该记录是被哪些事务修改的</p>
+</li>
+<li>
+<p>roll_pointer：指针可以将这些undo log串成一个链表，这个链表被称为版本链</p>
+</li>
+</ul>
+<p><img src="https://rt5bap83jl.feishu.cn/space/api/box/stream/download/asynccode/?code=N2UyNDE0NmNmNDU2N2UyY2Q5NDJkYzZiNzAwMzY3OTRfUjh5Zmw4d3VoWFI5VGZnaFR2a0NsVWk0bVdPTEM2WW5fVG9rZW46V3FmemIzbkhQb1BkRjB4UGFLbWNwR2RpbkRLXzE3MjE4NDExMjk6MTcyMTg0NDcyOV9WNA" alt=""></p>
+<p>另外，undo log可以跟Read View一起实现MVCC（多版本并发控制）：</p>
+<p>对于 <strong>读提交</strong> 和 <strong>可重复读</strong> 隔离级别的事务来说，它们的快照读（普通select语句）是通过Read View + undo log来实现的，区别在于创建Read View的时机不同</p>
+<ul>
+<li>
+<p>读提交：是在每一个select都会生成一个新的Read View，也意味着事务期间的多次读取同一数据，前后两次读的数据可能会出现不一致（不可重复读）</p>
+</li>
+<li>
+<p>可重复读：是在启动事务时生成一个Read View，然后整个事务期间都在用这个Read View，这样保证了事务期间读到的数据都是事务启动时的记录</p>
+</li>
+</ul>
+<p>这两个隔离级别实现是通过事务的Read View里的字段和记录两个隐藏列trx_id和roll_pointer的对比</p>
+<p><a href="https://xiaolincoding.com/mysql/transaction/mvcc.html#%E4%BA%8B%E5%8A%A1%E7%9A%84%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB%E6%9C%89%E5%93%AA%E4%BA%9B">事务隔离级别是怎么实现的？</a></p>
+<p>因此，undo log两大作用：</p>
+<ul>
+<li>
+<p>实现事务回滚，保障事务的原子性</p>
+</li>
+<li>
+<p>实现MVCC（多版本并发控制）关键因素之一</p>
+</li>
+</ul>
+<blockquote>
+<p>Undo log是如何刷盘？</p>
+        <a href="https://ahang7.github.io/post/basic/mysql/4.-mysql%E6%97%A5%E5%BF%97/" class="post-read-more">[Read More]</a>
+        
+    </div>
+
+    
+    <div class="blog-tags">
+        
+       
+       <a href="https://ahang7.github.io/tags/mysql/">mysql</a>&nbsp;
+         
+    </div>
+    
+
+</article>
+          
+            <article class="post-preview">
+    <a href="https://ahang7.github.io/post/basic/mysql/3.-mysql%E9%94%81/">
+        <h2 class="post-title">[MySQL] MySQL锁</h2>
+        
+        <h3 class="post-subtitle">
+            MySQL 锁类型，加锁与死锁
+        </h3>
+        
+        
+        
+    </a>
+
+    <p class="post-meta">
+        <span class="post-meta">
+  
+  
+  <i class="fas fa-calendar"></i>&nbsp;Posted on October 28, 2024
+  
+  
+    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;3&nbsp;minutes
+  
+  
+    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;487&nbsp;words
+  
+  
+    
+      &nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;ch
+    
+  
+  
+</span>
+
+
+    </p>
+    <div class="post-entry">
+        
+        <h2 id="锁的类型">锁的类型</h2>
+<p>Mysql的锁，根据加锁的范围可以分为全局锁、表级锁和行锁三类</p>
+<h3 id="全局锁">全局锁</h3>
+<p>要使用全局锁，执行下面这条命令：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="n">flush</span> <span class="n">tables</span> <span class="n">with</span> <span class="n">read</span> <span class="n">lock</span>
+</span></span></code></pre></div><p>执行之后，整个数据库就处于只读状态，这时其他线程执行以下操作，就会被阻塞</p>
+<ul>
+<li>
+<p>对数据的增删改，比如insert、delete、update等</p>
+</li>
+<li>
+<p>对表结构的更改操作，比如alter table、drop table等</p>
+</li>
+</ul>
+<p>要释放全局锁，执行下面的命令：</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="n">unlock</span> <span class="n">tables</span>
+</span></span></code></pre></div><blockquote>
+<p>全局锁的应用场景：</p>
+<p>全局锁主要用于做<strong>全库逻辑备份</strong>，这样在备份数据库期间，不会因为数据或者结构的更新，而出现备份文件的数据与预期的不一样</p>
+</blockquote>
+<p>加全局锁带来的缺点：会导致业务停滞，因为加全局锁之后，整个数据库都只是只读状态，不能更新数据</p>
+<p>可以通过开启事务，在可重复读的隔离级别下，即使其他事务更新了表的数据，也不会影响备份数据库时的Read View，</p>
+<p>备份数据库的工具是<code>mysqldump</code> ，在使用mysqldump时加上<code>-single-transaction</code> 参数的时候，就会在备份数据库之前开启事务</p>
+<h3 id="表级锁">表级锁</h3>
+<p>MySQL里面表级锁有以下几种：</p>
+<ul>
+<li>
+<p>表锁</p>
+</li>
+<li>
+<p>元数据锁（MDL）</p>
+</li>
+<li>
+<p>意向锁</p>
+</li>
+<li>
+<p>AUTO-INC锁</p>
+</li>
+</ul>
+<h4 id="表锁">表锁</h4>
+<p>使用下面的命令对表加锁和释放锁</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="c1">// 加读锁
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">lock</span> <span class="n">tables</span> <span class="o">&lt;</span><span class="n">table_name</span><span class="o">&gt;</span> <span class="n">read</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 写锁
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">lock</span> <span class="n">tables</span> <span class="o">&lt;</span><span class="n">table_name</span><span class="o">&gt;</span> <span class="n">write</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">// 释放锁
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">unlock</span> <span class="n">tables</span><span class="p">;</span>
+</span></span></code></pre></div><p>表锁会影响别的线程和本线程的读写操作</p>
+<h4 id="元数据锁mdl">元数据锁（MDL）</h4>
+<p>对于MDL，我们不需要显示使用，因为当我们在对数据库进行操作时，会自动给这个表上加MDL：</p>
+<ul>
+<li>
+<p>对一张表进行CURD操作时，加的是MDL读锁</p>
+</li>
+<li>
+<p>对一张表做结构变更操作的时候，加的是MDL写锁</p>
+</li>
+</ul>
+<p>MDL是为了保证当前用户对表执行CRUD操作时，防止其他线程对这个表结构做了变更</p>
+<p>MDL是在事务提交之后才会释放，这意味着<strong>事务执行期间，MDL是一直持有</strong></p>
+<p>需要注意的是，在事务启用之后，如果事务A没有提交，此时如果有表结构的修改请求发起，就会发生阻塞，这个阻塞也会导致其他CURD的请求被阻塞住</p>
+<p>这是因为申请MDL锁的操作会形成一个队列，队列中<strong>写锁<strong><strong>获取优先级大于</strong></strong>读锁</strong>，一旦出现MDL写锁等待，会阻塞该表后续的CRUD操作</p>
+<h4 id="意向锁">意向锁</h4>
+<ul>
+<li>
+<p>在使用InnoDB引擎的表里对某些记录加上共享锁之前，需要先在表级别加上一个意向共享锁</p>
+</li>
+<li>
+<p>在使用InnoDB引擎的表里对某些记录加上独占锁之前，需要先在表级别加上一个意向独占锁</p>
+</li>
+</ul>
+<p>在执行insert、update、delete操作时，需要先对表上加 意向独占锁，然后对该记录加独占锁</p>
+<p>而普通的select是不会加行级锁，普通的select语句是利用MVCC实现一致性读，是无锁的</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-C" data-lang="C"><span class="line"><span class="cl"><span class="c1">// select也是可以对记录加共享锁和独占锁，
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 先在表上加上意向共享锁，然后对读取的记录加共享锁
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">select</span> <span class="p">...</span> <span class="n">lock</span> <span class="n">in</span> <span class="n">share</span> <span class="n">mode</span><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="c1">// 先表上加上意向锁，然后再读取记录加独占锁
+</span></span></span><span class="line"><span class="cl"><span class="c1"></span><span class="n">select</span> <span class="p">...</span> <span class="k">for</span> <span class="n">update</span>
+</span></span></code></pre></div><p>意向锁的目的是为了快速判断表里是否有记录被加锁</p>
+<h4 id="auto-inc锁">AUTO-INC锁</h4>
+<p>表里面的主键通常设置成自增的，在插入数据时，可以不指定主键的值，数据库会自动给主键赋值递增的值，这主要是通过<strong>AUTO-INC锁</strong>实现的</p>
+<p>Auto-Inc锁是特殊的表锁机制，不是在一个事务提交后才释放，而是再执行完插入语句后就会立即释放</p>
+<h3 id="行级锁">行级锁</h3>
+<p>InnoDB引擎是支持行级锁的，而MyISAM引擎并不支持行级锁</p>
+<p>行级锁的类型主要有三类：</p>
+        <a href="https://ahang7.github.io/post/basic/mysql/3.-mysql%E9%94%81/" class="post-read-more">[Read More]</a>
+        
+    </div>
+
+    
+    <div class="blog-tags">
+        
+       
+       <a href="https://ahang7.github.io/tags/mysql/">mysql</a>&nbsp;
+         
+    </div>
+    
+
+</article>
+          
+            <article class="post-preview">
+    <a href="https://ahang7.github.io/post/basic/mysql/2.-mysql%E4%BA%8B%E5%8A%A1/">
+        <h2 class="post-title">[MySQL] MySQL事务</h2>
+        
+        <h3 class="post-subtitle">
+            MySQL 事务的特性、隔离级别以及MVCC
+        </h3>
+        
+        
+        
+    </a>
+
+    <p class="post-meta">
+        <span class="post-meta">
+  
+  
+  <i class="fas fa-calendar"></i>&nbsp;Posted on October 27, 2024
+  
+  
+    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;1&nbsp;minutes
+  
+  
+    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;144&nbsp;words
+  
+  
+    
+      &nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;ch
+    
+  
+  
+</span>
+
+
+    </p>
+    <div class="post-entry">
+        
+        <h2 id="1事务有哪些特征">1.事务有哪些特征</h2>
+<p>原子性，隔离性，一致性，持久性</p>
+<ul>
+<li>
+<p>原子性：要么全做，要么全不做</p>
+</li>
+<li>
+<p>隔离性：保证其它的状态转换不会影响到本次状态的转</p>
+</li>
+<li>
+<p>一致性：数据全部符合现实世界的约束</p>
+</li>
+<li>
+<p>持久性： 更新后的数据存储到磁盘</p>
+</li>
+</ul>
+<p>InnoDB引擎通过以下技术来保证事务的四个特性</p>
+<ol>
+<li>
+<p>持久性是通过 redo log（重做日志）来保证</p>
+</li>
+<li>
+<p>原子性是通过 undo log（回滚日志）来保证</p>
+</li>
+<li>
+<p>隔离性是通过 mvcc（多版本并发控制）或者锁机制来保证</p>
+</li>
+<li>
+<p>一致性是通过持久性+原子性+隔离性来保证</p>
+</li>
+</ol>
+<h2 id="2并发事务会引发的问题">2.并发事务会引发的问题</h2>
+<p>MySQL服务端是允许多个客户端连接，这意味着MySQL会出现同时处理多个事务的情况</p>
+<p>在同时处理多个事务的时候，可能会出现脏读、不可重复读、幻读的问题</p>
+<ul>
+<li>
+<p>脏读：一个事务读到了另一个<strong>未提交事务修改过</strong>的数据</p>
+</li>
+<li>
+<p>不可重复读：在一个事务中多次读取同一个<strong>数据</strong>，出现前后两次读到的数据不一样的情况</p>
+</li>
+<li>
+<p>幻读：在一个事务中多次查询某个符合查询条件的<strong>记录数量</strong>，如果出现前后两次查询到的记录数据不一样的情况</p>
+</li>
+</ul>
+<p>以上三个现象，问题的严重性是 脏读 &gt; 不可重复读 &gt; 幻读</p>
+<h2 id="3事务的隔离级别">3.事务的隔离级别</h2>
+<p>四种隔离级别：</p>
+<ol>
+<li>
+<p>读未提交：指一个事务还没有提交时，它做的变更就能被其他事务看到</p>
+</li>
+<li>
+<p>读提交：指一个事务提交之后，它做的变更才能被其他事务看到</p>
+</li>
+<li>
+<p>可重复读：指一个事务执行过程中看到的数据，一直跟这个事务启动时看到的数据是一致的，<strong>MySQL</strong> <strong>InnoDB引擎的默认隔离级别</strong></p>
+</li>
+<li>
+<p>串行化：对记录加上读写锁，在多个事务对这条记录进行读写操作时，如果发生读写冲突的时候，后访问的事务必须等前一个事务执行完成</p>
+</li>
+</ol>
+<blockquote>
+<p>按隔离水平高低排序如下：</p>
+<p>串行化 &gt; 可重复读 &gt; 读已提交 &gt; 读未提交</p>
+</blockquote>
+<p>针对不同的隔离级别：并发事务时可能发生的现象也不同</p>
+<ul>
+<li>
+<p>读未提交：脏读、不可重复读、幻读</p>
+</li>
+<li>
+<p>读提交：不可重复读、幻读</p>
+</li>
+<li>
+<p>可重复读：幻读</p>
+</li>
+<li>
+<p>串行化：</p>
+</li>
+</ul>
+<p>可重复读的隔离级别下，可以<strong>很大程度上避免</strong>幻读现象的发生，所以MySQL不使用串行化隔离级别来避免幻读现象的发生，因为<strong>串行化隔离级别会影响性能</strong></p>
+<p>InnoDB在默认隔离级别：<strong>可重复读</strong>的情况下很大程度上解决幻读现象的解决方案有两种：</p>
+<ul>
+<li>
+<p>针对**快照读（普通 select 语句），**是通过MVCC方式解决幻读</p>
+</li>
+<li>
+<p>针对**当前读（select &hellip; for update），**通过next-key lock（记录锁+间隙锁）方式解决了幻读</p>
+</li>
+</ul>
+<p>四种隔离事务是怎么实现的</p>
+<ul>
+<li>
+<p>对于读未提交：可以读到未提交事务修改的数据，所以直接读取就行</p>
+</li>
+<li>
+<p>对于串行化，通过加读写锁的方式来避免并行访问</p>
+</li>
+<li>
+<p>对于读提交和可重复读这两种隔离级别的事务，是通过Read View来实现的，它们的区别是在于创建Read View时，读提交隔离级别是在每个语句执行之前都会重新生成一个Read View；而可重复读隔离级别是启动事务时生成一个Read View，然后整个事务都在用这个Read View</p>
+</li>
+</ul>
+<p>在执行开启事务命令，并不意味着启动了事务：</p>
+<p>在MySQL中，开启事务有两种命令，分别是：</p>
+        <a href="https://ahang7.github.io/post/basic/mysql/2.-mysql%E4%BA%8B%E5%8A%A1/" class="post-read-more">[Read More]</a>
+        
+    </div>
+
+    
+    <div class="blog-tags">
+        
+       
+       <a href="https://ahang7.github.io/tags/mysql/">mysql</a>&nbsp;
+         
+    </div>
+    
+
+</article>
+          
+            <article class="post-preview">
+    <a href="https://ahang7.github.io/post/basic/mysql/1.-mysql%E7%B4%A2%E5%BC%95/">
+        <h2 class="post-title">[MySQL] MySQL索引</h2>
+        
+        <h3 class="post-subtitle">
+            MySQL 索引 - 索引数据结构
+        </h3>
+        
+        
+        
+    </a>
+
+    <p class="post-meta">
+        <span class="post-meta">
+  
+  
+  <i class="fas fa-calendar"></i>&nbsp;Posted on October 26, 2024
+  
+  
+    &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;2&nbsp;minutes
+  
+  
+    &nbsp;|&nbsp;<i class="fas fa-book"></i>&nbsp;261&nbsp;words
+  
+  
+    
+      &nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;ch
+    
+  
+  
+</span>
+
+
+    </p>
+    <div class="post-entry">
+        
+        <h2 id="1-b树索引数据结构">1. B+树（索引数据结构）</h2>
+<p>什么是索引？
+为什么索引能加快查询？
+索引的数据结构是什么？
+B+ 树 和（B 树 和 红黑树）有什么区别？
+为什么选择 B+树 作为索引数据结构？</p>
+<h3 id="为什么mysql-innodb选择b-tree作为索引">为什么Mysql InnoDB选择B+ Tree作为索引？</h3>
+<ol>
+<li>B+ 树 vs B 树
+B+ 树只在叶子节点存储数据，B树的非叶子节点也要存储数据，所以B+ 树的单个节点的数据量更小</li>
+<li>B+ 树 vs 二叉树
+对于有N个叶子节点的B+ 树，搜索复制度为O（logdn）</li>
+<li>B+ 树 vs Hash</li>
+</ol>
+<blockquote>
+<p><a href="https://learn.lianglianglee.com/%E4%B8%93%E6%A0%8F/MySQL%E5%AE%9E%E6%88%98%E5%AE%9D%E5%85%B8/08%20%20%E7%B4%A2%E5%BC%95%EF%BC%9A%E6%8E%92%E5%BA%8F%E7%9A%84%E8%89%BA%E6%9C%AF.md">08 索引:排序的艺术</a></p>
+<p><a href="https://xiaolincoding.com/mysql/index/why_index_chose_bpuls_tree.html">为什么 MySQL 采用 B+ 树作为索引？</a></p>
+</blockquote>
+<h2 id="2-索引组织表索引存储">2. 索引组织表（索引存储）</h2>
+<p>堆表和索引组织表有什么区别？</p>
+<p>分别应用场景是什么？</p>
+<p>Mysql InnoDB存储引擎中数据存储方式：<strong>索引组织表</strong></p>
+<p>数据存储有<strong>堆表和索引组织表两种。</strong></p>
+<ul>
+<li>
+<p>堆表中的数据是无序存放的，数据的排序完全依赖索引</p>
+</li>
+<li>
+<p>索引组织表，数据根据主键进行排序存放在索引中，主键索引也叫<strong>聚集索引</strong>（Clustered Index）</p>
+</li>
+</ul>
+<p>在索引组织表中，数据即索引，索引即数据</p>
+<h3 id="二级索引">二级索引</h3>
+<p>InnoDB存储引擎的数据是根据主键索引排序存储的，除了主键索引外，其它的索引都称为二级索引（Secondeary Index），或者非聚集索引</p>
+<p>二级索引也是一颗B+树索引，但是它和主键索引不同的是叶子节点存放的是索引键值、主键值</p>
+<p>通过二级索引<code>idx_name</code> 只能定位主键值，需要额外再通过主键索引进行查询，才能得到最终结果。</p>
+<p><strong>这种二级索引通过<strong><strong>主键</strong></strong>索引进行再一次查询的操作叫做“回表”</strong></p>
+<p>这样的二级索引设计的好处：若记录发生了修改，则其它索引无须进行维护，除非记录的主键发生了修改</p>
+<p><strong>在索引组织表中，万物皆索引，索引就是数据，数据就是索引</strong>。</p>
+<h3 id="二级索引的性能评估">二级索引的性能评估</h3>
+<ul>
+<li>
+<p>要比较顺序，对聚集索引性能友好</p>
+</li>
+<li>
+<p>尽可能紧凑，对二级索引的性能和存储友好</p>
+</li>
+</ul>
+<h3 id="函数索引先了解">函数索引（先了解）</h3>
+<p>&hellip;</p>
+<blockquote>
+<p><a href="https://learn.lianglianglee.com/%E4%B8%93%E6%A0%8F/MySQL%E5%AE%9E%E6%88%98%E5%AE%9D%E5%85%B8/09%20%20%E7%B4%A2%E5%BC%95%E7%BB%84%E7%BB%87%E8%A1%A8%EF%BC%9A%E4%B8%87%E7%89%A9%E7%9A%86%E7%B4%A2%E5%BC%95.md">09 索引组织表:万物皆索引</a></p>
+</blockquote>
+<h2 id="3组合索引联合索引">3.组合索引（联合索引）</h2>
+<p>联合索引的结构是什么？</p>
+        <a href="https://ahang7.github.io/post/basic/mysql/1.-mysql%E7%B4%A2%E5%BC%95/" class="post-read-more">[Read More]</a>
+        
+    </div>
+
+    
+    <div class="blog-tags">
+        
+       
+       <a href="https://ahang7.github.io/tags/mysql/">mysql</a>&nbsp;
+         
+    </div>
+    
+
+</article>
+          
+        </div>
+        
+      </div>
+    </div>
+  </div>
+
+      <footer>
+  <div class="container">
+    
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+              <li>
+		
+		  <a href="mailto:ch1447571882@qq.com" title="Email me">
+		
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+		
+		  <a href="https://github.com/ahang7" title="GitHub">
+		
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+		
+		  <a href="https://gitlab.com/username" title="GitLab">
+		
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-gitlab fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+          
+          <li>
+            <a href="/tags/mysql/index.xml" title="RSS">
+              <span class="fa-stack fa-lg">
+                <i class="fas fa-circle fa-stack-2x"></i>
+                <i class="fas fa-rss fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+          
+        </ul>
+        <p class="credits copyright text-muted">
+          
+            
+              <a href="yourwebsite.com">ch</a>
+            
+          
+
+          &nbsp;&bull;&nbsp;&copy;
+          
+            2024
+          
+
+          
+            &nbsp;&bull;&nbsp;
+            <a href="https://ahang7.github.io/">Beautiful Hugo</a>
+          
+        </p>
+        
+        <p class="credits theme-by text-muted">
+          <a href="https://gohugo.io">Hugo v0.136.0</a> powered &nbsp;&bull;&nbsp; Theme <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a> adapted from <a href="https://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</footer><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.js" integrity="sha384-G0zcxDFp5LWZtDuRMnBkk3EphCK1lhEf4UEyEM693ka574TZGwo4IWwS6QLzM/2t" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
+<script src="https://code.jquery.com/jquery-3.7.0.slim.min.js" integrity="sha384-w5y/xIeYixWvfM+A1cEbmHPURnvyqmVg5eVENruEdDjcyRLUSNej7512JQGspFUr" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+
+<script src="https://ahang7.github.io/js/main.js"></script>
+<script src="https://ahang7.github.io/js/highlight.min.js"></script>
+<script> hljs.initHighlightingOnLoad(); </script>
+<script> $(document).ready(function() {$("pre.chroma").css("padding","0");}); </script><script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.js" integrity="sha384-QELNnmcmU8IR9ZAykt67vGr9/rZJdHbiWi64V88fCPaOohUlHCqUD/unNN0BXSqy" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe-ui-default.min.js" integrity="sha384-m67o7SkQ1ALzKZIFh4CiTA8tmadaujiTa9Vu+nqPSwDOqHrDmxLezTdFln8077+q" crossorigin="anonymous"></script><script src="https://ahang7.github.io/js/load-photoswipe.js"></script>
+
+
+
+
+
+
+
+
+
+
+    
+  </body>
+</html>
+
