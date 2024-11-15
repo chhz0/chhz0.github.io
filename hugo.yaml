@@ -72,6 +72,7 @@ params:
   ShowAllPagesInArchive: true
   ShowPageNums: true
   ShowToc: true
+  tocopen: true
   # comments: false
   images: ["images/papermod-cover.png"]
   
@@ -94,20 +95,25 @@ params:
     imageTitle: hello-咣当
     imageWidth: 240
     imageHeight: 240
-    Title: "Hello 👋, 这里是C-H的博客，欢迎浏览！"
+    Title: "Hello 👋, 这里是C-H的博客 ✨"
     Content: >
-      👋 Welcome to demo page of Hugo's theme PaperMod!
+      🍁 欢迎来到本站，本站使用 **[hugo](https://gohugo.io/)** 搭建，主题为 **[PaperMod](https://github.com/adityatelange/hugo-PaperMod)**，
+      建站过程点击 ***[这里](./draft/build_site_with_hugo)***
 
-      - **PaperMod**  is designed to be clean and simple but fast and responsive theme with useful feature-set that enhances UX.
+      - 🍀 我将在本站记录自己的学习笔记，包括但不限于 **golang** 、**数据库**、**web**、**linux**... 当然也会记录我感兴趣的内容.
+      
+      - 🌹 接下来可以前往 ***[归档](./archives)*** 查看更多文章 **||** 
+      进入 ***[分类](./categories)*** 查找文章 **||** 
+      查看 ***[标签](./tags)*** 下的文章 **||**
+      使用 `alt` + `/` 进行 ***[搜索](./search)***
 
-      - Feel free to show your support by giving us a star 🌟 on GitHub and sharing with your friends and social media .
+      - ☘️ More: **[TODO_LIST](./todo.list)** 
 
-      - PaperMod is based on theme [Paper](https://github.com/nanxiaobei/hugo-paper/tree/4330c8b12aa48bfdecbcad6ad66145f679a430b3).
 
   socialIcons:
     - name: github
       title: View Source on Github
-      url: "https://github.com/adityatelange/hugo-PaperMod"
+      url: "https://github.com/CHlluanma/"
     - name: gitea
       title: check my personal peoject on Gitea
       url: ""

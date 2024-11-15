@@ -5,7 +5,6 @@ date: 2024-10-01
 tags: ["install", "protobuf"]
 categories: ["installX -- 安装"]
 series: ["Install Guide"]
-showToc: true
 ---
 
 以Ubuntu22.04为例，使用CMake从源码安装Protobuf v3.25.4

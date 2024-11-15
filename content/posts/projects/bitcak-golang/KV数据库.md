@@ -4,9 +4,6 @@ description: "基于bitcask实现的KV存储引擎"
 tags:  ["golang", "bitcask"]
 categories: ["实战项目"]
 date:  "2024-10-31"
-UseHugoToc: true
-showToc: true
-tocopen: true
 ---
 
 ## 1. KV基础
