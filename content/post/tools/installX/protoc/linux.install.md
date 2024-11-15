@@ -9,12 +9,15 @@ tags: ["linux", "protobuf"]
 前期准备：
 
 首先安装
+
 ```shell
 sudo apt install -y gcc g++ cmake git
 ```
+
 cmake 版本高于 3.15
 
 Ubuntu的官方源没有提供abseil安装包，需要手动安装
+
 ```shell
 git clone https://github.com/abseil/abseil-cpp.git  
 cd abseil-cpp  
@@ -26,6 +29,7 @@ sudo ldconfig
 ```
 
 开始安装`protobuf`
+
 ```shell
 git clone -b v3.23.2 https://github.com/protocolbuffers/protobuf.git && cd protobuf  
 git submodule update --init --recursive
@@ -34,3 +38,4 @@ make
 sudo make install .  
 sudo ldconfig 
 ```
+
