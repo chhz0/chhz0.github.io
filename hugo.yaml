@@ -1,6 +1,7 @@
 # If your site is in 'https', then make sure your base url isn't written using 'http' otherwise your sitemap would
 # contain http (as opposeed to https) URLs. This would affect Google indexing of your URLs.
 baseURL: "https://ahang7.github.io"
+languageCode: 'en-us'
 title: CH's 博客
 pagination.pagerSize: 5
 theme: ["PaperMod"]
@@ -24,7 +25,7 @@ menu:
       weight: 20
     - name: 分类
       url: categories/
-      weight: 30  
+      weight: 30
     - name: 标签
       url: tags/
       weight: 40
@@ -75,7 +76,7 @@ params:
   tocopen: true
   # comments: false
   images: ["images/papermod-cover.png"]
-  
+
   # profileMode:
   #   enabled: false
   #   title: Chen-Hang's 博客
@@ -101,13 +102,13 @@ params:
       建站过程点击 ***[这里](./draft/build_site_with_hugo)***
 
       - 🍀 我将在本站记录自己的学习笔记，包括但不限于 **golang** 、**数据库**、**web**、**linux**... 当然也会记录我感兴趣的内容.
-      
-      - 🌹 接下来可以前往 ***[归档](./archives)*** 查看更多文章 **||** 
-      进入 ***[分类](./categories)*** 查找文章 **||** 
+
+      - 🌹 接下来可以前往 ***[归档](./archives)*** 查看更多文章 **||**
+      进入 ***[分类](./categories)*** 查找文章 **||**
       查看 ***[标签](./tags)*** 下的文章 **||**
       使用 `alt` + `/` 进行 ***[搜索](./search)***
 
-      - ☘️ More: **[TODO_LIST](./todo.list)** 
+      - ☘️ More: **[TODO_LIST](./todo.list)**
 
 
   socialIcons:
