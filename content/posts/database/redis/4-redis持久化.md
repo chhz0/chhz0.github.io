@@ -4,6 +4,7 @@ subtitle: "redis的持久化策略 `RDB`&&`AOF`"
 tags:  ["redis"]
 date:  "2024-10-28"
 categories: ["redis"]
+series: ["database"]
 ---
 
 ## 五、持久化

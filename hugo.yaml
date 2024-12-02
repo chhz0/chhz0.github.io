@@ -1,9 +1,9 @@
 # If your site is in 'https', then make sure your base url isn't written using 'http' otherwise your sitemap would
 # contain http (as opposeed to https) URLs. This would affect Google indexing of your URLs.
-baseURL: "https://ahang7.github.io"
-languageCode: 'en-us'
+baseURL: "http://CHlluanma.github.io"
 title: CH's 博客
-pagination.pagerSize: 5
+copyright: "© [Hello KnowStack](https://github.com/CHlluanma) 2024"
+paginate: 5
 theme: ["PaperMod"]
 
 enableInlineShortcodes: true
@@ -56,6 +56,7 @@ outputs:
 
 params:
   env: production # to enable google analytics, opengraph, twitter-cards and schema.
+  title: "CH's 博客"
   description: "Chen-Hang's 博客 - https://github.com/CHlluanma/CHlluanma.github.io"
   author: Chen-Hang
 
@@ -92,7 +93,8 @@ params:
   #       url: tags
 
   homeInfoParams:
-    imageUrl: "https://raw.githubusercontent.com/CHlluanma/JustPic/refs/heads/main/kd-hello.svg"
+    # imageUrl: "https://raw.githubusercontent.com/CHlluanma/JustPic/refs/heads/main/kd-hello.svg"
+    imageUrl: "images/kd-hello.svg"
     imageTitle: hello-咣当
     imageWidth: 240
     imageHeight: 240
@@ -133,11 +135,10 @@ params:
     Text: "修改建议" # edit text
     appendFilePath: true # to append file path to Edit link
 
-  # label:
-  # iconSVG: '<svg xmlns="http://www.w3.org/2000/svg" height="25" viewBox="0 -960 960 960" fill="currentColor"><path d="M320-240h320v-80H320v80Zm0-160h320v-80H320v80ZM240-80q-33 0-56.5-23.5T160-160v-640q0-33 23.5-56.5T240-880h320l240 240v480q0 33-23.5 56.5T720-80H240Zm280-520v-200H240v640h480v-440H520ZM240-800v200-200 640-640Z"/></svg>'
-  # text: "Home"
-  # icon: icon.png
-  # iconHeight: 35
+  label:
+    iconSVG: '<svg xmlns="http://www.w3.org/2000/svg" height="25" viewBox="0 -960 960 960" fill="currentColor"><path d="M320-240h320v-80H320v80Zm0-160h320v-80H320v80ZM240-80q-33 0-56.5-23.5T160-160v-640q0-33 23.5-56.5T240-880h320l240 240v480q0 33-23.5 56.5T720-80H240Zm280-520v-200H240v640h480v-440H520ZM240-800v200-200 640-640Z"/></svg>'
+    icon: icon.png
+    iconHeight: 35
 
   # analytics:
   #     google:

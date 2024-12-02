@@ -4,6 +4,7 @@ subtitle: "redis的使用场景——缓存和分布式锁"
 tags:  ["redis"]
 date:  "2024-10-29"
 categories: ["redis"]
+series: ["database"]
 ---
 # 六、场景
 ## 1.缓存

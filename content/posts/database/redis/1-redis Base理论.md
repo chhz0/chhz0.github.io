@@ -1,6 +1,8 @@
 ---
 title:  "[redis] Base理论"
+summary: Redis的基本概念及其应用场景，并解释了BASE理论
 subtitle: "理解BASE理论，是CAP中一致性的妥协"
+series: ["database"]
 tags:  ["redis"]
 date:  "2024-10-25"
 categories: ["redis"]

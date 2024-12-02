@@ -4,6 +4,7 @@ subtitle: "redis是单线程的，数据以键值对形式存储在内存"
 tags:  ["redis"]
 date:  "2024-10-27"
 categories: ["redis"]
+series: ["database"]
 ---
 ## 四、执行流程
 

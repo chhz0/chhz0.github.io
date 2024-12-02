@@ -4,6 +4,7 @@ subtitle: "学习redis中的对象: string list hash set zset ..."
 tags:  ["redis"]
 date:  "2024-10-26"
 categories: ["redis"]
+series: ["database"]
 ---
 
 ## 三、对象
