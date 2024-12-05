@@ -1,9 +1,12 @@
 # If your site is in 'https', then make sure your base url isn't written using 'http' otherwise your sitemap would
 # contain http (as opposeed to https) URLs. This would affect Google indexing of your URLs.
-baseURL: "http://CHlluanma.github.io"
+baseURL: "http://chhz0.github.io/"
+languageCode: 'cn-zh'
 title: CH's 博客
-copyright: "© [Hello KnowStack](https://github.com/CHlluanma) 2024"
-paginate: 5
+copyright: "© [Hello KnowStack](https://github.com/chhz0) 2024"
+# paginate: 5
+pagination:
+  pagerSize: 5
 theme: ["PaperMod"]
 
 enableInlineShortcodes: true
@@ -57,7 +60,7 @@ outputs:
 params:
   env: production # to enable google analytics, opengraph, twitter-cards and schema.
   title: "CH's 博客"
-  description: "Chen-Hang's 博客 - https://github.com/CHlluanma/CHlluanma.github.io"
+  description: "Chen-Hang's 博客 - https://github.com/chhz0/chhz0.github.io"
   author: Chen-Hang
 
   defaultTheme: light
@@ -101,14 +104,14 @@ params:
     Title: "Hello 👋, 这里是C-H的博客 ✨"
     Content: >
       🍁 欢迎来到本站，本站使用 **[hugo](https://gohugo.io/)** 搭建，主题为 **[PaperMod](https://github.com/adityatelange/hugo-PaperMod)**，
-      建站过程点击 ***[这里](./draft/build_site_with_hugo)***
+      建站过程点击 ***[这里](./posts/hugo/build_site_with_hugo)***
 
       - 🍀 我将在本站记录自己的学习笔记，包括但不限于 **golang** 、**数据库**、**web**、**linux**... 当然也会记录我感兴趣的内容.
 
-      - 🌹 接下来可以前往 ***[归档](./archives)*** 查看更多文章 **||**
-      进入 ***[分类](./categories)*** 查找文章 **||**
-      查看 ***[标签](./tags)*** 下的文章 **||**
-      使用 `alt` + `/` 进行 ***[搜索](./search)***
+      - 🌹 接下来可以前往 ***[归档](./archives)*** 查看更多文章 ♾️
+      进入 ***[分类](./categories)*** 查找文章 ♾️
+      查看不同 ***[标签](./tags)*** 下的文章 ♾️
+      使用 `alt + /` 进行 ***[搜索](./search)***
 
       - ☘️ More: **[TODO_LIST](./todo.list)**
 
@@ -116,7 +119,7 @@ params:
   socialIcons:
     - name: github
       title: View Source on Github
-      url: "https://github.com/CHlluanma/"
+      url: "https://github.com/chhz0/"
     - name: gitea
       title: check my personal peoject on Gitea
       url: ""
@@ -131,18 +134,18 @@ params:
     #   url: ""
 
   editPost:
-    URL: "https://github.com/CHlluanma/CHlluanma.github.io/tree/main/content"
+    URL: "https://github.com/chhz0/chhz0.github.io/tree/main/content"
     Text: "修改建议" # edit text
     appendFilePath: true # to append file path to Edit link
 
-  label:
-    iconSVG: '<svg xmlns="http://www.w3.org/2000/svg" height="25" viewBox="0 -960 960 960" fill="currentColor"><path d="M320-240h320v-80H320v80Zm0-160h320v-80H320v80ZM240-80q-33 0-56.5-23.5T160-160v-640q0-33 23.5-56.5T240-880h320l240 240v480q0 33-23.5 56.5T720-80H240Zm280-520v-200H240v640h480v-440H520ZM240-800v200-200 640-640Z"/></svg>'
-    icon: icon.png
-    iconHeight: 35
+  # label:
+    # iconSVG: '<svg xmlns="http://www.w3.org/2000/svg" height="25" viewBox="0 -960 960 960" fill="currentColor"><path d="M320-240h320v-80H320v80Zm0-160h320v-80H320v80ZM240-80q-33 0-56.5-23.5T160-160v-640q0-33 23.5-56.5T240-880h320l240 240v480q0 33-23.5 56.5T720-80H240Zm280-520v-200H240v640h480v-440H520ZM240-800v200-200 640-640Z"/></svg>'
+    # icon: icon.png
+    # iconHeight: 35
 
-  # analytics:
-  #     google:
-  #         SiteVerificationTag: "XYZabc"
+  analytics:
+      google:
+          SiteVerificationTag: "XYZabc"
 
   assets:
     disableHLJS: true
@@ -201,3 +204,7 @@ services:
     disableInlineCSS: true
   twitter:
     disableInlineCSS: true
+
+module:
+  imports:
+  - path: github.com/adityatelange/hugo-PaperMod
