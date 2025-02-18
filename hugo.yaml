@@ -36,7 +36,7 @@ menu:
       url: search/
       weight: 50
     - name: GitHub
-      url: https://github.com/CHlluanma/
+      url: https://github.com/chhz0/
 
 minify:
   disableXML: true
@@ -63,7 +63,7 @@ params:
   description: "Chen-Hang's 博客 - https://github.com/chhz0/chhz0.github.io"
   author: Chen-Hang
 
-  defaultTheme: light
+  defaultTheme: dark
   # 主题切换开关
   # disableThemeToggle: true
   ShowShareButtons: false
@@ -79,7 +79,8 @@ params:
   ShowToc: true
   tocopen: true
   # comments: false
-  images: ["images/papermod-cover.png"]
+
+  # images: ["images/papermod-cover.png"]
 
   # profileMode:
   #   enabled: false
@@ -97,7 +98,7 @@ params:
 
   homeInfoParams:
     # imageUrl: "https://raw.githubusercontent.com/CHlluanma/JustPic/refs/heads/main/kd-hello.svg"
-    imageUrl: "images/kd-hello.svg"
+    imageUrl: "images/kd-sleep copy.svg"
     imageTitle: hello-咣当
     imageWidth: 240
     imageHeight: 240
@@ -108,9 +109,9 @@ params:
 
       - 🍀 我将在本站记录自己的学习笔记，包括但不限于 **golang** 、**数据库**、**web**、**linux**... 当然也会记录我感兴趣的内容.
 
-      - 🌹 接下来可以前往 ***[归档](./archives)*** 查看更多文章 ♾️
-      进入 ***[分类](./categories)*** 查找文章 ♾️
-      查看不同 ***[标签](./tags)*** 下的文章 ♾️
+      - 🌹 接下来可以前往 ***[归档](./archives)*** 查看更多文章 |
+      进入 ***[分类](./categories)*** 查找文章 |
+      查看不同 ***[标签](./tags)*** 下的文章 |
       使用 `alt + /` 进行 ***[搜索](./search)***
 
       - ☘️ More: **[TODO_LIST](./todo.list)**
