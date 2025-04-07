@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>rtwt.hugo</title><link>https://chhz0.github.io/</link><description>Recent content on rtwt.hugo</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Sat, 05 Apr 2025 15:07:38 +0800</lastBuildDate><atom:link href="https://chhz0.github.io/index.xml" rel="self" type="application/rss+xml"/><item><title>Bitcask</title><link>https://chhz0.github.io/posts/proj/bitcask/</link><pubDate>Sat, 05 Apr 2025 15:07:38 +0800</pubDate><guid>https://chhz0.github.io/posts/proj/bitcask/</guid><description>&lt;p>Bitcask是一个高性能的键值存储系统，设计之初的目的是提供高写入吞吐量和高效读取性能。采用了日志化结构哈希表(Log-Structured Hash Table)，核心是写前日志(WAL)、内存哈希表和定期merge。具体细节均在官方的设计论文 &lt;a href="https://riak.com/assets/bitcask-intro.pdf">Bitcask Design Paper&lt;/a> 中可以查看。&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>rtwt.hugo</title><link>https://chhz0.github.io/</link><description>Recent content on rtwt.hugo</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Sat, 05 Apr 2025 15:07:38 +0800</lastBuildDate><atom:link href="https://chhz0.github.io/rss.xml" rel="self" type="application/rss+xml"/><item><title>Bitcask</title><link>https://chhz0.github.io/blogs/proj/bitcask/bitcask-core/</link><pubDate>Sat, 05 Apr 2025 15:07:38 +0800</pubDate><guid>https://chhz0.github.io/blogs/proj/bitcask/bitcask-core/</guid><description>&lt;p>Bitcask是一个高性能的键值存储系统，设计之初的目的是提供高写入吞吐量和高效读取性能。采用了日志化结构哈希表(Log-Structured Hash Table)，核心是写前日志(WAL)、内存哈希表和定期merge。具体细节均在官方的设计论文 &lt;a href="https://riak.com/assets/bitcask-intro.pdf">Bitcask Design Paper&lt;/a> 中可以查看。&lt;/p>
 &lt;blockquote>
 &lt;p>官方论文中提到的bitcask应该具备的特性&lt;/p>
 &lt;ul>
@@ -19,14 +19,14 @@
 &lt;h2 id="文章结构">文章结构&lt;/h2>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>this is a example of directory structure
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>content/
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├── archive # archive posts
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├── archive # archive blogs
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ └── bitcask.md
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├── posts
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ ├── backend # backend posts
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ ├── frontend # frontend posts
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ ├── suiyi # uncertain posts
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ ├── middlewares # middlewares posts
-&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ └── proj # project posts
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├── blogs
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ ├── backend # backend blogs
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ ├── frontend # frontend blogs
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ ├── suiyi # uncertain blogs
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ ├── middlewares # middlewares blogs
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ └── proj # project blogs
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ └── bitcask
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ └── index.md
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├── about.md
@@ -38,6 +38,13 @@
 &lt;li>&lt;input disabled="" type="checkbox"> 更多元的markdown支持&lt;/li>
 &lt;li>&lt;input disabled="" type="checkbox"> 更加丰富的icon支持&lt;/li>
 &lt;li>&lt;input disabled="" type="checkbox"> 更多丰富的组件支持&lt;/li>
+&lt;/ul>
+&lt;h3 id="更详细的todo列表">更详细的TODO列表&lt;/h3>
+&lt;ul>
+&lt;li>&lt;input disabled="" type="checkbox"> 提供&lt;code>ctl+k&lt;/code>打开搜索功能&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 修复不同语言下&lt;code>details_read_time&lt;/code>错误&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 修复归档文章的&lt;code>shortcode&lt;/code>无法正常显示&lt;code>toc&lt;/code>以及&lt;code>details_read_time&lt;/code>&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 修复&lt;code>breadcrumbs&lt;/code>组件在多层文件夹时显示错误的bug&lt;/li>
 &lt;/ul></description></item><item><title>Search</title><link>https://chhz0.github.io/search/</link><pubDate>Sat, 05 Apr 2025 14:36:12 +0800</pubDate><guid>https://chhz0.github.io/search/</guid><description>&lt;h1 id="搜索">搜索&lt;/h1>
 &lt;p>您可以在这里搜索可索引的页面，例如帖子等. 还支持 URL 参数“q”，然后在页面加载事件时自动搜索.&lt;/p>
 &lt;p class="hidden">&lt;/p>
