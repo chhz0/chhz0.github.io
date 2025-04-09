@@ -1,1 +1,31 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Hugoes on rtwt.hugo</title><link>https://chhz0.github.io/hugoes/</link><description>Recent content in Hugoes on rtwt.hugo</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate/><atom:link href="https://chhz0.github.io/hugoes/rss.xml" rel="self" type="application/rss+xml"/></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Hugoes on ch.hugo</title><link>https://chhz0.github.io/hugoes/</link><description>Recent content in Hugoes on ch.hugo</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Tue, 08 Apr 2025 03:10:00 +0800</lastBuildDate><atom:link href="https://chhz0.github.io/hugoes/rss.xml" rel="self" type="application/rss+xml"/><item><title>Hugo Docs (Continuous Updates)</title><link>https://chhz0.github.io/hugoes/hugo-docs/</link><pubDate>Tue, 08 Apr 2025 03:10:00 +0800</pubDate><guid>https://chhz0.github.io/hugoes/hugo-docs/</guid><description>&lt;blockquote>
+&lt;p>Hugo 是最受欢迎的开源静态网站生成器之一. 凭借其惊人的速度和灵活性，Hugo 让网站建设再次变得有趣. 在这里我也将全面的解析Hugo 的所有特性.&lt;/p>&lt;/blockquote>
+&lt;p>本篇内容将全部基于&lt;a href="https://gohugo.io/documentation/">Hugo&lt;/a> 官方文档以及个人的实际操作. 实际上Hugo 的官方文档非常加十分的详细，我也超级推荐直接阅读官方的文档. 但是官方文档的内容太多，这对新手来说第一时间很难上手，包括我，所以我想将整个文档进行阅读记录，以方便入门.&lt;/p>
+&lt;p>于此同时，本站点也是使用了Hugo 进行搭建，所以进行这样一份学习记录也许有助于我改进网站.&lt;/p>
+&lt;h1 id="hugo">Hugo&lt;/h1>
+&lt;p>Hugo是一个用Go语言编写的静态网站生成器，针对速度进行优化，并且灵活设计. 它凭借先进的模板系统和快速的资产管道，Hugo可以在几秒钟内渲染出完整的站点.&lt;/p>
+&lt;p>其灵活的框架设计、多语言支持和强大的分类系统，Hugo很适合搭建文档站点，博客站点，以及各种静态网站.&lt;/p>
+&lt;h2 id="安装">安装&lt;/h2>
+&lt;blockquote>
+&lt;p>这里仅演示linux 下的安装过程&lt;/p>&lt;/blockquote>
+&lt;p>在按照Hugo前，你需要先了解Hugo提供的三个版本：&lt;code>标准版&lt;/code>、&lt;code>扩展版&lt;/code>和&lt;code>扩展/部署版&lt;/code>.&lt;/p>
+&lt;ul>
+&lt;li>标准版：仅包含核心功能，适合于开发者和普通用户使用.&lt;/li>
+&lt;li>扩展版：包含标准版所有功能，并且提供了许多扩展功能，如图片WebP格式处理, 使用嵌入的LibSass转化CSS, 使用Dart Sass转换器等.&lt;/li>
+&lt;li>扩展/部署版：包含扩展版所有功能，并且提供了许多部署功能，如Google Cloud Storage、AWS S3或者Azure存储容器等.&lt;/li>
+&lt;/ul>
+&lt;p>Hugo官方推荐使用&lt;code>扩展版&lt;/code>, 下面的安装过程也展示扩展版的安装.&lt;/p>
+&lt;h3 id="环境准备">环境准备&lt;/h3>
+&lt;p>使用Hugo时，&lt;code>Git&lt;/code>, &lt;code>Go&lt;/code>和&lt;code>Dart Sass&lt;/code>是经常使用的. 其中&lt;strong>Git是必须的&lt;/strong>，Go和Dart Sass如果不选择安装仅影响部分功能的使用.&lt;/p>
+&lt;ol>
+&lt;li>安装&lt;code>Git&lt;/code>(必要)&lt;/li>
+&lt;li>安装&lt;code>Go&lt;/code>(可选)&lt;/li>
+&lt;li>安装&lt;code>Dart Sass&lt;/code>(可选)&lt;/li>
+&lt;/ol>
+&lt;h3 id="直接下载">直接下载&lt;/h3>
+&lt;h3 id="源码构建">源码构建&lt;/h3>
+&lt;h3 id="仓库软件包">仓库软件包&lt;/h3>
+&lt;h2 id="快速上手">快速上手&lt;/h2>
+&lt;h2 id="配置">配置&lt;/h2>
+&lt;h2 id="部署">部署&lt;/h2>
+&lt;h2 id="模板">模板&lt;/h2></description></item></channel></rss>
