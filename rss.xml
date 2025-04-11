@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>ch.hugo</title><link>https://chhz0.github.io/</link><description>Recent content on ch.hugo</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Tue, 08 Apr 2025 13:59:43 +0800</lastBuildDate><atom:link href="https://chhz0.github.io/rss.xml" rel="self" type="application/rss+xml"/><item><title>Goose</title><link>https://chhz0.github.io/blogs/2025-04-08.goose/</link><pubDate>Tue, 08 Apr 2025 13:59:43 +0800</pubDate><guid>https://chhz0.github.io/blogs/2025-04-08.goose/</guid><description>&lt;p>Goose is a Go language package that provides a series of quick build services.&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>ch.hugo</title><link>https://chhz0.github.io/</link><description>Recent content on ch.hugo</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Tue, 08 Apr 2025 13:59:43 +0800</lastBuildDate><atom:link href="https://chhz0.github.io/rss.xml" rel="self" type="application/rss+xml"/><item><title>Goose</title><link>https://chhz0.github.io/blogs/2025-04-08.goose/</link><pubDate>Tue, 08 Apr 2025 13:59:43 +0800</pubDate><guid>https://chhz0.github.io/blogs/2025-04-08.goose/</guid><description>&lt;p>Goose 是一个 Go 语言包，提供了一系列快速构建服务的工具。&lt;/p>
 
 
 
@@ -23,7 +23,7 @@
 &lt;/li>
 &lt;li>使用声明式编程风格&lt;/li>
 &lt;/ul></description></item><item><title>Hugo Docs (Continuous Updates)</title><link>https://chhz0.github.io/hugoes/hugo-docs/</link><pubDate>Tue, 08 Apr 2025 03:10:00 +0800</pubDate><guid>https://chhz0.github.io/hugoes/hugo-docs/</guid><description>&lt;blockquote>
-&lt;p>Hugo 是最受欢迎的开源静态网站生成器之一. 凭借其惊人的速度和灵活性，Hugo 让网站建设再次变得有趣. 在这里我也将全面的解析Hugo 的所有特性.&lt;/p>&lt;/blockquote>
+&lt;p>Hugo 是最受欢迎的开源静态网站生成器之一. 凭借其惊人的速度和灵活性，Hugo 让网站建设再次变得有趣.&lt;/p>&lt;/blockquote>
 &lt;p>本篇内容将全部基于&lt;a href="https://gohugo.io/documentation/">Hugo&lt;/a> 官方文档以及个人的实际操作. 实际上Hugo 的官方文档非常加十分的详细，我也超级推荐直接阅读官方的文档. 但是官方文档的内容太多，这对新手来说第一时间很难上手，包括我，所以我想将整个文档进行阅读记录，以方便入门.&lt;/p>
 &lt;p>于此同时，本站点也是使用了Hugo 进行搭建，所以进行这样一份学习记录也许有助于我改进网站.&lt;/p>
 &lt;h1 id="hugo">Hugo&lt;/h1>
@@ -60,7 +60,8 @@
  
  
  
- &lt;p>Bitcask是一个高性能的键值存储系统，设计之初的目的是提供高写入吞吐量和高效读取性能。采用了日志化结构哈希表(Log-Structured Hash Table)，核心是写前日志(WAL)、内存哈希表和定期merge。具体细节均在官方的设计论文 &lt;a href="https://riak.com/assets/bitcask-intro.pdf">Bitcask Design Paper&lt;/a> 中可以查看。&lt;/p>
+ &lt;p>Bitcask是一个高性能的键值存储系统，设计之初的目的是提供高写入吞吐量和高效读取性能。采用了日志化结构哈希表(Log-Structured Hash Table)，核心是写前日志(WAL)、内存哈希表和定期merge.&lt;/p>
+&lt;p>具体细节均在官方的设计论文 &lt;a href="https://riak.com/assets/bitcask-intro.pdf">Bitcask Design Paper&lt;/a> 中可以查看。&lt;/p>
 &lt;blockquote>
 &lt;p>官方论文中提到的bitcask应该具备的特性&lt;/p>
 &lt;ul>
@@ -73,7 +74,8 @@
 &lt;li>predictable behavior under heavy access load or large volume&lt;/li>
 &lt;li>a license that allowed for easy default use in Riak&lt;/li>
 &lt;/ul>&lt;/blockquote>
-&lt;p>目前已经有优秀的开源实现：&lt;/p></description></item><item><title>Bitcask</title><link>https://chhz0.github.io/blogs/bitcask/2025-04-05.bitcask-core/</link><pubDate>Sat, 05 Apr 2025 15:07:38 +0800</pubDate><guid>https://chhz0.github.io/blogs/bitcask/2025-04-05.bitcask-core/</guid><description>&lt;p>Bitcask是一个高性能的键值存储系统，设计之初的目的是提供高写入吞吐量和高效读取性能。采用了日志化结构哈希表(Log-Structured Hash Table)，核心是写前日志(WAL)、内存哈希表和定期merge。具体细节均在官方的设计论文 &lt;a href="https://riak.com/assets/bitcask-intro.pdf">Bitcask Design Paper&lt;/a> 中可以查看。&lt;/p>
+&lt;p>目前已经有优秀的开源实现：&lt;/p></description></item><item><title>Bitcask</title><link>https://chhz0.github.io/blogs/bitcask/2025-04-05.bitcask-core/</link><pubDate>Sat, 05 Apr 2025 15:07:38 +0800</pubDate><guid>https://chhz0.github.io/blogs/bitcask/2025-04-05.bitcask-core/</guid><description>&lt;p>Bitcask是一个高性能的键值存储系统，设计之初的目的是提供高写入吞吐量和高效读取性能。采用了日志化结构哈希表(Log-Structured Hash Table)，核心是写前日志(WAL)、内存哈希表和定期merge.&lt;/p>
+&lt;p>具体细节均在官方的设计论文 &lt;a href="https://riak.com/assets/bitcask-intro.pdf">Bitcask Design Paper&lt;/a> 中可以查看。&lt;/p>
 &lt;blockquote>
 &lt;p>官方论文中提到的bitcask应该具备的特性&lt;/p>
 &lt;ul>
