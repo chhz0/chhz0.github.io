@@ -1,35 +1,11 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>ch.hugo</title><link>https://chhz0.github.io/</link><description>Recent content on ch.hugo</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Tue, 08 Apr 2025 13:59:43 +0800</lastBuildDate><atom:link href="https://chhz0.github.io/rss.xml" rel="self" type="application/rss+xml"/><item><title>Goose</title><link>https://chhz0.github.io/blogs/2025-04-08.goose/</link><pubDate>Tue, 08 Apr 2025 13:59:43 +0800</pubDate><guid>https://chhz0.github.io/blogs/2025-04-08.goose/</guid><description>&lt;p>Goose 是一个 Go 语言包，提供了一系列快速构建服务的工具。&lt;/p>
-
-
-
-&lt;a href="https://github.com/chhz0/goose" target="_blank" rel="noopener noreferrer">
- &lt;img src="https://github-readme-stats.vercel.app/api/pin/?username=chhz0&amp;repo=goose" alt="goose GitHub stats">
-&lt;/a>
-
-&lt;h2 id="设计原则">设计原则&lt;/h2>
-&lt;ol>
-&lt;li>约定优于配置 - 提供合理的默认值&lt;/li>
-&lt;li>模块化设计 - 可插入函数&lt;/li>
-&lt;li>易于使用 - 简单直观的 API&lt;/li>
-&lt;li>可扩展性 - 允许用户替换默认实现&lt;/li>
-&lt;/ol>
-&lt;ul>
-&lt;li>设计模式：
-&lt;ul>
-&lt;li>构建器模式&lt;/li>
-&lt;li>新功能和功能选项模式&lt;/li>
-&lt;li>上下文模式&lt;/li>
-&lt;/ul>
-&lt;/li>
-&lt;li>使用声明式编程风格&lt;/li>
-&lt;/ul></description></item><item><title>Hugo Docs (Continuous Updates)</title><link>https://chhz0.github.io/hugoes/hugo-docs/</link><pubDate>Tue, 08 Apr 2025 03:10:00 +0800</pubDate><guid>https://chhz0.github.io/hugoes/hugo-docs/</guid><description>&lt;blockquote>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>ch.hugo</title><link>https://chhz0.github.io/</link><description>Recent content on ch.hugo</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Tue, 08 Apr 2025 03:10:00 +0800</lastBuildDate><atom:link href="https://chhz0.github.io/rss.xml" rel="self" type="application/rss+xml"/><item><title>Hugo Docs (Continuous Updates)</title><link>https://chhz0.github.io/hugoes/hugo-docs/</link><pubDate>Tue, 08 Apr 2025 03:10:00 +0800</pubDate><guid>https://chhz0.github.io/hugoes/hugo-docs/</guid><description>&lt;blockquote>
 &lt;p>Hugo 是最受欢迎的开源静态网站生成器之一. 凭借其惊人的速度和灵活性，Hugo 让网站建设再次变得有趣.&lt;/p>&lt;/blockquote>
 &lt;p>本篇内容将全部基于&lt;a href="https://gohugo.io/documentation/">Hugo&lt;/a> 官方文档以及个人的实际操作. 实际上Hugo 的官方文档非常加十分的详细，我也超级推荐直接阅读官方的文档. 但是官方文档的内容太多，这对新手来说第一时间很难上手，包括我，所以我想将整个文档进行阅读记录，以方便入门.&lt;/p>
 &lt;p>于此同时，本站点也是使用了Hugo 进行搭建，所以进行这样一份学习记录也许有助于我改进网站.&lt;/p>
 &lt;h1 id="hugo">Hugo&lt;/h1>
 &lt;p>Hugo是一个用Go语言编写的静态网站生成器，针对速度进行优化，并且灵活设计. 它凭借先进的模板系统和快速的资产管道，Hugo可以在几秒钟内渲染出完整的站点.&lt;/p>
 &lt;p>其灵活的框架设计、多语言支持和强大的分类系统，Hugo很适合搭建文档站点，博客站点，以及各种静态网站.&lt;/p>
-&lt;h2 id="安装">安装&lt;/h2>
+&lt;h2 id="安装---installation">安装 - Installation&lt;/h2>
 &lt;blockquote>
 &lt;p>这里仅演示linux 下的安装过程&lt;/p>&lt;/blockquote>
 &lt;p>在按照Hugo前，你需要先了解Hugo提供的三个版本：&lt;code>标准版&lt;/code>、&lt;code>扩展版&lt;/code>和&lt;code>扩展/部署版&lt;/code>.&lt;/p>
@@ -49,32 +25,9 @@
 &lt;h3 id="直接下载">直接下载&lt;/h3>
 &lt;h3 id="源码构建">源码构建&lt;/h3>
 &lt;h3 id="仓库软件包">仓库软件包&lt;/h3>
-&lt;h2 id="快速上手">快速上手&lt;/h2>
-&lt;h2 id="配置">配置&lt;/h2>
-&lt;h2 id="部署">部署&lt;/h2>
-&lt;h2 id="模板">模板&lt;/h2></description></item><item><title>Archive - Bitcask</title><link>https://chhz0.github.io/archive/projects/bitcask/</link><pubDate>Mon, 07 Apr 2025 21:46:39 +0800</pubDate><guid>https://chhz0.github.io/archive/projects/bitcask/</guid><description>&lt;blockquote>
-&lt;p>这是一个归档|推荐|测试的文章.&lt;/p>&lt;/blockquote>
-
-
-
- 
- 
- 
- &lt;p>Bitcask是一个高性能的键值存储系统，设计之初的目的是提供高写入吞吐量和高效读取性能。采用了日志化结构哈希表(Log-Structured Hash Table)，核心是写前日志(WAL)、内存哈希表和定期merge.&lt;/p>
-&lt;p>具体细节均在官方的设计论文 &lt;a href="https://riak.com/assets/bitcask-intro.pdf">Bitcask Design Paper&lt;/a> 中可以查看。&lt;/p>
-&lt;blockquote>
-&lt;p>官方论文中提到的bitcask应该具备的特性&lt;/p>
-&lt;ul>
-&lt;li>low latency per item read or written&lt;/li>
-&lt;li>high throughput, especially when writing an incoming stream of random items&lt;/li>
-&lt;li>ability to handle datasets much larger than RAM w/o degradation&lt;/li>
-&lt;li>crash friendliness, both in terms of fast recovery and not losing data&lt;/li>
-&lt;li>ease of backup and restore&lt;/li>
-&lt;li>a relatively simple, understandable (and thus supportable) code structure and data format&lt;/li>
-&lt;li>predictable behavior under heavy access load or large volume&lt;/li>
-&lt;li>a license that allowed for easy default use in Riak&lt;/li>
-&lt;/ul>&lt;/blockquote>
-&lt;p>目前已经有优秀的开源实现：&lt;/p></description></item><item><title>Bitcask</title><link>https://chhz0.github.io/blogs/bitcask/2025-04-05.bitcask-core/</link><pubDate>Sat, 05 Apr 2025 15:07:38 +0800</pubDate><guid>https://chhz0.github.io/blogs/bitcask/2025-04-05.bitcask-core/</guid><description>&lt;p>Bitcask是一个高性能的键值存储系统，设计之初的目的是提供高写入吞吐量和高效读取性能。采用了日志化结构哈希表(Log-Structured Hash Table)，核心是写前日志(WAL)、内存哈希表和定期merge.&lt;/p>
+&lt;h2 id="configuration">Configuration&lt;/h2>
+&lt;h2 id="cli">CLI&lt;/h2></description></item><item><title>Archive - Bitcask</title><link>https://chhz0.github.io/archive/projects/bitcask/</link><pubDate>Mon, 07 Apr 2025 21:46:39 +0800</pubDate><guid>https://chhz0.github.io/archive/projects/bitcask/</guid><description>&lt;blockquote>
+&lt;p>这是一个归档|测试的文章.&lt;/p>&lt;/blockquote></description></item><item><title>Bitcask</title><link>https://chhz0.github.io/blogs/bitcask/2025-04-05.bitcask-core/</link><pubDate>Sat, 05 Apr 2025 15:07:38 +0800</pubDate><guid>https://chhz0.github.io/blogs/bitcask/2025-04-05.bitcask-core/</guid><description>&lt;p>Bitcask是一个高性能的键值存储系统，设计之初的目的是提供高写入吞吐量和高效读取性能。采用了日志化结构哈希表(Log-Structured Hash Table)，核心是写前日志(WAL)、内存哈希表和定期merge.&lt;/p>
 &lt;p>具体细节均在官方的设计论文 &lt;a href="https://riak.com/assets/bitcask-intro.pdf">Bitcask Design Paper&lt;/a> 中可以查看。&lt;/p>
 &lt;blockquote>
 &lt;p>官方论文中提到的bitcask应该具备的特性&lt;/p>
@@ -90,9 +43,8 @@
 &lt;/ul>&lt;/blockquote>
 &lt;p>目前已经有优秀的开源实现：&lt;/p></description></item><item><title>About</title><link>https://chhz0.github.io/about/</link><pubDate>Sat, 05 Apr 2025 14:36:12 +0800</pubDate><guid>https://chhz0.github.io/about/</guid><description>&lt;h1 id="关于本站">关于本站&lt;/h1>
 &lt;blockquote>
-&lt;p>本站由 &lt;a href="https://gohugo.io/">Hugo&lt;/a> 搭建，使用基于&lt;a href="https://github.com/math-queiroz/rusty-typewriter">math-queiroz/Rusty-Typewriter&lt;/a> 二次开发的 &lt;a href="https://github.com/chhz0/Rusty-Typewriter">chhz0/Rusty-Typewriter&lt;/a> 主题.&lt;/p>&lt;/blockquote>
-&lt;p>我计划在这里记录自己的学习笔记，包括但不限于 &lt;code>Golang&lt;/code>, &lt;code>Java&lt;/code>, &lt;code>Cangjie&lt;/code>, &lt;code>计算机基础&lt;/code>, &lt;code>Linux&lt;/code>, &lt;code>计算机网络&lt;/code>, &lt;code>Git&lt;/code>, &lt;code>Docker&lt;/code>, &lt;code>Kubernetes&lt;/code>, &lt;code>Message Queue&lt;/code>, &lt;code>MySQL&lt;/code>, &lt;code>Redis&lt;/code>, &lt;code>HTML&lt;/code>, &lt;code>CSS&lt;/code>, &lt;code>JavaScript&lt;/code>, &lt;code>TypeScript&lt;/code>, &lt;code>Vue&lt;/code>, &lt;code>React&lt;/code>以及一些 &lt;strong>开源项目&lt;/strong> 等&amp;hellip;&lt;/p>
-&lt;p>哈哈，这里画的饼有点多，未来将以单个主题来写，希望能坚持下去!&lt;/p>
+&lt;p>本站由 &lt;a href="https://gohugo.io/">Hugo&lt;/a> 搭建，使用&lt;a href="https://github.com/math-queiroz/rusty-typewriter">math-queiroz/Rusty-Typewriter&lt;/a> 扩展主题.&lt;/p>&lt;/blockquote>
+&lt;p>计划在这里记录自己的学习笔记，包括但不限于 &lt;code>Golang&lt;/code>, &lt;code>Java&lt;/code>, &lt;code>Cangjie&lt;/code>, &lt;code>cs_base&lt;/code>, &lt;code>Git&lt;/code>, &lt;code>Docker&lt;/code>, &lt;code>Kubernetes&lt;/code>, &lt;code>Message Queue&lt;/code>, &lt;code>MySQL&lt;/code>, &lt;code>Redis&lt;/code>, &lt;code>HTML&lt;/code>, &lt;code>CSS&lt;/code>, &lt;code>JavaScript&lt;/code>, &lt;code>TypeScript&lt;/code>, &lt;code>Vue&lt;/code>, &lt;code>React&lt;/code>以及一些 &lt;strong>开源项目&lt;/strong> 等&amp;hellip;&lt;/p>
 &lt;h2 id="文章结构">文章结构&lt;/h2>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>this is a example of directory structure
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>content/
