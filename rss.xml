@@ -64,4 +64,28 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ └── hugo-docs.md
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├── about.md
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>└── search.md
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>在&lt;code>content/blogs&lt;/code> 目录下，将以 date.title.md 的markdown文件列表. &lt;code>content/archive/**/*&lt;/code> 将存在目录层级，以方便查找想要阅读的博客，&lt;/p></description></item></channel></rss>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>在&lt;code>content/blogs&lt;/code> 目录下，将以 date.title.md 的markdown文件列表. &lt;code>content/archive/**/*&lt;/code> 将存在目录层级，以方便查找想要阅读的博客，&lt;/p></description></item><item><title>Search</title><link>https://chhz0.github.io/search/</link><pubDate>Mon, 24 Mar 2025 23:00:00 -0300</pubDate><guid>https://chhz0.github.io/search/</guid><description>&lt;h1 id="search">Search&lt;/h1>
+&lt;p>Here you can search for indexable pages, like posts and alike. There&amp;rsquo;s also support for URL param &amp;ldquo;q&amp;rdquo; which then auto searches upon page load event.&lt;/p>
+&lt;p class="hidden">&lt;/p>
+&lt;p class="search-loading hidden">加载中...&lt;/p>
+
+&lt;form id="search-form" class="search-form" action="#" method="post" accept-charset="UTF-8" role="search">
+ &lt;div class="search-bar">
+ &lt;label for="query" class="hidden">搜索...&lt;/label>
+ &lt;input id="query" class="search-text" type="text" placeholder="搜索. . ."/>
+ &lt;/div>
+&lt;/form>
+
+&lt;div class="search-results">&lt;/div>
+
+&lt;template>
+ &lt;article class="search-result list-view">
+ &lt;header>
+ &lt;h2 class="title">&lt;a href="#">&lt;/a>&lt;/h2>
+ &lt;div class="submitted">
+ &lt;time class="created-date">&lt;/time>
+ &lt;/div>
+ &lt;/header>
+ &lt;p class="content">&lt;/p>
+ &lt;/article>
+&lt;/template></description></item></channel></rss>
