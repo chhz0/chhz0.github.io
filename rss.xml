@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>ch.hugo</title><link>https://chhz0.github.io/</link><description>Recent content on ch.hugo</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Tue, 08 Apr 2025 03:10:00 +0800</lastBuildDate><atom:link href="https://chhz0.github.io/rss.xml" rel="self" type="application/rss+xml"/><item><title>Hugo Docs (Continuous Updates)</title><link>https://chhz0.github.io/hugoes/hugo-docs/</link><pubDate>Tue, 08 Apr 2025 03:10:00 +0800</pubDate><guid>https://chhz0.github.io/hugoes/hugo-docs/</guid><description>&lt;blockquote>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>ch.hugo</title><link>https://chhz0.github.io/</link><description>Recent content on ch.hugo</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Tue, 08 Apr 2025 03:10:00 +0800</lastBuildDate><atom:link href="https://chhz0.github.io/rss.xml" rel="self" type="application/rss+xml"/><item><title>Hugo Docs (Continuous Updates)</title><link>https://chhz0.github.io/blogs/hugoes/hugo-docs/</link><pubDate>Tue, 08 Apr 2025 03:10:00 +0800</pubDate><guid>https://chhz0.github.io/blogs/hugoes/hugo-docs/</guid><description>&lt;blockquote>
 &lt;p>Hugo 是最受欢迎的开源静态网站生成器之一. 凭借其惊人的速度和灵活性，Hugo 让网站建设再次变得有趣.&lt;/p>&lt;/blockquote>
 &lt;p>本篇内容将全部基于&lt;a href="https://gohugo.io/documentation/">Hugo&lt;/a> 官方文档以及个人的实际操作. 实际上Hugo 的官方文档非常加十分的详细，我也超级推荐直接阅读官方的文档. 但是官方文档的内容太多，这对新手来说第一时间很难上手，包括我，所以我想将整个文档进行阅读记录，以方便入门.&lt;/p>
 &lt;p>于此同时，本站点也是使用了Hugo 进行搭建，所以进行这样一份学习记录也许有助于我改进网站.&lt;/p>
@@ -26,8 +26,7 @@
 &lt;h3 id="源码构建">源码构建&lt;/h3>
 &lt;h3 id="仓库软件包">仓库软件包&lt;/h3>
 &lt;h2 id="configuration">Configuration&lt;/h2>
-&lt;h2 id="cli">CLI&lt;/h2></description></item><item><title>Archive - Bitcask</title><link>https://chhz0.github.io/archive/projects/bitcask/</link><pubDate>Mon, 07 Apr 2025 21:46:39 +0800</pubDate><guid>https://chhz0.github.io/archive/projects/bitcask/</guid><description>&lt;blockquote>
-&lt;p>这是一个归档|测试的文章.&lt;/p>&lt;/blockquote></description></item><item><title>Bitcask</title><link>https://chhz0.github.io/blogs/bitcask/2025-04-05.bitcask-core/</link><pubDate>Sat, 05 Apr 2025 15:07:38 +0800</pubDate><guid>https://chhz0.github.io/blogs/bitcask/2025-04-05.bitcask-core/</guid><description>&lt;p>Bitcask是一个高性能的键值存储系统，设计之初的目的是提供高写入吞吐量和高效读取性能。采用了日志化结构哈希表(Log-Structured Hash Table)，核心是写前日志(WAL)、内存哈希表和定期merge.&lt;/p>
+&lt;h2 id="cli">CLI&lt;/h2></description></item><item><title>Bitcask</title><link>https://chhz0.github.io/blogs/bitcask/2025-04-05.bitcask-core/</link><pubDate>Sat, 05 Apr 2025 15:07:38 +0800</pubDate><guid>https://chhz0.github.io/blogs/bitcask/2025-04-05.bitcask-core/</guid><description>&lt;p>Bitcask是一个高性能的键值存储系统，设计之初的目的是提供高写入吞吐量和高效读取性能。采用了日志化结构哈希表(Log-Structured Hash Table)，核心是写前日志(WAL)、内存哈希表和定期merge.&lt;/p>
 &lt;p>具体细节均在官方的设计论文 &lt;a href="https://riak.com/assets/bitcask-intro.pdf">Bitcask Design Paper&lt;/a> 中可以查看。&lt;/p>
 &lt;blockquote>
 &lt;p>官方论文中提到的bitcask应该具备的特性&lt;/p>
@@ -66,6 +65,8 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>└── search.md
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>在&lt;code>content/blogs&lt;/code> 目录下，将以 date.title.md 的markdown文件列表. &lt;code>content/archive/**/*&lt;/code> 将存在目录层级，以方便查找想要阅读的博客，&lt;/p></description></item><item><title>Search</title><link>https://chhz0.github.io/search/</link><pubDate>Mon, 24 Mar 2025 23:00:00 -0300</pubDate><guid>https://chhz0.github.io/search/</guid><description>&lt;h1 id="search">Search&lt;/h1>
 &lt;p>Here you can search for indexable pages, like posts and alike. There&amp;rsquo;s also support for URL param &amp;ldquo;q&amp;rdquo; which then auto searches upon page load event.&lt;/p>
+&lt;blockquote>
+&lt;p>你可以在此处搜索可索引的页面，例如帖子等内容。该功能还支持 URL 参数 &amp;ldquo;q&amp;rdquo;，在页面加载时会自动根据该参数进行搜索。&lt;/p>&lt;/blockquote>
 &lt;p class="hidden">&lt;/p>
 &lt;p class="search-loading hidden">加载中...&lt;/p>
 
