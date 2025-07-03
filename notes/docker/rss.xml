@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Docker on ch.hugo</title><link>https://chhz0.github.io/notes/docker/</link><description>Recent content in Docker on ch.hugo</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Thu, 03 Jul 2025 22:17:26 +0800</lastBuildDate><atom:link href="https://chhz0.github.io/notes/docker/rss.xml" rel="self" type="application/rss+xml"/><item><title>Deploy Go applications using docker(bate)</title><link>https://chhz0.github.io/notes/docker/docker-deploy/</link><pubDate>Thu, 03 Jul 2025 22:17:26 +0800</pubDate><guid>https://chhz0.github.io/notes/docker/docker-deploy/</guid><description>&lt;blockquote>
+&lt;p>使用Docker 以及Docker Compose部署Go程序&lt;/p>&lt;/blockquote>
+&lt;h3 id="部署示例">部署示例&lt;/h3>
+&lt;h4 id="1准备代码">1.准备代码&lt;/h4>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-Plaintext" data-lang="Plaintext">&lt;span style="display:flex;">&lt;span>package main
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>import (
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &amp;#34;fmt&amp;#34;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &amp;#34;net/http&amp;#34;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>func main() {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> http.HandleFunc(&amp;#34;/&amp;#34;, hello)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> server := &amp;amp;http.Server{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Addr: &amp;#34;:8888&amp;#34;,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> fmt.Println(&amp;#34;server startup...&amp;#34;)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> if err := server.ListenAndServe(); err != nil {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> fmt.Printf(&amp;#34;server startup failed, err:%v\n&amp;#34;, err)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>func hello(w http.ResponseWriter, _ *http.Request) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> w.Write([]byte(&amp;#34;hello liwenzhou.com!&amp;#34;))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>这里是简单代码&lt;/p>
+&lt;h4 id="2创建docker镜像">2.创建Docker镜像&lt;/h4>
+&lt;blockquote>
+&lt;p>镜像(image)包含运行应用程序所需的所有东西——代码/二进制文件、运行时、依赖项以及所需的任何其它人间系统对象&lt;/p>&lt;/blockquote>
+&lt;p>简单讲，镜像是定义应用程序以及运行所需的一切&lt;/p>
+&lt;h4 id="3编写dockerfile">3.编写Dockerfile&lt;/h4>
+&lt;p>要创建Docker镜像(image)必须在配置文件中的指定步骤，这个文件默认称为&lt;code>Dockerfile&lt;/code>&lt;/p></description></item><item><title>Dockerfile(bate)</title><link>https://chhz0.github.io/notes/docker/dockerfile/</link><pubDate>Thu, 03 Jul 2025 22:17:17 +0800</pubDate><guid>https://chhz0.github.io/notes/docker/dockerfile/</guid><description>&lt;blockquote>
+&lt;p>Dockerfile 构建你自己的容器&lt;/p>&lt;/blockquote>
+&lt;p>学习自&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://juejin.cn/post/7179042892395053113">一篇文章带你吃透 Dockerfile - 掘金 (juejin.cn)&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://docs.docker.com/engine/reference/builder/">Dockerfile reference&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://juejin.cn/post/7042663735156015140">全网最详细的Docker-Compose详细教程 - 掘金 (juejin.cn)&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://zhuanlan.zhihu.com/p/387840381">docker compose 配置文件 .yml 全面指南 - 知乎 (zhihu.com)&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://github.com/compose-spec/compose-spec/blob/master/spec.md">compose-spec/spec.md at master · compose-spec/compose-spec · GitHub&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>学习Dockers前期，通过Docker的官方镜像仓库拉取里面的镜像，根据这些镜像创建出容器并运行&lt;/p>
+&lt;p>实际上，Docker官方镜像也是通过一定的方式构建出来的，只要弄清其中的逻辑，我们也可以仿照官方镜像的构建过程，构建出自己的镜像&lt;/p>
+&lt;p>&lt;code>Dockerfile&lt;/code>就是这样一个用于描述Docker镜像构建过程的文本文件，dockerfile可以包含多条构建指令，以及相关的描述&lt;/p>
+&lt;h3 id="1什么是容器">1.什么是容器&lt;/h3>
+&lt;p>容器是计算机上的沙盒进程，与主机上的其它进程隔离，这种隔离利用了&lt;code>内核命名空间和cgroups&lt;/code>。简而言之容器是：&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>是&lt;code>image&lt;/code>的可运行实例&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>可以在本地计算机、虚拟机上运行或部署到云中&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>是可移植的&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>与其它容器隔离，并运行自己的软件，二进制文件和配置&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="2什么是容器映射">2.什么是容器映射&lt;/h3>
+&lt;p>当容器运行时，它使用了隔离的文件系统。这个自定义的文件系统由容器映像&lt;code>container image&lt;/code>提供。因为image包含了容器的问价系统，使用image必须包含所有的运行应用程序所必须的所有东西——依赖项、配置、脚本、二进制文件等等。&lt;/p>
+&lt;blockquote>
+&lt;p>沙盒进程是指在计算机系统中，为了保障安全和隔离性而采用的一种技术，将应用程序运行在一个受限制的环境中，限制它们能访问的资源和操作范围，从而避免恶意程序和授权程序对系统的破坏&lt;/p>&lt;/blockquote>
+&lt;h3 id="3容器是怎么运行的">3.容器是怎么运行的&lt;/h3>
+&lt;p>当一个容器运行时，它为其文件系统使用来image的各个层。每个容器都有自己的命名空间来创建/更新/删除文件。在另一个容器中不会看到任何更改，即使它们使用相同的image&lt;/p>
+&lt;h3 id="4容器卷container-volumes">4.容器卷[container volumes]&lt;/h3>
+&lt;p>每个容器启动时都是从容器的定义开始的。在容器中可以创建、更新和删除文件，但当容器被删除时，这些改变将回丢失，所有更变都被隔离在各个容器中&lt;/p>
+&lt;p>卷：提供了将容器的特定文件系统路径链路到主机的能力。如果在主机上的某个文件被挂载，那么当容器中该文件路径下的文件发送更改时，我们在主机上同样也可以看到更改。同样的，启动另一个挂载了同一个文件目录的容器，它也可以访问到相同的文件&lt;/p>
+&lt;h2 id="镜像构建原理">镜像构建原理&lt;/h2>
+&lt;hr>
+&lt;h3 id="1docker架构模式">1.Docker架构模式&lt;/h3>
+&lt;p>&lt;img src="https://rt5bap83jl.feishu.cn/space/api/box/stream/download/asynccode/?code=ODNkMzZjNzQ1MTljOTE0ZThhNjliYjMwODFiMjQ0NTJfSVlseWZldFNjR0l6QVpDbzFMdmNhYXg1TWRZb1oxUjZfVG9rZW46RjhBeWJoWkZpb2ZZbll4WEd2dGN3RXJHbkxoXzE3MjE4NDA4ODE6MTcyMTg0NDQ4MV9WNA" alt="">&lt;/p>
+&lt;p>&lt;code>docker&lt;/code>使用了&lt;strong>client&lt;/strong>/&lt;strong>server&lt;/strong>的架构模式。构建镜像时，用户在&lt;strong>dockers&lt;/strong> &lt;strong>client&lt;/strong>输入构建命令。&lt;strong>docker&lt;/strong>引擎以 &lt;code>REST API&lt;/code>的形式，像 &lt;strong>docker&lt;/strong> &lt;strong>daemon&lt;/strong>发送构建请求，如何dockers daemon就根据构建请求的内容，开始镜像构建的工作，并向Client持续放回构建过程的信息。&lt;/p>
+&lt;h3 id="2镜像分层模型">2.镜像分层模型&lt;/h3>
+&lt;hr>
+&lt;p>&lt;strong>docker&lt;/strong>镜像是用于创建容器的只读模板，是通过 &lt;strong>Dockerfile&lt;/strong>中定义的指令构建而成的，构建结束后，会在原有的镜像层上生成一个新的镜像层，如下所示&lt;/p>
+&lt;p>&lt;img src="https://rt5bap83jl.feishu.cn/space/api/box/stream/download/asynccode/?code=NmE5Yjk1OTNiMTc0MDI5YmU0NGZiNTNjZDU4NDQ5MDFfZmlPNWJYSnRaQ0RUSnJZNXpGSmN0anNFN1V6WGw4VkRfVG9rZW46RU9scmI4N0Jrb2RQVHJ4cVJFM2NwNlNtblBkXzE3MjE4NDA4ODE6MTcyMTg0NDQ4MV9WNA" alt="">&lt;/p>
+&lt;p>在 tomcat 镜像创建一个容器后，会在tomcat镜像之上新创建一个可写的容器层，在容器中写文件时，会保存到这个容器层中&lt;/p>
+&lt;p>&lt;img src="https://rt5bap83jl.feishu.cn/space/api/box/stream/download/asynccode/?code=MWU3YzUzYTM5OTE3NmZkZmEyNjhiYjZhYjljZTFiOTZfaTY2T1RORTY0UEVXWVJ0cnZ4RGxnSVE2ZGE0QWtsVlVfVG9rZW46Vk5McWI1RVV1b2h5WFV4aHBPM2NrcTNRbnVnXzE3MjE4NDA4ODE6MTcyMTg0NDQ4MV9WNA" alt="">&lt;/p>
+&lt;h3 id="3基础镜像与父级镜像">3.基础镜像与父级镜像&lt;/h3>
+&lt;hr>
+&lt;p>用于构建基础镜像的 &lt;strong>Dockerfile&lt;/strong> 不指定父级镜像，Docker约定使用如下形式基础镜像&lt;/p></description></item><item><title>Docker(bate)</title><link>https://chhz0.github.io/notes/docker/docker/</link><pubDate>Thu, 03 Jul 2025 22:17:11 +0800</pubDate><guid>https://chhz0.github.io/notes/docker/docker/</guid><description>&lt;blockquote>
+&lt;p>Docker 一文&lt;/p>&lt;/blockquote>
+&lt;blockquote>
+&lt;p>&lt;a href="https://yeasy.gitbook.io/docker_practice/">https://yeasy.gitbook.io/docker_practice/&lt;/a>&lt;/p>&lt;/blockquote>
+&lt;h2 id="一基本概念">一、基本概念&lt;/h2>
+&lt;ul>
+&lt;li>镜像(&lt;code>Image&lt;/code>)&lt;/li>
+&lt;li>容器(&lt;code>Container&lt;/code>)&lt;/li>
+&lt;li>仓库(&lt;code>Repository&lt;/code>)&lt;/li>
+&lt;/ul>
+&lt;p>理解以上三个概念，就能理解docker的生命周期&lt;/p>
+&lt;h3 id="1镜像">1.镜像&lt;/h3>
+&lt;p>&lt;strong>Docker镜像&lt;/strong>是一个特殊的文件系统，除了提供容器运行时所需的程序、库、资源、配置等文件，以及一些运行时所需的配置参数。镜像不包含任何动态数据，其内容在插件之后也不会被改变&lt;/p>
+&lt;p>&lt;strong>分层存储&lt;/strong>，镜像采用了分层存储的架构，由一组文件系统组成的（多层文件系统联合组成）。在构建镜像时，会一层一层构建，后一层依赖于上一层，后一层上的任何改变都只会发生在本层，不会干涉到上一层。因此构建镜像的时候，需要对每层需要添加的东西尽量加最少最有必要的东西，减少额外的东西&lt;/p>
+&lt;p>分层存储的特征还使得&lt;strong>镜像的复用，定制&lt;/strong>更为容易&lt;/p>
+&lt;h3 id="2容器">2.容器&lt;/h3>
+&lt;p>容器是镜像运行时的实体，可以被创建、启动、停止、删除暂停等&lt;/p>
+&lt;blockquote>
+&lt;p>镜像(Image)和容器(container)的关系，就像是面向对象程序设计中的&lt;code>类&lt;/code> 和&lt;code>实例&lt;/code> 一样&lt;/p>&lt;/blockquote>
+&lt;p>容器的实质是进程，运行于属于自己的独立的命名空间。因此容器可以拥有自己的&lt;code>root&lt;/code> 文件系统，网络配置、进程空间等，运行在一个隔离的环境。这样的隔离特性，使得容器封装的应用比直接在宿主运行更加安全&lt;/p>
+&lt;p>容器也是分层存储，是&lt;strong>以镜像为基础层&lt;/strong>，在其上创建一个当前容器的存储层，这个层是为容器运行时进行读写而准备的，称为&lt;strong>容器存储层&lt;/strong>&lt;/p>
+&lt;p>容器存储层的生命周期跟容器一样，当容器消亡时，容器存储层也随之消亡，因此任何保存于容器存储层的信息都会随着容器的删除而丢失&lt;/p>
+&lt;blockquote>
+&lt;p>Dokcer最佳实践的要求，容器不应该向其存储层写入任何数据，容器存储层保存无状态化，所有的文件写入操作，都应该使用数据卷、或者绑定宿主目录&lt;/p>
+&lt;p>数据卷独立于容器，使用容器卷，容器的删除或者重写运行之后，数据都不会丢失&lt;/p>&lt;/blockquote>
+&lt;h3 id="3仓库">3.仓库&lt;/h3>
+&lt;p>Docker Register：提供一个集中的存储、分发镜像的服务&lt;/p>
+&lt;p>一个&lt;strong>Docker Register&lt;/strong>可以包含多个**仓库（&lt;strong>&lt;strong>Repository&lt;/strong>&lt;/strong>）;&lt;strong>每个仓库可以包含多个&lt;/strong>标签（Tag）,**每个标签对应一个镜像&lt;/p>
+&lt;p>可以通过&lt;code>&amp;lt;Repository Name&amp;gt;:&amp;lt;Tag Name&amp;gt;&lt;/code> 的格式来指定具体的软件是那个版本的镜像&lt;/p>
+&lt;p>仓库名以两段路径形式出现，比如&lt;code>jwilder/nginx-proxy&lt;/code> 前者是Docker Registry多用户环境下的用户名，后者是对应的软件名&lt;/p>
+&lt;h3 id="docker-registry-公开服务">Docker Registry 公开服务&lt;/h3>
+&lt;p>Docker Registry公开服务是开放给用户使用、允许用户管理镜像的Registry服务。&lt;/p>
+&lt;p>最常见的是Docker Registry公开服务是官方的&lt;a href="https://hub.docker.com/">hub.docker.com&lt;/a>，也是默认的Registry&lt;/p>
+&lt;p>也可以使用国内的镜像网站&lt;/p>
+&lt;h3 id="私有docker-registry">私有Docker Registry&lt;/h3>
+&lt;p>用户可以在本地搭建私有的Docker Registry。Docker提供了Docker Registry镜像，可以直接使用搭建私有Registry服务&lt;/p>
+&lt;h2 id="二镜像">二、镜像&lt;/h2>
+&lt;h3 id="1获取镜像">1.获取镜像&lt;/h3>
+&lt;p>从Docker镜像仓库获取镜像的命令是 &lt;code>docker pull&lt;/code>&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-Dockerfile" data-lang="Dockerfile">&lt;span style="display:flex;">&lt;span>docker pull &lt;span style="color:#f92672">[&lt;/span>选项&lt;span style="color:#f92672">]&lt;/span> &lt;span style="color:#f92672">[&lt;/span>Docker Registry 地址&lt;span style="color:#f92672">[&lt;/span>:端口号&lt;span style="color:#f92672">]&lt;/span>/&lt;span style="color:#f92672">]&lt;/span> 仓库名&lt;span style="color:#f92672">[&lt;/span>:标签&lt;span style="color:#f92672">]&lt;/span>&lt;span style="color:#960050;background-color:#1e0010">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>具体选项可以从&lt;code>docker pull --help&lt;/code> 命令查看，&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>Docker镜像仓库地址：地址格式一般为 &lt;code>&amp;lt;域名/IP&amp;gt;[:端口号]&lt;/code>。默认地址是 Docker Hub&lt;/p></description></item></channel></rss>

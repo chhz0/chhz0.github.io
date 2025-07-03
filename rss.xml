@@ -1,4 +1,720 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>ch.hugo</title><link>https://chhz0.github.io/</link><description>Recent content on ch.hugo</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Wed, 02 Jul 2025 15:37:39 +0800</lastBuildDate><atom:link href="https://chhz0.github.io/rss.xml" rel="self" type="application/rss+xml"/><item><title>MySQL - Todo</title><link>https://chhz0.github.io/notes/database/mysql/todo/</link><pubDate>Wed, 02 Jul 2025 15:37:39 +0800</pubDate><guid>https://chhz0.github.io/notes/database/mysql/todo/</guid><description>&lt;blockquote>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>ch.hugo</title><link>https://chhz0.github.io/</link><description>Recent content on ch.hugo</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Thu, 03 Jul 2025 23:16:28 +0800</lastBuildDate><atom:link href="https://chhz0.github.io/rss.xml" rel="self" type="application/rss+xml"/><item><title>Mysql Transaction(bate)</title><link>https://chhz0.github.io/notes/database/mysql/mysql-transaction/</link><pubDate>Thu, 03 Jul 2025 23:16:28 +0800</pubDate><guid>https://chhz0.github.io/notes/database/mysql/mysql-transaction/</guid><description>&lt;blockquote>
+&lt;p>MySQL 事务&lt;/p>&lt;/blockquote>
+&lt;h2 id="1事务有哪些特征">1.事务有哪些特征&lt;/h2>
+&lt;p>原子性，隔离性，一致性，持久性&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>原子性：要么全做，要么全不做&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>隔离性：保证其它的状态转换不会影响到本次状态的转&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>一致性：数据全部符合现实世界的约束&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>持久性： 更新后的数据存储到磁盘&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;p>InnoDB引擎通过以下技术来保证事务的四个特性&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>持久性是通过 redo log（重做日志）来保证&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>原子性是通过 undo log（回滚日志）来保证&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>隔离性是通过 mvcc（多版本并发控制）或者锁机制来保证&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>一致性是通过持久性+原子性+隔离性来保证&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;h2 id="2并发事务会引发的问题">2.并发事务会引发的问题&lt;/h2>
+&lt;p>MySQL服务端是允许多个客户端连接，这意味着MySQL会出现同时处理多个事务的情况&lt;/p>
+&lt;p>在同时处理多个事务的时候，可能会出现脏读、不可重复读、幻读的问题&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>脏读：一个事务读到了另一个&lt;strong>未提交事务修改过&lt;/strong>的数据&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>不可重复读：在一个事务中多次读取同一个&lt;strong>数据&lt;/strong>，出现前后两次读到的数据不一样的情况&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>幻读：在一个事务中多次查询某个符合查询条件的&lt;strong>记录数量&lt;/strong>，如果出现前后两次查询到的记录数据不一样的情况&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;p>以上三个现象，问题的严重性是 脏读 &amp;gt; 不可重复读 &amp;gt; 幻读&lt;/p>
+&lt;h2 id="3事务的隔离级别">3.事务的隔离级别&lt;/h2>
+&lt;p>四种隔离级别：&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>读未提交：指一个事务还没有提交时，它做的变更就能被其他事务看到&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>读提交：指一个事务提交之后，它做的变更才能被其他事务看到&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>可重复读：指一个事务执行过程中看到的数据，一直跟这个事务启动时看到的数据是一致的，&lt;strong>MySQL&lt;/strong> &lt;strong>InnoDB引擎的默认隔离级别&lt;/strong>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>串行化：对记录加上读写锁，在多个事务对这条记录进行读写操作时，如果发生读写冲突的时候，后访问的事务必须等前一个事务执行完成&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;blockquote>
+&lt;p>按隔离水平高低排序如下：&lt;/p>
+&lt;p>串行化 &amp;gt; 可重复读 &amp;gt; 读已提交 &amp;gt; 读未提交&lt;/p>&lt;/blockquote>
+&lt;p>针对不同的隔离级别：并发事务时可能发生的现象也不同&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>读未提交：脏读、不可重复读、幻读&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>读提交：不可重复读、幻读&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>可重复读：幻读&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>串行化：&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;p>可重复读的隔离级别下，可以&lt;strong>很大程度上避免&lt;/strong>幻读现象的发生，所以MySQL不使用串行化隔离级别来避免幻读现象的发生，因为&lt;strong>串行化隔离级别会影响性能&lt;/strong>&lt;/p>
+&lt;p>InnoDB在默认隔离级别：&lt;strong>可重复读&lt;/strong>的情况下很大程度上解决幻读现象的解决方案有两种：&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>针对**快照读（普通 select 语句），**是通过MVCC方式解决幻读&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>针对**当前读（select &amp;hellip; for update），**通过next-key lock（记录锁+间隙锁）方式解决了幻读&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;p>四种隔离事务是怎么实现的&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>对于读未提交：可以读到未提交事务修改的数据，所以直接读取就行&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>对于串行化，通过加读写锁的方式来避免并行访问&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>对于读提交和可重复读这两种隔离级别的事务，是通过Read View来实现的，它们的区别是在于创建Read View时，读提交隔离级别是在每个语句执行之前都会重新生成一个Read View；而可重复读隔离级别是启动事务时生成一个Read View，然后整个事务都在用这个Read View&lt;/p></description></item><item><title>Mysql Log(bate)</title><link>https://chhz0.github.io/notes/database/mysql/mysql-log/</link><pubDate>Thu, 03 Jul 2025 23:16:14 +0800</pubDate><guid>https://chhz0.github.io/notes/database/mysql/mysql-log/</guid><description>&lt;blockquote>
+&lt;p>MySQL 日志 - undo log | redo log | bin log&lt;/p>&lt;/blockquote>
+&lt;p>先理解执行一条sql语句，在mysql内部会发生什么？&lt;/p>
+&lt;p>以执行一条&lt;code>update&lt;/code> 语句为例：&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>客户端会先通过连接器建立连接，连接器会判断用户身份&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>这里是一条update语句，所以不需要经过查询缓存（注意，当表上有更新语句，会把整个查询缓存清空，所以在Mysql8.0这个功能就被移除了）&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>解析器会通过词法分析识别出关键字，构建出语法树，接着做语法分析，判断输入的语句是否符合MySQL语法&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>预处理器会判断表和字段是否存在&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>优化器确定执行计划（使用索引或者全表查询）&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>执行器负责具体执行，找到这一行然后更新&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;p>不过，更新语句的流程会涉及到&lt;strong>undo&lt;/strong> &lt;strong>log&lt;/strong>**，redo log，binlog**三种日志：&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>undo log（回滚日志）：是InnoDB存储引擎生成的日志，实现了事务中的&lt;strong>原子性&lt;/strong>，主要用于事务回滚和MVCC&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>redo log（重做日志）：是InnoDB存储引擎生成的日志，实现了事务中的&lt;strong>持久性&lt;/strong>，主要用于掉电等故障恢复&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>bing log（归档日志）：是Server层生成的日志，主要用于数据备份和主从复制&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="1为什么需要undo-log">1.为什么需要undo log？&lt;/h2>
+&lt;p>在执行一条“增删改”语句的时候，MySQL会隐式开启事务，执行完后自动提交事务&lt;/p>
+&lt;blockquote>
+&lt;p>MySQL中执行一条语句后是否自动提交事务，是由&lt;code>autocommit&lt;/code> 参数来决定的，默认是开启的&lt;/p>&lt;/blockquote>
+&lt;p>当事务执行过程中，都记录下回滚时需要的信息到一个日志中，那么在事务执行过程中发生MySQL崩溃后，可以通过这个日志回滚到事务之前的数据&lt;/p>
+&lt;p>实现这一机制就是 &lt;strong>undo&lt;/strong> &lt;strong>log&lt;/strong>**（回滚日志），它保证了事务的&lt;strong>&lt;strong>ACID&lt;/strong>&lt;/strong>特性中的原子性**&lt;/p>
+&lt;p>每当InnoDB引擎对每种操作进行回滚时，进行相反操作就行：&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>插入 - 删除&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>删除 - 插入&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>更新 - 更新为旧值&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;p>一条记录每次进行操作产生的undo log格式都有一个roll_pointer和一个trx_id事务id：&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>trx_id：记录该记录是被哪些事务修改的&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>roll_pointer：指针可以将这些undo log串成一个链表，这个链表被称为版本链&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;p>&lt;img src="https://rt5bap83jl.feishu.cn/space/api/box/stream/download/asynccode/?code=N2UyNDE0NmNmNDU2N2UyY2Q5NDJkYzZiNzAwMzY3OTRfUjh5Zmw4d3VoWFI5VGZnaFR2a0NsVWk0bVdPTEM2WW5fVG9rZW46V3FmemIzbkhQb1BkRjB4UGFLbWNwR2RpbkRLXzE3MjE4NDExMjk6MTcyMTg0NDcyOV9WNA" alt="">&lt;/p>
+&lt;p>另外，undo log可以跟Read View一起实现MVCC（多版本并发控制）：&lt;/p>
+&lt;p>对于 &lt;strong>读提交&lt;/strong> 和 &lt;strong>可重复读&lt;/strong> 隔离级别的事务来说，它们的快照读（普通select语句）是通过Read View + undo log来实现的，区别在于创建Read View的时机不同&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>读提交：是在每一个select都会生成一个新的Read View，也意味着事务期间的多次读取同一数据，前后两次读的数据可能会出现不一致（不可重复读）&lt;/p></description></item><item><title>Mysql Lock(bate)</title><link>https://chhz0.github.io/notes/database/mysql/mysql-lock/</link><pubDate>Thu, 03 Jul 2025 23:16:11 +0800</pubDate><guid>https://chhz0.github.io/notes/database/mysql/mysql-lock/</guid><description>&lt;blockquote>
+&lt;p>MySQL 锁 - 全局锁|表级锁|行级锁&lt;/p>&lt;/blockquote>
+&lt;h2 id="锁的类型">锁的类型&lt;/h2>
+&lt;p>Mysql的锁，根据加锁的范围可以分为全局锁、表级锁和行锁三类&lt;/p>
+&lt;h3 id="全局锁">全局锁&lt;/h3>
+&lt;p>要使用全局锁，执行下面这条命令：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-C" data-lang="C">&lt;span style="display:flex;">&lt;span>flush tables with read lock
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>执行之后，整个数据库就处于只读状态，这时其他线程执行以下操作，就会被阻塞&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>对数据的增删改，比如insert、delete、update等&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>对表结构的更改操作，比如alter table、drop table等&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;p>要释放全局锁，执行下面的命令：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-C" data-lang="C">&lt;span style="display:flex;">&lt;span>unlock tables
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;blockquote>
+&lt;p>全局锁的应用场景：&lt;/p>
+&lt;p>全局锁主要用于做&lt;strong>全库逻辑备份&lt;/strong>，这样在备份数据库期间，不会因为数据或者结构的更新，而出现备份文件的数据与预期的不一样&lt;/p>&lt;/blockquote>
+&lt;p>加全局锁带来的缺点：会导致业务停滞，因为加全局锁之后，整个数据库都只是只读状态，不能更新数据&lt;/p>
+&lt;p>可以通过开启事务，在可重复读的隔离级别下，即使其他事务更新了表的数据，也不会影响备份数据库时的Read View，&lt;/p>
+&lt;p>备份数据库的工具是&lt;code>mysqldump&lt;/code> ，在使用mysqldump时加上&lt;code>-single-transaction&lt;/code> 参数的时候，就会在备份数据库之前开启事务&lt;/p>
+&lt;h3 id="表级锁">表级锁&lt;/h3>
+&lt;p>MySQL里面表级锁有以下几种：&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>表锁&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>元数据锁（MDL）&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>意向锁&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>AUTO-INC锁&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;h4 id="表锁">表锁&lt;/h4>
+&lt;p>使用下面的命令对表加锁和释放锁&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-C" data-lang="C">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">// 加读锁
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>lock tables &lt;span style="color:#f92672">&amp;lt;&lt;/span>table_name&lt;span style="color:#f92672">&amp;gt;&lt;/span> read;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">// 写锁
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>lock tables &lt;span style="color:#f92672">&amp;lt;&lt;/span>table_name&lt;span style="color:#f92672">&amp;gt;&lt;/span> write;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">// 释放锁
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>unlock tables;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>表锁会影响别的线程和本线程的读写操作&lt;/p>
+&lt;h4 id="元数据锁mdl">元数据锁（MDL）&lt;/h4>
+&lt;p>对于MDL，我们不需要显示使用，因为当我们在对数据库进行操作时，会自动给这个表上加MDL：&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>对一张表进行CURD操作时，加的是MDL读锁&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>对一张表做结构变更操作的时候，加的是MDL写锁&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;p>MDL是为了保证当前用户对表执行CRUD操作时，防止其他线程对这个表结构做了变更&lt;/p>
+&lt;p>MDL是在事务提交之后才会释放，这意味着&lt;strong>事务执行期间，MDL是一直持有&lt;/strong>&lt;/p>
+&lt;p>需要注意的是，在事务启用之后，如果事务A没有提交，此时如果有表结构的修改请求发起，就会发生阻塞，这个阻塞也会导致其他CURD的请求被阻塞住&lt;/p>
+&lt;p>这是因为申请MDL锁的操作会形成一个队列，队列中&lt;strong>写锁&lt;strong>&lt;strong>获取优先级大于&lt;/strong>&lt;/strong>读锁&lt;/strong>，一旦出现MDL写锁等待，会阻塞该表后续的CRUD操作&lt;/p>
+&lt;h4 id="意向锁">意向锁&lt;/h4>
+&lt;ul>
+&lt;li>
+&lt;p>在使用InnoDB引擎的表里对某些记录加上共享锁之前，需要先在表级别加上一个意向共享锁&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>在使用InnoDB引擎的表里对某些记录加上独占锁之前，需要先在表级别加上一个意向独占锁&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;p>在执行insert、update、delete操作时，需要先对表上加 意向独占锁，然后对该记录加独占锁&lt;/p>
+&lt;p>而普通的select是不会加行级锁，普通的select语句是利用MVCC实现一致性读，是无锁的&lt;/p></description></item><item><title>Mysql Index(bate)</title><link>https://chhz0.github.io/notes/database/mysql/mysql-index/</link><pubDate>Thu, 03 Jul 2025 23:16:07 +0800</pubDate><guid>https://chhz0.github.io/notes/database/mysql/mysql-index/</guid><description>&lt;blockquote>
+&lt;p>MySQL 索引&lt;/p>&lt;/blockquote>
+&lt;h2 id="1-b树索引数据结构">1. B+树（索引数据结构）&lt;/h2>
+&lt;p>什么是索引？
+为什么索引能加快查询？
+索引的数据结构是什么？
+B+ 树 和（B 树 和 红黑树）有什么区别？
+为什么选择 B+树 作为索引数据结构？&lt;/p>
+&lt;h3 id="为什么mysql-innodb选择b-tree作为索引">为什么Mysql InnoDB选择B+ Tree作为索引？&lt;/h3>
+&lt;ol>
+&lt;li>B+ 树 vs B 树
+B+ 树只在叶子节点存储数据，B树的非叶子节点也要存储数据，所以B+ 树的单个节点的数据量更小&lt;/li>
+&lt;li>B+ 树 vs 二叉树
+对于有N个叶子节点的B+ 树，搜索复制度为O（logdn）&lt;/li>
+&lt;li>B+ 树 vs Hash&lt;/li>
+&lt;/ol>
+&lt;blockquote>
+&lt;p>&lt;a href="https://learn.lianglianglee.com/%E4%B8%93%E6%A0%8F/MySQL%E5%AE%9E%E6%88%98%E5%AE%9D%E5%85%B8/08%20%20%E7%B4%A2%E5%BC%95%EF%BC%9A%E6%8E%92%E5%BA%8F%E7%9A%84%E8%89%BA%E6%9C%AF.md">08 索引:排序的艺术&lt;/a>&lt;/p>
+&lt;p>&lt;a href="https://xiaolincoding.com/mysql/index/why_index_chose_bpuls_tree.html">为什么 MySQL 采用 B+ 树作为索引？&lt;/a>&lt;/p>&lt;/blockquote>
+&lt;h2 id="2-索引组织表索引存储">2. 索引组织表（索引存储）&lt;/h2>
+&lt;p>堆表和索引组织表有什么区别？&lt;/p>
+&lt;p>分别应用场景是什么？&lt;/p>
+&lt;p>Mysql InnoDB存储引擎中数据存储方式：&lt;strong>索引组织表&lt;/strong>&lt;/p>
+&lt;p>数据存储有&lt;strong>堆表和索引组织表两种。&lt;/strong>&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>堆表中的数据是无序存放的，数据的排序完全依赖索引&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>索引组织表，数据根据主键进行排序存放在索引中，主键索引也叫&lt;strong>聚集索引&lt;/strong>（Clustered Index）&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;p>在索引组织表中，数据即索引，索引即数据&lt;/p>
+&lt;h3 id="二级索引">二级索引&lt;/h3>
+&lt;p>InnoDB存储引擎的数据是根据主键索引排序存储的，除了主键索引外，其它的索引都称为二级索引（Secondeary Index），或者非聚集索引&lt;/p>
+&lt;p>二级索引也是一颗B+树索引，但是它和主键索引不同的是叶子节点存放的是索引键值、主键值&lt;/p>
+&lt;p>通过二级索引&lt;code>idx_name&lt;/code> 只能定位主键值，需要额外再通过主键索引进行查询，才能得到最终结果。&lt;/p>
+&lt;p>&lt;strong>这种二级索引通过&lt;strong>&lt;strong>主键&lt;/strong>&lt;/strong>索引进行再一次查询的操作叫做“回表”&lt;/strong>&lt;/p>
+&lt;p>这样的二级索引设计的好处：若记录发生了修改，则其它索引无须进行维护，除非记录的主键发生了修改&lt;/p>
+&lt;p>&lt;strong>在索引组织表中，万物皆索引，索引就是数据，数据就是索引&lt;/strong>。&lt;/p>
+&lt;h3 id="二级索引的性能评估">二级索引的性能评估&lt;/h3>
+&lt;ul>
+&lt;li>
+&lt;p>要比较顺序，对聚集索引性能友好&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>尽可能紧凑，对二级索引的性能和存储友好&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="函数索引先了解">函数索引（先了解）&lt;/h3>
+&lt;p>&amp;hellip;&lt;/p></description></item><item><title>Mysql Buffer Pool(bate)</title><link>https://chhz0.github.io/notes/database/mysql/mysql-buffer-pool/</link><pubDate>Thu, 03 Jul 2025 23:15:59 +0800</pubDate><guid>https://chhz0.github.io/notes/database/mysql/mysql-buffer-pool/</guid><description>&lt;blockquote>
+&lt;p>MySQL 缓存池&lt;/p>&lt;/blockquote>
+&lt;h2 id="为什么要有buffer-pool">为什么要有Buffer Pool&lt;/h2>
+&lt;p>MySQL的数据存储在磁盘的，如果每次都从磁盘里面读取数据，这样性能是很差的&lt;/p>
+&lt;p>提高性能，就需要加入缓存。当数据从磁盘中取出来之后，缓存内存中，下次查询同样的数据，直接从内存中读取&lt;/p>
+&lt;p>为此InnoDB存储引擎设计了&lt;strong>一个缓存池（Buffer Pool），来提高数据库的读写性能&lt;/strong>&lt;/p>
+&lt;p>有了缓冲池后：&lt;/p>
+&lt;ul>
+&lt;li>读取数据时，如果数据存在于Buffer Pool中，客户端就会直接读取Buffer Pool中的数据，否则再去磁盘中读取&lt;/li>
+&lt;li>当修改数据时，首先修改Buffer Pool中数据所在的数据页，然后将该页设置为脏页，最后由后台线程将脏页写入到磁盘&lt;/li>
+&lt;/ul>
+&lt;h2 id="buffer-pool有多大">Buffer Pool有多大？&lt;/h2>
+&lt;p>Buffer Pool在MySQL启动的时候，向操作系统申请的一片连续的内存空间，默认配置下Buffer Pool只有&lt;code>128MB&lt;/code>&lt;/p>
+&lt;p>可以通过调整&lt;code>innodb_buffer_pool_size&lt;/code> 参数来设置Buffer Pool的大小，一般建议设置为可用物理内存的60%~80%&lt;/p>
+&lt;h2 id="buffer-pool缓存什么">Buffer Pool缓存什么？&lt;/h2>
+&lt;p>InnoDB会把存储的数据分为若干个&lt;strong>页&lt;/strong>，以页作为磁盘和内存交互的基本单位，一个页的默认大小为**16kb，**因此Buffer Pool同样需要按页来划分&lt;/p>
+&lt;p>在MySQL启动的时候，**InnoDB会为Buffer Pool申请一片连续的&lt;strong>&lt;strong>内存&lt;/strong>&lt;/strong>空间，然后按照默认的16&lt;strong>&lt;strong>kb&lt;/strong>&lt;/strong>的大小划分出一个个的页，Buffer Pool中的页就叫做缓存页。**这些缓存页都是空的，之后随着程序的运行，才会有磁盘上的页被缓存到Buffer Pool中&lt;/p>
+&lt;p>所以，MySQL刚启动的时候，其使用的虚拟内存空间很大，而使用到的物理内存空间很小，这时因为这些虚拟内存被访问后，操作系统才会触发缺页中断，接着将虚拟地址和物理地址建立映射关系&lt;/p>
+&lt;p>Buffer Pool缓存了以下的：&lt;/p>
+&lt;ul>
+&lt;li>索引页&lt;/li>
+&lt;li>数据页&lt;/li>
+&lt;li>插入缓存页&lt;/li>
+&lt;li>Undo页&lt;/li>
+&lt;li>自适应哈希索引&lt;/li>
+&lt;li>锁信息&lt;/li>
+&lt;/ul>
+&lt;p>为了更好管理Buffer Pool中的缓存页，InnoDB为每一个缓存页都创建了一个**控制块，**控制块包括缓存页的表空间，页号，缓存页地址，链表节点等，控制块也占据内存空间，它是在Buffer Pool的最前面，接着才是缓存页&lt;/p>
+&lt;p>暂时无法在飞书文档外展示此内容&lt;/p>
+&lt;p>上面的控制块和缓存页之间的空白空间称为&lt;strong>碎片空间&lt;/strong>&lt;/p>
+&lt;blockquote>
+&lt;p>碎片空间：每一个控制块对应一个缓存页，在分配足够多的控制块和缓存页后，可能剩余的空间不足够一个控制块和缓存页的大小，那么这块空间就不被使用，剩下的这块空间就被称为碎片&lt;/p>
+&lt;p>当Buffer Pool的大小设置的刚刚好，就不会产生碎片&lt;/p>&lt;/blockquote>
+&lt;p>查询一条记录时，InnoDB会把整个页的数据加载到Buffer Pool中，通过索引只能定位到磁盘中的页，而不能定位到页中一条记录。&lt;/p>
+&lt;p>&lt;a href="https://mp.weixin.qq.com/s/A5gNVXMNE-iIlY3oofXtLw">mp.weixin.qq.com&lt;/a>(从数据页的角度看B+树——InnoDB存储引擎)&lt;/p>
+&lt;p>记录是按照行来存储的，但是数据库的读取并不是以&lt;strong>行&lt;/strong>为单位，否则一次读取（一次IO操作）只能处理一行数据，效率会非常低，因此，&lt;strong>InnoDB的数据是按照数据页为单位来读写的&lt;/strong>&lt;/p>
+&lt;p>数据页的结构分为7个部分&lt;/p>
+&lt;table>
+ &lt;thead>
+ &lt;tr>
+ &lt;th>&lt;/th>
+ &lt;th>&lt;/th>
+ &lt;/tr>
+ &lt;/thead>
+ &lt;tbody>
+ &lt;tr>
+ &lt;td>File Header(38)&lt;/td>
+ &lt;td>文件头，表示页的信息&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>Page Header(56)&lt;/td>
+ &lt;td>页头，表示页的状态信息&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>infimum+supermun(26)&lt;/td>
+ &lt;td>两个虚拟伪记录，分别表示页中最小记录和最大记录&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>User Records(unclear)&lt;/td>
+ &lt;td>存储行记录内容&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>Free Space(unclear)&lt;/td>
+ &lt;td>页中还没被使用的&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>Page Directory(unclear)&lt;/td>
+ &lt;td>页目录，存储用户记录的相对位置，对记录起索引作用&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>File Tailer(8)&lt;/td>
+ &lt;td>校验页是否完整&lt;/td>
+ &lt;/tr>
+ &lt;/tbody>
+&lt;/table>
+&lt;p>其中，行记录由&lt;code>infimum+supremum&lt;/code> 和 &lt;code>User Records&lt;/code>构成&lt;/p></description></item><item><title>Mysql Arch(bate)</title><link>https://chhz0.github.io/notes/database/mysql/mysql-arch/</link><pubDate>Thu, 03 Jul 2025 23:15:49 +0800</pubDate><guid>https://chhz0.github.io/notes/database/mysql/mysql-arch/</guid><description>&lt;blockquote>
+&lt;p>MySQL 架构- server &amp;amp;&amp;amp; storage-engine&lt;/p>&lt;/blockquote>
+&lt;h2 id="61-sql执行过程">6.1 SQL执行过程&lt;/h2>
+&lt;p>推荐阅读 &lt;a href="https://xiaolincoding.com/mysql/base/how_select.html#mysql-%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B%E6%98%AF%E6%80%8E%E6%A0%B7%E7%9A%84">小林coding/mysql&lt;/a>&lt;/p>
+&lt;p>MySQL架构分为两层：&lt;strong>server层和存储引擎层&lt;/strong>&lt;/p>
+&lt;ul>
+&lt;li>Server层负责建立连接、分析和执行SQL
+&lt;ul>
+&lt;li>MySQL大多数核心功能模块都在这里：连接器、查询缓存、解析器、预处理器、优化器、执行器等&lt;/li>
+&lt;li>还有所有的内置函数&lt;/li>
+&lt;li>所有跨存储引擎的功能&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>存储引擎层负责数据的存储和提取
+&lt;ul>
+&lt;li>支持InnoDB、MyISAM、Memory等多个存储引擎&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="611-连接器">6.1.1 连接器&lt;/h3>
+&lt;p>MySQL是基于TCP协议进行传输的，所以在连接MySQL的时候需要先进行TCP三次握手，在命令行使用命令进行连接&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-Bash" data-lang="Bash">&lt;span style="display:flex;">&lt;span>mysql -h $ip -u$user -p
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>用户通过用户密码成功连接后，连接器会获取用户的权限，然后保存起来，在后续的此连接的任何操作，都会基于连接开始的时候读取到的权限逻辑进行判断&lt;/p>
+&lt;p>建立连接后，即使修改了该用户的权限，也不影响已连接的权限。只有新建的连接才会有新的权限设置&lt;/p>
+&lt;h4 id="6111-查看mysql服务的客户端连接">6.1.1.1 查看MySQL服务的客户端连接&lt;/h4>
+&lt;p>可以执行&lt;code>show processlist&lt;/code> 命令进行查看&lt;/p>
+&lt;h4 id="6112-空闲连接会一直占着">6.1.1.2 空闲连接会一直占着&lt;/h4>
+&lt;p>不会，MySQL定义了空闲连接的最大空闲时长，由&lt;code>wait_timeout&lt;/code> 参数控制，默认值是8小时，超过这个时间，连接器就会把这个连接断开&lt;/p>
+&lt;p>使用命令可以查看该值&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-Bash" data-lang="Bash">&lt;span style="display:flex;">&lt;span>show variables like &lt;span style="color:#e6db74">&amp;#39;wait_timeout&amp;#39;&lt;/span>;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>可以手动断开空闲的连接，使用的是&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-SQL" data-lang="SQL">&lt;span style="display:flex;">&lt;span>kill &lt;span style="color:#66d9ef">connection&lt;/span> &lt;span style="color:#f92672">+&lt;/span> id
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>当空闲的连接被服务端主动断开后，这个客户端并不会马上知道，等到客户端在发起下一个请求时，才会收到报错&lt;/p>
+&lt;p>“ERROR 2013 (HY000): Lost connection to MySQL server during query”&lt;/p>
+&lt;h4 id="6113-mysql的连接限制">6.1.1.3 MySQL的连接限制&lt;/h4>
+&lt;p>MySQL服务支持的最大连接数由&lt;code>max_connections&lt;/code> 参数控制&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-Bash" data-lang="Bash">&lt;span style="display:flex;">&lt;span>show variables like &lt;span style="color:#e6db74">&amp;#39;max_connections&amp;#39;&lt;/span>;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>MySQL的连接跟HTTP一样，有短连接和长连接的概念&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-SQL" data-lang="SQL">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">//&lt;/span> &lt;span style="color:#960050;background-color:#1e0010">短连接&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#960050;background-color:#1e0010">连接&lt;/span> mysql &lt;span style="color:#960050;background-color:#1e0010">服务（&lt;/span>TCP &lt;span style="color:#960050;background-color:#1e0010">三次握手）&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#960050;background-color:#1e0010">执行&lt;/span>&lt;span style="color:#66d9ef">sql&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#960050;background-color:#1e0010">断开&lt;/span> mysql &lt;span style="color:#960050;background-color:#1e0010">服务（&lt;/span>TCP &lt;span style="color:#960050;background-color:#1e0010">四次挥手）&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">//&lt;/span> &lt;span style="color:#960050;background-color:#1e0010">长连接&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#960050;background-color:#1e0010">连接&lt;/span> mysql &lt;span style="color:#960050;background-color:#1e0010">服务（&lt;/span>TCP &lt;span style="color:#960050;background-color:#1e0010">三次握手）&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#960050;background-color:#1e0010">执行&lt;/span>&lt;span style="color:#66d9ef">sql&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#960050;background-color:#1e0010">执行&lt;/span>&lt;span style="color:#66d9ef">sql&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#960050;background-color:#1e0010">执行&lt;/span>&lt;span style="color:#66d9ef">sql&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>....
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#960050;background-color:#1e0010">断开&lt;/span> mysql &lt;span style="color:#960050;background-color:#1e0010">服务（&lt;/span>TCP &lt;span style="color:#960050;background-color:#1e0010">四次挥手）&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>一般推荐长连接，但是使用长连接可能会占用内存增多，因为_MySQL在执行查询过程中临时使用内存管理连接对象__，_只有在连接断开的时候才会释放&lt;/p></description></item><item><title>Git Repo Readme(bate)</title><link>https://chhz0.github.io/notes/git/git-repo-readme/</link><pubDate>Thu, 03 Jul 2025 23:09:20 +0800</pubDate><guid>https://chhz0.github.io/notes/git/git-repo-readme/</guid><description>&lt;blockquote>
+&lt;p>Git 仓库 README.md 规范&lt;/p>&lt;/blockquote>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-markdown" data-lang="markdown">&lt;span style="display:flex;">&lt;span># 项目名称
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&amp;lt;!-- 写一段简短的话描述项目 --&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">## 功能特性
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&amp;lt;!-- 描述该项目的核心功能点 --&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">## 软件架构(可选)
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&amp;lt;!-- 可以描述下项目的架构 --&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">## 快速开始
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">### 依赖检查
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&amp;lt;!-- 描述该项目的依赖，比如依赖的包、工具或者其他任何依赖项 --&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">### 构建
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&amp;lt;!-- 描述如何构建该项目 --&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">### 运行
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&amp;lt;!-- 描述如何运行该项目 --&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">## 使用指南
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&amp;lt;!-- 描述如何使用该项目 --&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">## 如何贡献
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&amp;lt;!-- 告诉其他开发者如果给该项目贡献源码 --&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">## 社区(可选)
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&amp;lt;!-- 如果有需要可以介绍一些社区相关的内容 --&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">## 关于作者
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&amp;lt;!-- 这里写上项目作者 --&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">## 谁在用(可选)
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&amp;lt;!-- 可以列出使用本项目的其他有影响力的项目，算是给项目打个广告吧 --&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">## 许可证
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&amp;lt;!-- 这里链接上该项目的开源许可证 --&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Git Commit(bate)</title><link>https://chhz0.github.io/notes/git/git-commit/</link><pubDate>Thu, 03 Jul 2025 23:08:59 +0800</pubDate><guid>https://chhz0.github.io/notes/git/git-commit/</guid><description>&lt;blockquote>
+&lt;p>写出符合Angular规范的Git Commit Message&lt;/p>&lt;/blockquote>
+&lt;h2 id="git-commit-规范">git commit 规范 &lt;Badge type="tip" text="Git Commit Message" />&lt;/h2>
+&lt;h3 id="符合angular规范的commit-message">符合Angular规范的Commit Message&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>&amp;lt;type&amp;gt;[(optional scope)]: &amp;lt;description&amp;gt;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>// 空行
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>[optional body]
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>// 空行
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>[optional footers]
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>分为了Header、Body、footer三个部分&lt;/p>
+&lt;h4 id="header">Header&lt;/h4>
+&lt;p>Header部分只有一行&lt;code>&amp;lt;type&amp;gt;[(optional scope)]: &amp;lt;description&amp;gt;&lt;/code>，其中type必选，其它可选&lt;/p>
+&lt;p>type&amp;ndash;&amp;gt;归为两类：&lt;/p>
+&lt;ul>
+&lt;li>Development(项目管理类变更，不影响用户和生产环境的代码)&lt;/li>
+&lt;li>Production(影响用户和生产环境的代码)&lt;/li>
+&lt;/ul>
+&lt;table>
+ &lt;thead>
+ &lt;tr>
+ &lt;th>类型&lt;/th>
+ &lt;th>类别&lt;/th>
+ &lt;th>说明&lt;/th>
+ &lt;/tr>
+ &lt;/thead>
+ &lt;tbody>
+ &lt;tr>
+ &lt;td>feat&lt;/td>
+ &lt;td>Production&lt;/td>
+ &lt;td>新增功能&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>fix&lt;/td>
+ &lt;td>Production&lt;/td>
+ &lt;td>修复缺陷&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>perf&lt;/td>
+ &lt;td>Production&lt;/td>
+ &lt;td>提高代码性能的变更&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>style&lt;/td>
+ &lt;td>Development&lt;/td>
+ &lt;td>代码格式类的变更，例如使用gofmt格式化代码&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>refactor&lt;/td>
+ &lt;td>Production&lt;/td>
+ &lt;td>其他代码类的变更，例如 简化代码、重命名变量、删除冗余代码等等&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>test&lt;/td>
+ &lt;td>Development&lt;/td>
+ &lt;td>新增测试用例或更新现有的测试用例&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>ci&lt;/td>
+ &lt;td>Development&lt;/td>
+ &lt;td>持续基础和部署相关的改动，例如修改Jenkins、GitLab CI等Ci配置文件或者更新系统单元文件&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>docs&lt;/td>
+ &lt;td>Development&lt;/td>
+ &lt;td>文档类的更新，包括修改用户文档、开发文档&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>chore&lt;/td>
+ &lt;td>Development&lt;/td>
+ &lt;td>其他类型，例如构建流程、依赖管理或者复制工具的变动&lt;/td>
+ &lt;/tr>
+ &lt;/tbody>
+&lt;/table>
+&lt;p>scope&amp;ndash;&amp;gt;不设置太具体的值，说明commit的影响范围
+description&amp;ndash;&amp;gt;对commit的简短描述，以动词开头&lt;/p>
+&lt;h4 id="body">Body&lt;/h4>
+&lt;p>Body对Commit Message的高度概况，方便查看具体做了什么变更&lt;/p>
+&lt;h4 id="footer">Footer&lt;/h4>
+&lt;p>Footer部分不是必选，可根据需要选择，主要用来说什么本次commit导致的后果，通常用来说明不兼容的改动或者关闭的issue&lt;/p></description></item><item><title>Git Commands(bate)</title><link>https://chhz0.github.io/notes/git/git-commands/</link><pubDate>Thu, 03 Jul 2025 23:08:11 +0800</pubDate><guid>https://chhz0.github.io/notes/git/git-commands/</guid><description>&lt;blockquote>
+&lt;p>git 命令&lt;/p>&lt;/blockquote>
+&lt;h3 id="git-rebase">git rebase&lt;/h3>
+&lt;p>git rebase的最大作用是重写历史&lt;/p>
+&lt;p>使用&lt;code>git rebase -i &amp;lt;commit ID&amp;gt;&lt;/code>使用git rebase命令 修改某次 commit 的 message&lt;/p>
+&lt;table>
+ &lt;thead>
+ &lt;tr>
+ &lt;th>命令&lt;/th>
+ &lt;th>目的&lt;/th>
+ &lt;/tr>
+ &lt;/thead>
+ &lt;tbody>
+ &lt;tr>
+ &lt;td>p,pick&lt;/td>
+ &lt;td>不对该commit做任何处理&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>r,reword&lt;/td>
+ &lt;td>保留该commit，但是修改提交信息&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>e,edit&lt;/td>
+ &lt;td>保留该commit，但是rebase是会暂停，允许你修改这个commit&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>s,squash&lt;/td>
+ &lt;td>保留该commit，但是将当前commit与上一个commit合并&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>f,fixup&lt;/td>
+ &lt;td>与squash相同，但不会保存当前commit的提交信息&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>x,exec&lt;/td>
+ &lt;td>执行其他shell命令&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>d,drop&lt;/td>
+ &lt;td>删除该commit&lt;/td>
+ &lt;/tr>
+ &lt;/tbody>
+&lt;/table>
+&lt;h3 id="git-commit--amend">git commit -amend&lt;/h3>
+&lt;p>git commit –amend：修改最近一次 commit 的 message&lt;/p></description></item><item><title>Deploy Go applications using docker(bate)</title><link>https://chhz0.github.io/notes/docker/docker-deploy/</link><pubDate>Thu, 03 Jul 2025 22:17:26 +0800</pubDate><guid>https://chhz0.github.io/notes/docker/docker-deploy/</guid><description>&lt;blockquote>
+&lt;p>使用Docker 以及Docker Compose部署Go程序&lt;/p>&lt;/blockquote>
+&lt;h3 id="部署示例">部署示例&lt;/h3>
+&lt;h4 id="1准备代码">1.准备代码&lt;/h4>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-Plaintext" data-lang="Plaintext">&lt;span style="display:flex;">&lt;span>package main
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>import (
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &amp;#34;fmt&amp;#34;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &amp;#34;net/http&amp;#34;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>func main() {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> http.HandleFunc(&amp;#34;/&amp;#34;, hello)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> server := &amp;amp;http.Server{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> Addr: &amp;#34;:8888&amp;#34;,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> fmt.Println(&amp;#34;server startup...&amp;#34;)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> if err := server.ListenAndServe(); err != nil {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> fmt.Printf(&amp;#34;server startup failed, err:%v\n&amp;#34;, err)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>func hello(w http.ResponseWriter, _ *http.Request) {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> w.Write([]byte(&amp;#34;hello liwenzhou.com!&amp;#34;))
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>这里是简单代码&lt;/p>
+&lt;h4 id="2创建docker镜像">2.创建Docker镜像&lt;/h4>
+&lt;blockquote>
+&lt;p>镜像(image)包含运行应用程序所需的所有东西——代码/二进制文件、运行时、依赖项以及所需的任何其它人间系统对象&lt;/p>&lt;/blockquote>
+&lt;p>简单讲，镜像是定义应用程序以及运行所需的一切&lt;/p>
+&lt;h4 id="3编写dockerfile">3.编写Dockerfile&lt;/h4>
+&lt;p>要创建Docker镜像(image)必须在配置文件中的指定步骤，这个文件默认称为&lt;code>Dockerfile&lt;/code>&lt;/p></description></item><item><title>Dockerfile(bate)</title><link>https://chhz0.github.io/notes/docker/dockerfile/</link><pubDate>Thu, 03 Jul 2025 22:17:17 +0800</pubDate><guid>https://chhz0.github.io/notes/docker/dockerfile/</guid><description>&lt;blockquote>
+&lt;p>Dockerfile 构建你自己的容器&lt;/p>&lt;/blockquote>
+&lt;p>学习自&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://juejin.cn/post/7179042892395053113">一篇文章带你吃透 Dockerfile - 掘金 (juejin.cn)&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://docs.docker.com/engine/reference/builder/">Dockerfile reference&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://juejin.cn/post/7042663735156015140">全网最详细的Docker-Compose详细教程 - 掘金 (juejin.cn)&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://zhuanlan.zhihu.com/p/387840381">docker compose 配置文件 .yml 全面指南 - 知乎 (zhihu.com)&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://github.com/compose-spec/compose-spec/blob/master/spec.md">compose-spec/spec.md at master · compose-spec/compose-spec · GitHub&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>学习Dockers前期，通过Docker的官方镜像仓库拉取里面的镜像，根据这些镜像创建出容器并运行&lt;/p>
+&lt;p>实际上，Docker官方镜像也是通过一定的方式构建出来的，只要弄清其中的逻辑，我们也可以仿照官方镜像的构建过程，构建出自己的镜像&lt;/p>
+&lt;p>&lt;code>Dockerfile&lt;/code>就是这样一个用于描述Docker镜像构建过程的文本文件，dockerfile可以包含多条构建指令，以及相关的描述&lt;/p>
+&lt;h3 id="1什么是容器">1.什么是容器&lt;/h3>
+&lt;p>容器是计算机上的沙盒进程，与主机上的其它进程隔离，这种隔离利用了&lt;code>内核命名空间和cgroups&lt;/code>。简而言之容器是：&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>是&lt;code>image&lt;/code>的可运行实例&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>可以在本地计算机、虚拟机上运行或部署到云中&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>是可移植的&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>与其它容器隔离，并运行自己的软件，二进制文件和配置&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="2什么是容器映射">2.什么是容器映射&lt;/h3>
+&lt;p>当容器运行时，它使用了隔离的文件系统。这个自定义的文件系统由容器映像&lt;code>container image&lt;/code>提供。因为image包含了容器的问价系统，使用image必须包含所有的运行应用程序所必须的所有东西——依赖项、配置、脚本、二进制文件等等。&lt;/p>
+&lt;blockquote>
+&lt;p>沙盒进程是指在计算机系统中，为了保障安全和隔离性而采用的一种技术，将应用程序运行在一个受限制的环境中，限制它们能访问的资源和操作范围，从而避免恶意程序和授权程序对系统的破坏&lt;/p>&lt;/blockquote>
+&lt;h3 id="3容器是怎么运行的">3.容器是怎么运行的&lt;/h3>
+&lt;p>当一个容器运行时，它为其文件系统使用来image的各个层。每个容器都有自己的命名空间来创建/更新/删除文件。在另一个容器中不会看到任何更改，即使它们使用相同的image&lt;/p>
+&lt;h3 id="4容器卷container-volumes">4.容器卷[container volumes]&lt;/h3>
+&lt;p>每个容器启动时都是从容器的定义开始的。在容器中可以创建、更新和删除文件，但当容器被删除时，这些改变将回丢失，所有更变都被隔离在各个容器中&lt;/p>
+&lt;p>卷：提供了将容器的特定文件系统路径链路到主机的能力。如果在主机上的某个文件被挂载，那么当容器中该文件路径下的文件发送更改时，我们在主机上同样也可以看到更改。同样的，启动另一个挂载了同一个文件目录的容器，它也可以访问到相同的文件&lt;/p>
+&lt;h2 id="镜像构建原理">镜像构建原理&lt;/h2>
+&lt;hr>
+&lt;h3 id="1docker架构模式">1.Docker架构模式&lt;/h3>
+&lt;p>&lt;img src="https://rt5bap83jl.feishu.cn/space/api/box/stream/download/asynccode/?code=ODNkMzZjNzQ1MTljOTE0ZThhNjliYjMwODFiMjQ0NTJfSVlseWZldFNjR0l6QVpDbzFMdmNhYXg1TWRZb1oxUjZfVG9rZW46RjhBeWJoWkZpb2ZZbll4WEd2dGN3RXJHbkxoXzE3MjE4NDA4ODE6MTcyMTg0NDQ4MV9WNA" alt="">&lt;/p>
+&lt;p>&lt;code>docker&lt;/code>使用了&lt;strong>client&lt;/strong>/&lt;strong>server&lt;/strong>的架构模式。构建镜像时，用户在&lt;strong>dockers&lt;/strong> &lt;strong>client&lt;/strong>输入构建命令。&lt;strong>docker&lt;/strong>引擎以 &lt;code>REST API&lt;/code>的形式，像 &lt;strong>docker&lt;/strong> &lt;strong>daemon&lt;/strong>发送构建请求，如何dockers daemon就根据构建请求的内容，开始镜像构建的工作，并向Client持续放回构建过程的信息。&lt;/p>
+&lt;h3 id="2镜像分层模型">2.镜像分层模型&lt;/h3>
+&lt;hr>
+&lt;p>&lt;strong>docker&lt;/strong>镜像是用于创建容器的只读模板，是通过 &lt;strong>Dockerfile&lt;/strong>中定义的指令构建而成的，构建结束后，会在原有的镜像层上生成一个新的镜像层，如下所示&lt;/p>
+&lt;p>&lt;img src="https://rt5bap83jl.feishu.cn/space/api/box/stream/download/asynccode/?code=NmE5Yjk1OTNiMTc0MDI5YmU0NGZiNTNjZDU4NDQ5MDFfZmlPNWJYSnRaQ0RUSnJZNXpGSmN0anNFN1V6WGw4VkRfVG9rZW46RU9scmI4N0Jrb2RQVHJ4cVJFM2NwNlNtblBkXzE3MjE4NDA4ODE6MTcyMTg0NDQ4MV9WNA" alt="">&lt;/p>
+&lt;p>在 tomcat 镜像创建一个容器后，会在tomcat镜像之上新创建一个可写的容器层，在容器中写文件时，会保存到这个容器层中&lt;/p>
+&lt;p>&lt;img src="https://rt5bap83jl.feishu.cn/space/api/box/stream/download/asynccode/?code=MWU3YzUzYTM5OTE3NmZkZmEyNjhiYjZhYjljZTFiOTZfaTY2T1RORTY0UEVXWVJ0cnZ4RGxnSVE2ZGE0QWtsVlVfVG9rZW46Vk5McWI1RVV1b2h5WFV4aHBPM2NrcTNRbnVnXzE3MjE4NDA4ODE6MTcyMTg0NDQ4MV9WNA" alt="">&lt;/p>
+&lt;h3 id="3基础镜像与父级镜像">3.基础镜像与父级镜像&lt;/h3>
+&lt;hr>
+&lt;p>用于构建基础镜像的 &lt;strong>Dockerfile&lt;/strong> 不指定父级镜像，Docker约定使用如下形式基础镜像&lt;/p></description></item><item><title>Docker(bate)</title><link>https://chhz0.github.io/notes/docker/docker/</link><pubDate>Thu, 03 Jul 2025 22:17:11 +0800</pubDate><guid>https://chhz0.github.io/notes/docker/docker/</guid><description>&lt;blockquote>
+&lt;p>Docker 一文&lt;/p>&lt;/blockquote>
+&lt;blockquote>
+&lt;p>&lt;a href="https://yeasy.gitbook.io/docker_practice/">https://yeasy.gitbook.io/docker_practice/&lt;/a>&lt;/p>&lt;/blockquote>
+&lt;h2 id="一基本概念">一、基本概念&lt;/h2>
+&lt;ul>
+&lt;li>镜像(&lt;code>Image&lt;/code>)&lt;/li>
+&lt;li>容器(&lt;code>Container&lt;/code>)&lt;/li>
+&lt;li>仓库(&lt;code>Repository&lt;/code>)&lt;/li>
+&lt;/ul>
+&lt;p>理解以上三个概念，就能理解docker的生命周期&lt;/p>
+&lt;h3 id="1镜像">1.镜像&lt;/h3>
+&lt;p>&lt;strong>Docker镜像&lt;/strong>是一个特殊的文件系统，除了提供容器运行时所需的程序、库、资源、配置等文件，以及一些运行时所需的配置参数。镜像不包含任何动态数据，其内容在插件之后也不会被改变&lt;/p>
+&lt;p>&lt;strong>分层存储&lt;/strong>，镜像采用了分层存储的架构，由一组文件系统组成的（多层文件系统联合组成）。在构建镜像时，会一层一层构建，后一层依赖于上一层，后一层上的任何改变都只会发生在本层，不会干涉到上一层。因此构建镜像的时候，需要对每层需要添加的东西尽量加最少最有必要的东西，减少额外的东西&lt;/p>
+&lt;p>分层存储的特征还使得&lt;strong>镜像的复用，定制&lt;/strong>更为容易&lt;/p>
+&lt;h3 id="2容器">2.容器&lt;/h3>
+&lt;p>容器是镜像运行时的实体，可以被创建、启动、停止、删除暂停等&lt;/p>
+&lt;blockquote>
+&lt;p>镜像(Image)和容器(container)的关系，就像是面向对象程序设计中的&lt;code>类&lt;/code> 和&lt;code>实例&lt;/code> 一样&lt;/p>&lt;/blockquote>
+&lt;p>容器的实质是进程，运行于属于自己的独立的命名空间。因此容器可以拥有自己的&lt;code>root&lt;/code> 文件系统，网络配置、进程空间等，运行在一个隔离的环境。这样的隔离特性，使得容器封装的应用比直接在宿主运行更加安全&lt;/p>
+&lt;p>容器也是分层存储，是&lt;strong>以镜像为基础层&lt;/strong>，在其上创建一个当前容器的存储层，这个层是为容器运行时进行读写而准备的，称为&lt;strong>容器存储层&lt;/strong>&lt;/p>
+&lt;p>容器存储层的生命周期跟容器一样，当容器消亡时，容器存储层也随之消亡，因此任何保存于容器存储层的信息都会随着容器的删除而丢失&lt;/p>
+&lt;blockquote>
+&lt;p>Dokcer最佳实践的要求，容器不应该向其存储层写入任何数据，容器存储层保存无状态化，所有的文件写入操作，都应该使用数据卷、或者绑定宿主目录&lt;/p>
+&lt;p>数据卷独立于容器，使用容器卷，容器的删除或者重写运行之后，数据都不会丢失&lt;/p>&lt;/blockquote>
+&lt;h3 id="3仓库">3.仓库&lt;/h3>
+&lt;p>Docker Register：提供一个集中的存储、分发镜像的服务&lt;/p>
+&lt;p>一个&lt;strong>Docker Register&lt;/strong>可以包含多个**仓库（&lt;strong>&lt;strong>Repository&lt;/strong>&lt;/strong>）;&lt;strong>每个仓库可以包含多个&lt;/strong>标签（Tag）,**每个标签对应一个镜像&lt;/p>
+&lt;p>可以通过&lt;code>&amp;lt;Repository Name&amp;gt;:&amp;lt;Tag Name&amp;gt;&lt;/code> 的格式来指定具体的软件是那个版本的镜像&lt;/p>
+&lt;p>仓库名以两段路径形式出现，比如&lt;code>jwilder/nginx-proxy&lt;/code> 前者是Docker Registry多用户环境下的用户名，后者是对应的软件名&lt;/p>
+&lt;h3 id="docker-registry-公开服务">Docker Registry 公开服务&lt;/h3>
+&lt;p>Docker Registry公开服务是开放给用户使用、允许用户管理镜像的Registry服务。&lt;/p>
+&lt;p>最常见的是Docker Registry公开服务是官方的&lt;a href="https://hub.docker.com/">hub.docker.com&lt;/a>，也是默认的Registry&lt;/p>
+&lt;p>也可以使用国内的镜像网站&lt;/p>
+&lt;h3 id="私有docker-registry">私有Docker Registry&lt;/h3>
+&lt;p>用户可以在本地搭建私有的Docker Registry。Docker提供了Docker Registry镜像，可以直接使用搭建私有Registry服务&lt;/p>
+&lt;h2 id="二镜像">二、镜像&lt;/h2>
+&lt;h3 id="1获取镜像">1.获取镜像&lt;/h3>
+&lt;p>从Docker镜像仓库获取镜像的命令是 &lt;code>docker pull&lt;/code>&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-Dockerfile" data-lang="Dockerfile">&lt;span style="display:flex;">&lt;span>docker pull &lt;span style="color:#f92672">[&lt;/span>选项&lt;span style="color:#f92672">]&lt;/span> &lt;span style="color:#f92672">[&lt;/span>Docker Registry 地址&lt;span style="color:#f92672">[&lt;/span>:端口号&lt;span style="color:#f92672">]&lt;/span>/&lt;span style="color:#f92672">]&lt;/span> 仓库名&lt;span style="color:#f92672">[&lt;/span>:标签&lt;span style="color:#f92672">]&lt;/span>&lt;span style="color:#960050;background-color:#1e0010">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>具体选项可以从&lt;code>docker pull --help&lt;/code> 命令查看，&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>Docker镜像仓库地址：地址格式一般为 &lt;code>&amp;lt;域名/IP&amp;gt;[:端口号]&lt;/code>。默认地址是 Docker Hub&lt;/p></description></item><item><title>MySQL - Todo</title><link>https://chhz0.github.io/notes/database/mysql/todo/</link><pubDate>Wed, 02 Jul 2025 15:37:39 +0800</pubDate><guid>https://chhz0.github.io/notes/database/mysql/todo/</guid><description>&lt;blockquote>
 &lt;p>MySQL 内容代办事项&lt;/p>&lt;/blockquote>
 &lt;ul>
 &lt;li>&lt;input disabled="" type="checkbox"> SQL基础语法&lt;/li>
@@ -222,7 +938,8 @@
 &lt;h3 id="源码构建">源码构建&lt;/h3>
 &lt;h3 id="仓库软件包">仓库软件包&lt;/h3>
 &lt;h2 id="configuration">Configuration&lt;/h2>
-&lt;h2 id="cli">CLI&lt;/h2></description></item><item><title>Bitcask</title><link>https://chhz0.github.io/blogs/2025/bitcask/bitcask-core/</link><pubDate>Sat, 05 Apr 2025 15:07:38 +0800</pubDate><guid>https://chhz0.github.io/blogs/2025/bitcask/bitcask-core/</guid><description>&lt;p>Bitcask是一个高性能的键值存储系统，设计之初的目的是提供高写入吞吐量和高效读取性能。采用了日志化结构哈希表(Log-Structured Hash Table)，核心是写前日志(WAL)、内存哈希表和定期merge.&lt;/p>
+&lt;h2 id="cli">CLI&lt;/h2></description></item><item><title>Bitcask</title><link>https://chhz0.github.io/blogs/2025/0405.bitcask-core/</link><pubDate>Sat, 05 Apr 2025 15:07:38 +0800</pubDate><guid>https://chhz0.github.io/blogs/2025/0405.bitcask-core/</guid><description>&lt;blockquote>
+&lt;p>Bitcask是一个高性能的键值存储系统，设计之初的目的是提供高写入吞吐量和高效读取性能。采用了日志化结构哈希表(Log-Structured Hash Table)，核心是写前日志(WAL)、内存哈希表和定期merge.&lt;/p>&lt;/blockquote>
 &lt;p>具体细节均在官方的设计论文 &lt;a href="https://riak.com/assets/bitcask-intro.pdf">Bitcask Design Paper&lt;/a> 中可以查看。&lt;/p>
 &lt;blockquote>
 &lt;p>官方论文中提到的bitcask应该具备的特性&lt;/p>
@@ -259,7 +976,83 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ └── hugo-docs.md
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├── about.md
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>└── search.md
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>在&lt;code>content/blogs&lt;/code> 目录下，将以 date.title.md 的markdown文件列表. &lt;code>content/archive/**/*&lt;/code> 将存在目录层级，以方便查找想要阅读的博客，&lt;/p></description></item><item><title>Search</title><link>https://chhz0.github.io/search/</link><pubDate>Mon, 24 Mar 2025 23:00:00 -0300</pubDate><guid>https://chhz0.github.io/search/</guid><description>&lt;h1 id="search">Search&lt;/h1>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>在&lt;code>content/blogs&lt;/code> 目录下，将以 date.title.md 的markdown文件列表. &lt;code>content/archive/**/*&lt;/code> 将存在目录层级，以方便查找想要阅读的博客，&lt;/p></description></item><item><title/><link>https://chhz0.github.io/interviews/mysql/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://chhz0.github.io/interviews/mysql/</guid><description>&lt;h2 id="0-sql语法">0. SQL语法&lt;/h2>
+&lt;h3 id="01-count主键和count非主键结果会不同吗">0.1 count主键和count非主键结果会不同吗？&lt;/h3>
+&lt;p>分析：count()函数是返回表中某个列的非NULL值数量&lt;/p>
+&lt;ul>
+&lt;li>主键不能存储NULL值，所以count(主键)返回的结果，可以表示数据库中所有行数据的量&lt;/li>
+&lt;li>非主键可以保存NULL值，所以count(非主键)返回表中非主键列的非NULL值的数量&lt;/li>
+&lt;/ul>
+&lt;p>回答：
+主键不能存NULL值，所以count主键代表统计表中所有行数据的数量
+而非主键可以存储NULL值，所以count非主键返回的是表中这个列的非NULL值的数量&lt;/p>
+&lt;h2 id="一索引面试题">一、索引面试题&lt;/h2>
+&lt;h3 id="11-mysql有哪些索引">1.1 MySQL有哪些索引？&lt;/h3>
+&lt;p>分析：索引是由存储引擎来实现的，不同存储引擎支持的索引类型也是不同的，大多数存储引擎都是支持&lt;/p>
+&lt;p>B+树索引，哈希索引，全文索引的区别：&lt;/p>
+&lt;ul>
+&lt;li>B+树索引：InnoDB引擎默认的索引，支持排序，分组，模糊查询等，并且性能稳定&lt;/li>
+&lt;li>哈希索引：多用于等值查询，时间复杂度为O(1)，效率非常高，但不支持排序，范围查询以及模糊查询&lt;/li>
+&lt;li>全文索引：一般用于查询文本中的关键字，而不是直接比较是否相等等，主要用来解决 WHERE name LIKE &amp;ldquo;%aaaa%&amp;rdquo;&lt;/li>
+&lt;/ul>
+&lt;p>&lt;a href="https://dev.mysql.com/doc/refman/8.0/en/storage-engines.html">dev.mysql.com&lt;/a>&lt;/p>
+&lt;p>回答：我了解到Mysql支持B+树索引，哈希索引，全文索引这三种索引类型，比较常用的是B+树索引，因为它是InnoDB引擎默认使用的索引类型，支持排序，分组，范围查询，模糊查询等&lt;/p>
+&lt;h3 id="12-innodb引擎的索引数据结构是什么">1.2 InnoDB引擎的索引数据结构是什么？&lt;/h3>
+&lt;p>回答：InnoDB引擎是采用B+树作为索引的数据结构&lt;/p>
+&lt;h3 id="130-mysql为什么使用b树">1.3.0 mysql为什么使用B+树？&lt;/h3>
+&lt;p>分析：这里要回答对平衡树、红黑树，跳表，B树等的对比&lt;/p>
+&lt;p>回答：&lt;/p>
+&lt;ul>
+&lt;li>B+树是多叉树，平衡二叉树、红黑树是二叉树，在同等数据量下，平衡二叉树、红黑树高度更高，磁盘IO次数更多，性能更差，而且它们会频繁执行在平衡过程，来保证树形结构平衡&lt;/li>
+&lt;li>和B+树相比，跳表在极端情况下会退化为链表，平衡性差，而数据库查询需要一个可预期的查询时间，并且跳表需要更多的内存&lt;/li>
+&lt;li>和B+树相比，B树的数据结构存储在全部节点，对范围查询不友好，非叶子节点存储了数据，导致内存中难以放下全部非叶子节点，如果内存放不下非叶子节点，那么意味着查询非叶子节点的时候都需要磁盘IO&lt;/li>
+&lt;/ul>
+&lt;p>学习：&lt;a href="https://leeshengis.com/archives/672553">10｜数据库索引：为什么MySQL用B+树而不用B树？ | JUST DO IT&lt;/a>&lt;/p>
+&lt;h3 id="13-为什么索引用b树而不用红黑树">1.3 为什么索引用B+树？而不用红黑树？&lt;/h3>
+&lt;p>分析：InnoDB引擎的数据是存储在磁盘上的，所以选择数据结构的第一优先级是考虑从磁盘查询数据的成本，如果树的高度越高，意味着磁盘I/O就越多，这样会影响查询性能&lt;/p>
+&lt;p>对于N个叶子节点的B+树，其搜索复杂度为&lt;code>O(logdN)&lt;/code> ，其中d表示节点允许的最大子节点个数为d&lt;/p>
+&lt;p>在实际的应用中，即使数据达到了千万级别，B+树的高度依旧维持在3&lt;del>4层，也就是说一次数据查询操作只需要做3&lt;/del>4次的磁盘I/O操作&lt;/p>
+&lt;p>而红黑树本质上是二叉树，二叉树的每个父节点的儿子节点只能是2个，意味着其搜索复杂度为&lt;code>O(logN)&lt;/code> ，这已经比B+Tree高出不少，因此二叉树搜索到目标数据所经历的磁盘I/O次数要更多&lt;/p>
+&lt;p>回答：主要原因是随着数据量的增多，红黑树的树高会比B+树高 ，这样查询数据的时候会面临更多的磁盘I/O，查询性能没那么好。&lt;/p>
+&lt;p>因为红黑树本质是二叉树，而b+树是多叉树，存储相同数量的数据量下，红黑树的树高会比B+树的树高，由于InnoDB引擎的数据都是存储在磁盘上的，如果树的高度过高，意味着磁盘I/O就越多，会影响到查询性能，所以InnoDB引擎的索引选择了B+树&lt;/p>
+&lt;h3 id="14-为什么索引用b树而不是b树">1.4 为什么索引用B+树？而不是B树？&lt;/h3>
+&lt;p>分析：考察对B+树 和 B 树的理解，可以从三个角度分析&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>磁盘I/O角度&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>范围查询角度&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>增删改查角度&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;p>回答：我觉得主要有三个原因：&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>B+树的磁盘读写代价更低：B+树只有叶子节点存储索引和数据，非叶子节点只存放索引，而B树所有节点都会存放索引和数据，因此存储相同数据量的情况下，B+树可以比B树更矮胖，查询叶子节点的磁盘I/O次数也少&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>B+树便于范围查询：MySQL经常需要使用范围查询，B+树所有叶子节点间都有链表进行连接，这种设计对范围查询查询非常有帮助，B树没有将所有叶子节点用链表串联起来的结构，只能用中序遍历来完成范围查询，这会比B+树范围查询涉及多个节点的磁盘I/O操作，一次范围查询的效率不如B+树&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>B+树增删改查效率更加稳定：B+树有大量冗余节点，这些冗余数据可以让B+树在插入、删除的效率都更高，比如删除根节点的时候，不会像B树那样会发生复杂的树的变化。另外，B+树把所有指向数据的指针都放在叶子节点，因此查询、插入、删除数据都需要走到最后一层，这不同于B树可能在任意一层找到数据，所以B+树更为稳定&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="15-为什么索引用b树而不用哈希表">1.5 为什么索引用B+树？而不用哈希表？&lt;/h3>
+&lt;p>分析：&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>哈希表的数据是散列分布的，不具有序性，无法进行范围和排序&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>哈希表存在哈希冲突，哈希冲突严重，也会降低查询效率&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;p>回答：MySQL会有会多范围和排序的场景，虽然哈希表的搜索时间复杂度是O(1)，但是由于哈希表的数据都是通过哈希函数计算后散列分布的，所以哈希表索引不支持范围和排序操作，不支持联合索引最左匹配原则，如果重复键比较多，还容易操作哈希碰撞导致效率进一步降低。而B+树可以满足这些应用&lt;/p>
+&lt;h3 id="16聚簇索引和非聚簇索引有什么区别">1.6聚簇索引和非聚簇索引有什么区别？&lt;/h3>
+&lt;p>分析：先说聚簇索引和非聚簇索引B+树叶子节点存放内容的区别，然后再引出回表查询和覆盖索引查询&lt;/p></description></item><item><title>Search</title><link>https://chhz0.github.io/search/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://chhz0.github.io/search/</guid><description>&lt;h1 id="search">Search&lt;/h1>
 &lt;p>Here you can search for indexable pages, like posts and alike. There&amp;rsquo;s also support for URL param &amp;ldquo;q&amp;rdquo; which then auto searches upon page load event.&lt;/p>
 &lt;blockquote>
 &lt;p>你可以在此处搜索可索引的页面，例如帖子等内容。该功能还支持 URL 参数 &amp;ldquo;q&amp;rdquo;，在页面加载时会自动根据该参数进行搜索。&lt;/p>&lt;/blockquote>

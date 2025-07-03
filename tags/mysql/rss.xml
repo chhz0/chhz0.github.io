@@ -1,4 +1,422 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>MySQL on ch.hugo</title><link>https://chhz0.github.io/tags/mysql/</link><description>Recent content in MySQL on ch.hugo</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Wed, 02 Jul 2025 15:37:39 +0800</lastBuildDate><atom:link href="https://chhz0.github.io/tags/mysql/rss.xml" rel="self" type="application/rss+xml"/><item><title>MySQL - Todo</title><link>https://chhz0.github.io/notes/database/mysql/todo/</link><pubDate>Wed, 02 Jul 2025 15:37:39 +0800</pubDate><guid>https://chhz0.github.io/notes/database/mysql/todo/</guid><description>&lt;blockquote>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>MySQL on ch.hugo</title><link>https://chhz0.github.io/tags/mysql/</link><description>Recent content in MySQL on ch.hugo</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Thu, 03 Jul 2025 23:16:28 +0800</lastBuildDate><atom:link href="https://chhz0.github.io/tags/mysql/rss.xml" rel="self" type="application/rss+xml"/><item><title>Mysql Transaction(bate)</title><link>https://chhz0.github.io/notes/database/mysql/mysql-transaction/</link><pubDate>Thu, 03 Jul 2025 23:16:28 +0800</pubDate><guid>https://chhz0.github.io/notes/database/mysql/mysql-transaction/</guid><description>&lt;blockquote>
+&lt;p>MySQL 事务&lt;/p>&lt;/blockquote>
+&lt;h2 id="1事务有哪些特征">1.事务有哪些特征&lt;/h2>
+&lt;p>原子性，隔离性，一致性，持久性&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>原子性：要么全做，要么全不做&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>隔离性：保证其它的状态转换不会影响到本次状态的转&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>一致性：数据全部符合现实世界的约束&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>持久性： 更新后的数据存储到磁盘&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;p>InnoDB引擎通过以下技术来保证事务的四个特性&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>持久性是通过 redo log（重做日志）来保证&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>原子性是通过 undo log（回滚日志）来保证&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>隔离性是通过 mvcc（多版本并发控制）或者锁机制来保证&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>一致性是通过持久性+原子性+隔离性来保证&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;h2 id="2并发事务会引发的问题">2.并发事务会引发的问题&lt;/h2>
+&lt;p>MySQL服务端是允许多个客户端连接，这意味着MySQL会出现同时处理多个事务的情况&lt;/p>
+&lt;p>在同时处理多个事务的时候，可能会出现脏读、不可重复读、幻读的问题&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>脏读：一个事务读到了另一个&lt;strong>未提交事务修改过&lt;/strong>的数据&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>不可重复读：在一个事务中多次读取同一个&lt;strong>数据&lt;/strong>，出现前后两次读到的数据不一样的情况&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>幻读：在一个事务中多次查询某个符合查询条件的&lt;strong>记录数量&lt;/strong>，如果出现前后两次查询到的记录数据不一样的情况&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;p>以上三个现象，问题的严重性是 脏读 &amp;gt; 不可重复读 &amp;gt; 幻读&lt;/p>
+&lt;h2 id="3事务的隔离级别">3.事务的隔离级别&lt;/h2>
+&lt;p>四种隔离级别：&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>读未提交：指一个事务还没有提交时，它做的变更就能被其他事务看到&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>读提交：指一个事务提交之后，它做的变更才能被其他事务看到&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>可重复读：指一个事务执行过程中看到的数据，一直跟这个事务启动时看到的数据是一致的，&lt;strong>MySQL&lt;/strong> &lt;strong>InnoDB引擎的默认隔离级别&lt;/strong>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>串行化：对记录加上读写锁，在多个事务对这条记录进行读写操作时，如果发生读写冲突的时候，后访问的事务必须等前一个事务执行完成&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;blockquote>
+&lt;p>按隔离水平高低排序如下：&lt;/p>
+&lt;p>串行化 &amp;gt; 可重复读 &amp;gt; 读已提交 &amp;gt; 读未提交&lt;/p>&lt;/blockquote>
+&lt;p>针对不同的隔离级别：并发事务时可能发生的现象也不同&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>读未提交：脏读、不可重复读、幻读&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>读提交：不可重复读、幻读&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>可重复读：幻读&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>串行化：&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;p>可重复读的隔离级别下，可以&lt;strong>很大程度上避免&lt;/strong>幻读现象的发生，所以MySQL不使用串行化隔离级别来避免幻读现象的发生，因为&lt;strong>串行化隔离级别会影响性能&lt;/strong>&lt;/p>
+&lt;p>InnoDB在默认隔离级别：&lt;strong>可重复读&lt;/strong>的情况下很大程度上解决幻读现象的解决方案有两种：&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>针对**快照读（普通 select 语句），**是通过MVCC方式解决幻读&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>针对**当前读（select &amp;hellip; for update），**通过next-key lock（记录锁+间隙锁）方式解决了幻读&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;p>四种隔离事务是怎么实现的&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>对于读未提交：可以读到未提交事务修改的数据，所以直接读取就行&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>对于串行化，通过加读写锁的方式来避免并行访问&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>对于读提交和可重复读这两种隔离级别的事务，是通过Read View来实现的，它们的区别是在于创建Read View时，读提交隔离级别是在每个语句执行之前都会重新生成一个Read View；而可重复读隔离级别是启动事务时生成一个Read View，然后整个事务都在用这个Read View&lt;/p></description></item><item><title>Mysql Log(bate)</title><link>https://chhz0.github.io/notes/database/mysql/mysql-log/</link><pubDate>Thu, 03 Jul 2025 23:16:14 +0800</pubDate><guid>https://chhz0.github.io/notes/database/mysql/mysql-log/</guid><description>&lt;blockquote>
+&lt;p>MySQL 日志 - undo log | redo log | bin log&lt;/p>&lt;/blockquote>
+&lt;p>先理解执行一条sql语句，在mysql内部会发生什么？&lt;/p>
+&lt;p>以执行一条&lt;code>update&lt;/code> 语句为例：&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>客户端会先通过连接器建立连接，连接器会判断用户身份&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>这里是一条update语句，所以不需要经过查询缓存（注意，当表上有更新语句，会把整个查询缓存清空，所以在Mysql8.0这个功能就被移除了）&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>解析器会通过词法分析识别出关键字，构建出语法树，接着做语法分析，判断输入的语句是否符合MySQL语法&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>预处理器会判断表和字段是否存在&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>优化器确定执行计划（使用索引或者全表查询）&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>执行器负责具体执行，找到这一行然后更新&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;p>不过，更新语句的流程会涉及到&lt;strong>undo&lt;/strong> &lt;strong>log&lt;/strong>**，redo log，binlog**三种日志：&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>undo log（回滚日志）：是InnoDB存储引擎生成的日志，实现了事务中的&lt;strong>原子性&lt;/strong>，主要用于事务回滚和MVCC&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>redo log（重做日志）：是InnoDB存储引擎生成的日志，实现了事务中的&lt;strong>持久性&lt;/strong>，主要用于掉电等故障恢复&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>bing log（归档日志）：是Server层生成的日志，主要用于数据备份和主从复制&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="1为什么需要undo-log">1.为什么需要undo log？&lt;/h2>
+&lt;p>在执行一条“增删改”语句的时候，MySQL会隐式开启事务，执行完后自动提交事务&lt;/p>
+&lt;blockquote>
+&lt;p>MySQL中执行一条语句后是否自动提交事务，是由&lt;code>autocommit&lt;/code> 参数来决定的，默认是开启的&lt;/p>&lt;/blockquote>
+&lt;p>当事务执行过程中，都记录下回滚时需要的信息到一个日志中，那么在事务执行过程中发生MySQL崩溃后，可以通过这个日志回滚到事务之前的数据&lt;/p>
+&lt;p>实现这一机制就是 &lt;strong>undo&lt;/strong> &lt;strong>log&lt;/strong>**（回滚日志），它保证了事务的&lt;strong>&lt;strong>ACID&lt;/strong>&lt;/strong>特性中的原子性**&lt;/p>
+&lt;p>每当InnoDB引擎对每种操作进行回滚时，进行相反操作就行：&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>插入 - 删除&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>删除 - 插入&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>更新 - 更新为旧值&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;p>一条记录每次进行操作产生的undo log格式都有一个roll_pointer和一个trx_id事务id：&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>trx_id：记录该记录是被哪些事务修改的&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>roll_pointer：指针可以将这些undo log串成一个链表，这个链表被称为版本链&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;p>&lt;img src="https://rt5bap83jl.feishu.cn/space/api/box/stream/download/asynccode/?code=N2UyNDE0NmNmNDU2N2UyY2Q5NDJkYzZiNzAwMzY3OTRfUjh5Zmw4d3VoWFI5VGZnaFR2a0NsVWk0bVdPTEM2WW5fVG9rZW46V3FmemIzbkhQb1BkRjB4UGFLbWNwR2RpbkRLXzE3MjE4NDExMjk6MTcyMTg0NDcyOV9WNA" alt="">&lt;/p>
+&lt;p>另外，undo log可以跟Read View一起实现MVCC（多版本并发控制）：&lt;/p>
+&lt;p>对于 &lt;strong>读提交&lt;/strong> 和 &lt;strong>可重复读&lt;/strong> 隔离级别的事务来说，它们的快照读（普通select语句）是通过Read View + undo log来实现的，区别在于创建Read View的时机不同&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>读提交：是在每一个select都会生成一个新的Read View，也意味着事务期间的多次读取同一数据，前后两次读的数据可能会出现不一致（不可重复读）&lt;/p></description></item><item><title>Mysql Lock(bate)</title><link>https://chhz0.github.io/notes/database/mysql/mysql-lock/</link><pubDate>Thu, 03 Jul 2025 23:16:11 +0800</pubDate><guid>https://chhz0.github.io/notes/database/mysql/mysql-lock/</guid><description>&lt;blockquote>
+&lt;p>MySQL 锁 - 全局锁|表级锁|行级锁&lt;/p>&lt;/blockquote>
+&lt;h2 id="锁的类型">锁的类型&lt;/h2>
+&lt;p>Mysql的锁，根据加锁的范围可以分为全局锁、表级锁和行锁三类&lt;/p>
+&lt;h3 id="全局锁">全局锁&lt;/h3>
+&lt;p>要使用全局锁，执行下面这条命令：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-C" data-lang="C">&lt;span style="display:flex;">&lt;span>flush tables with read lock
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>执行之后，整个数据库就处于只读状态，这时其他线程执行以下操作，就会被阻塞&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>对数据的增删改，比如insert、delete、update等&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>对表结构的更改操作，比如alter table、drop table等&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;p>要释放全局锁，执行下面的命令：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-C" data-lang="C">&lt;span style="display:flex;">&lt;span>unlock tables
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;blockquote>
+&lt;p>全局锁的应用场景：&lt;/p>
+&lt;p>全局锁主要用于做&lt;strong>全库逻辑备份&lt;/strong>，这样在备份数据库期间，不会因为数据或者结构的更新，而出现备份文件的数据与预期的不一样&lt;/p>&lt;/blockquote>
+&lt;p>加全局锁带来的缺点：会导致业务停滞，因为加全局锁之后，整个数据库都只是只读状态，不能更新数据&lt;/p>
+&lt;p>可以通过开启事务，在可重复读的隔离级别下，即使其他事务更新了表的数据，也不会影响备份数据库时的Read View，&lt;/p>
+&lt;p>备份数据库的工具是&lt;code>mysqldump&lt;/code> ，在使用mysqldump时加上&lt;code>-single-transaction&lt;/code> 参数的时候，就会在备份数据库之前开启事务&lt;/p>
+&lt;h3 id="表级锁">表级锁&lt;/h3>
+&lt;p>MySQL里面表级锁有以下几种：&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>表锁&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>元数据锁（MDL）&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>意向锁&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>AUTO-INC锁&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;h4 id="表锁">表锁&lt;/h4>
+&lt;p>使用下面的命令对表加锁和释放锁&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-C" data-lang="C">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">// 加读锁
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>lock tables &lt;span style="color:#f92672">&amp;lt;&lt;/span>table_name&lt;span style="color:#f92672">&amp;gt;&lt;/span> read;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">// 写锁
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>lock tables &lt;span style="color:#f92672">&amp;lt;&lt;/span>table_name&lt;span style="color:#f92672">&amp;gt;&lt;/span> write;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">// 释放锁
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>unlock tables;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>表锁会影响别的线程和本线程的读写操作&lt;/p>
+&lt;h4 id="元数据锁mdl">元数据锁（MDL）&lt;/h4>
+&lt;p>对于MDL，我们不需要显示使用，因为当我们在对数据库进行操作时，会自动给这个表上加MDL：&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>对一张表进行CURD操作时，加的是MDL读锁&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>对一张表做结构变更操作的时候，加的是MDL写锁&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;p>MDL是为了保证当前用户对表执行CRUD操作时，防止其他线程对这个表结构做了变更&lt;/p>
+&lt;p>MDL是在事务提交之后才会释放，这意味着&lt;strong>事务执行期间，MDL是一直持有&lt;/strong>&lt;/p>
+&lt;p>需要注意的是，在事务启用之后，如果事务A没有提交，此时如果有表结构的修改请求发起，就会发生阻塞，这个阻塞也会导致其他CURD的请求被阻塞住&lt;/p>
+&lt;p>这是因为申请MDL锁的操作会形成一个队列，队列中&lt;strong>写锁&lt;strong>&lt;strong>获取优先级大于&lt;/strong>&lt;/strong>读锁&lt;/strong>，一旦出现MDL写锁等待，会阻塞该表后续的CRUD操作&lt;/p>
+&lt;h4 id="意向锁">意向锁&lt;/h4>
+&lt;ul>
+&lt;li>
+&lt;p>在使用InnoDB引擎的表里对某些记录加上共享锁之前，需要先在表级别加上一个意向共享锁&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>在使用InnoDB引擎的表里对某些记录加上独占锁之前，需要先在表级别加上一个意向独占锁&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;p>在执行insert、update、delete操作时，需要先对表上加 意向独占锁，然后对该记录加独占锁&lt;/p>
+&lt;p>而普通的select是不会加行级锁，普通的select语句是利用MVCC实现一致性读，是无锁的&lt;/p></description></item><item><title>Mysql Index(bate)</title><link>https://chhz0.github.io/notes/database/mysql/mysql-index/</link><pubDate>Thu, 03 Jul 2025 23:16:07 +0800</pubDate><guid>https://chhz0.github.io/notes/database/mysql/mysql-index/</guid><description>&lt;blockquote>
+&lt;p>MySQL 索引&lt;/p>&lt;/blockquote>
+&lt;h2 id="1-b树索引数据结构">1. B+树（索引数据结构）&lt;/h2>
+&lt;p>什么是索引？
+为什么索引能加快查询？
+索引的数据结构是什么？
+B+ 树 和（B 树 和 红黑树）有什么区别？
+为什么选择 B+树 作为索引数据结构？&lt;/p>
+&lt;h3 id="为什么mysql-innodb选择b-tree作为索引">为什么Mysql InnoDB选择B+ Tree作为索引？&lt;/h3>
+&lt;ol>
+&lt;li>B+ 树 vs B 树
+B+ 树只在叶子节点存储数据，B树的非叶子节点也要存储数据，所以B+ 树的单个节点的数据量更小&lt;/li>
+&lt;li>B+ 树 vs 二叉树
+对于有N个叶子节点的B+ 树，搜索复制度为O（logdn）&lt;/li>
+&lt;li>B+ 树 vs Hash&lt;/li>
+&lt;/ol>
+&lt;blockquote>
+&lt;p>&lt;a href="https://learn.lianglianglee.com/%E4%B8%93%E6%A0%8F/MySQL%E5%AE%9E%E6%88%98%E5%AE%9D%E5%85%B8/08%20%20%E7%B4%A2%E5%BC%95%EF%BC%9A%E6%8E%92%E5%BA%8F%E7%9A%84%E8%89%BA%E6%9C%AF.md">08 索引:排序的艺术&lt;/a>&lt;/p>
+&lt;p>&lt;a href="https://xiaolincoding.com/mysql/index/why_index_chose_bpuls_tree.html">为什么 MySQL 采用 B+ 树作为索引？&lt;/a>&lt;/p>&lt;/blockquote>
+&lt;h2 id="2-索引组织表索引存储">2. 索引组织表（索引存储）&lt;/h2>
+&lt;p>堆表和索引组织表有什么区别？&lt;/p>
+&lt;p>分别应用场景是什么？&lt;/p>
+&lt;p>Mysql InnoDB存储引擎中数据存储方式：&lt;strong>索引组织表&lt;/strong>&lt;/p>
+&lt;p>数据存储有&lt;strong>堆表和索引组织表两种。&lt;/strong>&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>堆表中的数据是无序存放的，数据的排序完全依赖索引&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>索引组织表，数据根据主键进行排序存放在索引中，主键索引也叫&lt;strong>聚集索引&lt;/strong>（Clustered Index）&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;p>在索引组织表中，数据即索引，索引即数据&lt;/p>
+&lt;h3 id="二级索引">二级索引&lt;/h3>
+&lt;p>InnoDB存储引擎的数据是根据主键索引排序存储的，除了主键索引外，其它的索引都称为二级索引（Secondeary Index），或者非聚集索引&lt;/p>
+&lt;p>二级索引也是一颗B+树索引，但是它和主键索引不同的是叶子节点存放的是索引键值、主键值&lt;/p>
+&lt;p>通过二级索引&lt;code>idx_name&lt;/code> 只能定位主键值，需要额外再通过主键索引进行查询，才能得到最终结果。&lt;/p>
+&lt;p>&lt;strong>这种二级索引通过&lt;strong>&lt;strong>主键&lt;/strong>&lt;/strong>索引进行再一次查询的操作叫做“回表”&lt;/strong>&lt;/p>
+&lt;p>这样的二级索引设计的好处：若记录发生了修改，则其它索引无须进行维护，除非记录的主键发生了修改&lt;/p>
+&lt;p>&lt;strong>在索引组织表中，万物皆索引，索引就是数据，数据就是索引&lt;/strong>。&lt;/p>
+&lt;h3 id="二级索引的性能评估">二级索引的性能评估&lt;/h3>
+&lt;ul>
+&lt;li>
+&lt;p>要比较顺序，对聚集索引性能友好&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>尽可能紧凑，对二级索引的性能和存储友好&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="函数索引先了解">函数索引（先了解）&lt;/h3>
+&lt;p>&amp;hellip;&lt;/p></description></item><item><title>Mysql Buffer Pool(bate)</title><link>https://chhz0.github.io/notes/database/mysql/mysql-buffer-pool/</link><pubDate>Thu, 03 Jul 2025 23:15:59 +0800</pubDate><guid>https://chhz0.github.io/notes/database/mysql/mysql-buffer-pool/</guid><description>&lt;blockquote>
+&lt;p>MySQL 缓存池&lt;/p>&lt;/blockquote>
+&lt;h2 id="为什么要有buffer-pool">为什么要有Buffer Pool&lt;/h2>
+&lt;p>MySQL的数据存储在磁盘的，如果每次都从磁盘里面读取数据，这样性能是很差的&lt;/p>
+&lt;p>提高性能，就需要加入缓存。当数据从磁盘中取出来之后，缓存内存中，下次查询同样的数据，直接从内存中读取&lt;/p>
+&lt;p>为此InnoDB存储引擎设计了&lt;strong>一个缓存池（Buffer Pool），来提高数据库的读写性能&lt;/strong>&lt;/p>
+&lt;p>有了缓冲池后：&lt;/p>
+&lt;ul>
+&lt;li>读取数据时，如果数据存在于Buffer Pool中，客户端就会直接读取Buffer Pool中的数据，否则再去磁盘中读取&lt;/li>
+&lt;li>当修改数据时，首先修改Buffer Pool中数据所在的数据页，然后将该页设置为脏页，最后由后台线程将脏页写入到磁盘&lt;/li>
+&lt;/ul>
+&lt;h2 id="buffer-pool有多大">Buffer Pool有多大？&lt;/h2>
+&lt;p>Buffer Pool在MySQL启动的时候，向操作系统申请的一片连续的内存空间，默认配置下Buffer Pool只有&lt;code>128MB&lt;/code>&lt;/p>
+&lt;p>可以通过调整&lt;code>innodb_buffer_pool_size&lt;/code> 参数来设置Buffer Pool的大小，一般建议设置为可用物理内存的60%~80%&lt;/p>
+&lt;h2 id="buffer-pool缓存什么">Buffer Pool缓存什么？&lt;/h2>
+&lt;p>InnoDB会把存储的数据分为若干个&lt;strong>页&lt;/strong>，以页作为磁盘和内存交互的基本单位，一个页的默认大小为**16kb，**因此Buffer Pool同样需要按页来划分&lt;/p>
+&lt;p>在MySQL启动的时候，**InnoDB会为Buffer Pool申请一片连续的&lt;strong>&lt;strong>内存&lt;/strong>&lt;/strong>空间，然后按照默认的16&lt;strong>&lt;strong>kb&lt;/strong>&lt;/strong>的大小划分出一个个的页，Buffer Pool中的页就叫做缓存页。**这些缓存页都是空的，之后随着程序的运行，才会有磁盘上的页被缓存到Buffer Pool中&lt;/p>
+&lt;p>所以，MySQL刚启动的时候，其使用的虚拟内存空间很大，而使用到的物理内存空间很小，这时因为这些虚拟内存被访问后，操作系统才会触发缺页中断，接着将虚拟地址和物理地址建立映射关系&lt;/p>
+&lt;p>Buffer Pool缓存了以下的：&lt;/p>
+&lt;ul>
+&lt;li>索引页&lt;/li>
+&lt;li>数据页&lt;/li>
+&lt;li>插入缓存页&lt;/li>
+&lt;li>Undo页&lt;/li>
+&lt;li>自适应哈希索引&lt;/li>
+&lt;li>锁信息&lt;/li>
+&lt;/ul>
+&lt;p>为了更好管理Buffer Pool中的缓存页，InnoDB为每一个缓存页都创建了一个**控制块，**控制块包括缓存页的表空间，页号，缓存页地址，链表节点等，控制块也占据内存空间，它是在Buffer Pool的最前面，接着才是缓存页&lt;/p>
+&lt;p>暂时无法在飞书文档外展示此内容&lt;/p>
+&lt;p>上面的控制块和缓存页之间的空白空间称为&lt;strong>碎片空间&lt;/strong>&lt;/p>
+&lt;blockquote>
+&lt;p>碎片空间：每一个控制块对应一个缓存页，在分配足够多的控制块和缓存页后，可能剩余的空间不足够一个控制块和缓存页的大小，那么这块空间就不被使用，剩下的这块空间就被称为碎片&lt;/p>
+&lt;p>当Buffer Pool的大小设置的刚刚好，就不会产生碎片&lt;/p>&lt;/blockquote>
+&lt;p>查询一条记录时，InnoDB会把整个页的数据加载到Buffer Pool中，通过索引只能定位到磁盘中的页，而不能定位到页中一条记录。&lt;/p>
+&lt;p>&lt;a href="https://mp.weixin.qq.com/s/A5gNVXMNE-iIlY3oofXtLw">mp.weixin.qq.com&lt;/a>(从数据页的角度看B+树——InnoDB存储引擎)&lt;/p>
+&lt;p>记录是按照行来存储的，但是数据库的读取并不是以&lt;strong>行&lt;/strong>为单位，否则一次读取（一次IO操作）只能处理一行数据，效率会非常低，因此，&lt;strong>InnoDB的数据是按照数据页为单位来读写的&lt;/strong>&lt;/p>
+&lt;p>数据页的结构分为7个部分&lt;/p>
+&lt;table>
+ &lt;thead>
+ &lt;tr>
+ &lt;th>&lt;/th>
+ &lt;th>&lt;/th>
+ &lt;/tr>
+ &lt;/thead>
+ &lt;tbody>
+ &lt;tr>
+ &lt;td>File Header(38)&lt;/td>
+ &lt;td>文件头，表示页的信息&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>Page Header(56)&lt;/td>
+ &lt;td>页头，表示页的状态信息&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>infimum+supermun(26)&lt;/td>
+ &lt;td>两个虚拟伪记录，分别表示页中最小记录和最大记录&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>User Records(unclear)&lt;/td>
+ &lt;td>存储行记录内容&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>Free Space(unclear)&lt;/td>
+ &lt;td>页中还没被使用的&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>Page Directory(unclear)&lt;/td>
+ &lt;td>页目录，存储用户记录的相对位置，对记录起索引作用&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>File Tailer(8)&lt;/td>
+ &lt;td>校验页是否完整&lt;/td>
+ &lt;/tr>
+ &lt;/tbody>
+&lt;/table>
+&lt;p>其中，行记录由&lt;code>infimum+supremum&lt;/code> 和 &lt;code>User Records&lt;/code>构成&lt;/p></description></item><item><title>Mysql Arch(bate)</title><link>https://chhz0.github.io/notes/database/mysql/mysql-arch/</link><pubDate>Thu, 03 Jul 2025 23:15:49 +0800</pubDate><guid>https://chhz0.github.io/notes/database/mysql/mysql-arch/</guid><description>&lt;blockquote>
+&lt;p>MySQL 架构- server &amp;amp;&amp;amp; storage-engine&lt;/p>&lt;/blockquote>
+&lt;h2 id="61-sql执行过程">6.1 SQL执行过程&lt;/h2>
+&lt;p>推荐阅读 &lt;a href="https://xiaolincoding.com/mysql/base/how_select.html#mysql-%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B%E6%98%AF%E6%80%8E%E6%A0%B7%E7%9A%84">小林coding/mysql&lt;/a>&lt;/p>
+&lt;p>MySQL架构分为两层：&lt;strong>server层和存储引擎层&lt;/strong>&lt;/p>
+&lt;ul>
+&lt;li>Server层负责建立连接、分析和执行SQL
+&lt;ul>
+&lt;li>MySQL大多数核心功能模块都在这里：连接器、查询缓存、解析器、预处理器、优化器、执行器等&lt;/li>
+&lt;li>还有所有的内置函数&lt;/li>
+&lt;li>所有跨存储引擎的功能&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>存储引擎层负责数据的存储和提取
+&lt;ul>
+&lt;li>支持InnoDB、MyISAM、Memory等多个存储引擎&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="611-连接器">6.1.1 连接器&lt;/h3>
+&lt;p>MySQL是基于TCP协议进行传输的，所以在连接MySQL的时候需要先进行TCP三次握手，在命令行使用命令进行连接&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-Bash" data-lang="Bash">&lt;span style="display:flex;">&lt;span>mysql -h $ip -u$user -p
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>用户通过用户密码成功连接后，连接器会获取用户的权限，然后保存起来，在后续的此连接的任何操作，都会基于连接开始的时候读取到的权限逻辑进行判断&lt;/p>
+&lt;p>建立连接后，即使修改了该用户的权限，也不影响已连接的权限。只有新建的连接才会有新的权限设置&lt;/p>
+&lt;h4 id="6111-查看mysql服务的客户端连接">6.1.1.1 查看MySQL服务的客户端连接&lt;/h4>
+&lt;p>可以执行&lt;code>show processlist&lt;/code> 命令进行查看&lt;/p>
+&lt;h4 id="6112-空闲连接会一直占着">6.1.1.2 空闲连接会一直占着&lt;/h4>
+&lt;p>不会，MySQL定义了空闲连接的最大空闲时长，由&lt;code>wait_timeout&lt;/code> 参数控制，默认值是8小时，超过这个时间，连接器就会把这个连接断开&lt;/p>
+&lt;p>使用命令可以查看该值&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-Bash" data-lang="Bash">&lt;span style="display:flex;">&lt;span>show variables like &lt;span style="color:#e6db74">&amp;#39;wait_timeout&amp;#39;&lt;/span>;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>可以手动断开空闲的连接，使用的是&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-SQL" data-lang="SQL">&lt;span style="display:flex;">&lt;span>kill &lt;span style="color:#66d9ef">connection&lt;/span> &lt;span style="color:#f92672">+&lt;/span> id
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>当空闲的连接被服务端主动断开后，这个客户端并不会马上知道，等到客户端在发起下一个请求时，才会收到报错&lt;/p>
+&lt;p>“ERROR 2013 (HY000): Lost connection to MySQL server during query”&lt;/p>
+&lt;h4 id="6113-mysql的连接限制">6.1.1.3 MySQL的连接限制&lt;/h4>
+&lt;p>MySQL服务支持的最大连接数由&lt;code>max_connections&lt;/code> 参数控制&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-Bash" data-lang="Bash">&lt;span style="display:flex;">&lt;span>show variables like &lt;span style="color:#e6db74">&amp;#39;max_connections&amp;#39;&lt;/span>;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>MySQL的连接跟HTTP一样，有短连接和长连接的概念&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-SQL" data-lang="SQL">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">//&lt;/span> &lt;span style="color:#960050;background-color:#1e0010">短连接&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#960050;background-color:#1e0010">连接&lt;/span> mysql &lt;span style="color:#960050;background-color:#1e0010">服务（&lt;/span>TCP &lt;span style="color:#960050;background-color:#1e0010">三次握手）&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#960050;background-color:#1e0010">执行&lt;/span>&lt;span style="color:#66d9ef">sql&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#960050;background-color:#1e0010">断开&lt;/span> mysql &lt;span style="color:#960050;background-color:#1e0010">服务（&lt;/span>TCP &lt;span style="color:#960050;background-color:#1e0010">四次挥手）&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">//&lt;/span> &lt;span style="color:#960050;background-color:#1e0010">长连接&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#960050;background-color:#1e0010">连接&lt;/span> mysql &lt;span style="color:#960050;background-color:#1e0010">服务（&lt;/span>TCP &lt;span style="color:#960050;background-color:#1e0010">三次握手）&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#960050;background-color:#1e0010">执行&lt;/span>&lt;span style="color:#66d9ef">sql&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#960050;background-color:#1e0010">执行&lt;/span>&lt;span style="color:#66d9ef">sql&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#960050;background-color:#1e0010">执行&lt;/span>&lt;span style="color:#66d9ef">sql&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>....
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#960050;background-color:#1e0010">断开&lt;/span> mysql &lt;span style="color:#960050;background-color:#1e0010">服务（&lt;/span>TCP &lt;span style="color:#960050;background-color:#1e0010">四次挥手）&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>一般推荐长连接，但是使用长连接可能会占用内存增多，因为_MySQL在执行查询过程中临时使用内存管理连接对象__，_只有在连接断开的时候才会释放&lt;/p></description></item><item><title>MySQL - Todo</title><link>https://chhz0.github.io/notes/database/mysql/todo/</link><pubDate>Wed, 02 Jul 2025 15:37:39 +0800</pubDate><guid>https://chhz0.github.io/notes/database/mysql/todo/</guid><description>&lt;blockquote>
 &lt;p>MySQL 内容代办事项&lt;/p>&lt;/blockquote>
 &lt;ul>
 &lt;li>&lt;input disabled="" type="checkbox"> SQL基础语法&lt;/li>

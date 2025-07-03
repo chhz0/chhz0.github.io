@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Interviews on ch.hugo</title><link>https://chhz0.github.io/interviews/</link><description>Recent content in Interviews on ch.hugo</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Mon, 01 Jan 0001 00:00:00 +0000</lastBuildDate><atom:link href="https://chhz0.github.io/interviews/rss.xml" rel="self" type="application/rss+xml"/><item><title/><link>https://chhz0.github.io/interviews/mysql/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://chhz0.github.io/interviews/mysql/</guid><description>&lt;h2 id="0-sql语法">0. SQL语法&lt;/h2>
+&lt;h3 id="01-count主键和count非主键结果会不同吗">0.1 count主键和count非主键结果会不同吗？&lt;/h3>
+&lt;p>分析：count()函数是返回表中某个列的非NULL值数量&lt;/p>
+&lt;ul>
+&lt;li>主键不能存储NULL值，所以count(主键)返回的结果，可以表示数据库中所有行数据的量&lt;/li>
+&lt;li>非主键可以保存NULL值，所以count(非主键)返回表中非主键列的非NULL值的数量&lt;/li>
+&lt;/ul>
+&lt;p>回答：
+主键不能存NULL值，所以count主键代表统计表中所有行数据的数量
+而非主键可以存储NULL值，所以count非主键返回的是表中这个列的非NULL值的数量&lt;/p>
+&lt;h2 id="一索引面试题">一、索引面试题&lt;/h2>
+&lt;h3 id="11-mysql有哪些索引">1.1 MySQL有哪些索引？&lt;/h3>
+&lt;p>分析：索引是由存储引擎来实现的，不同存储引擎支持的索引类型也是不同的，大多数存储引擎都是支持&lt;/p>
+&lt;p>B+树索引，哈希索引，全文索引的区别：&lt;/p>
+&lt;ul>
+&lt;li>B+树索引：InnoDB引擎默认的索引，支持排序，分组，模糊查询等，并且性能稳定&lt;/li>
+&lt;li>哈希索引：多用于等值查询，时间复杂度为O(1)，效率非常高，但不支持排序，范围查询以及模糊查询&lt;/li>
+&lt;li>全文索引：一般用于查询文本中的关键字，而不是直接比较是否相等等，主要用来解决 WHERE name LIKE &amp;ldquo;%aaaa%&amp;rdquo;&lt;/li>
+&lt;/ul>
+&lt;p>&lt;a href="https://dev.mysql.com/doc/refman/8.0/en/storage-engines.html">dev.mysql.com&lt;/a>&lt;/p>
+&lt;p>回答：我了解到Mysql支持B+树索引，哈希索引，全文索引这三种索引类型，比较常用的是B+树索引，因为它是InnoDB引擎默认使用的索引类型，支持排序，分组，范围查询，模糊查询等&lt;/p>
+&lt;h3 id="12-innodb引擎的索引数据结构是什么">1.2 InnoDB引擎的索引数据结构是什么？&lt;/h3>
+&lt;p>回答：InnoDB引擎是采用B+树作为索引的数据结构&lt;/p>
+&lt;h3 id="130-mysql为什么使用b树">1.3.0 mysql为什么使用B+树？&lt;/h3>
+&lt;p>分析：这里要回答对平衡树、红黑树，跳表，B树等的对比&lt;/p>
+&lt;p>回答：&lt;/p>
+&lt;ul>
+&lt;li>B+树是多叉树，平衡二叉树、红黑树是二叉树，在同等数据量下，平衡二叉树、红黑树高度更高，磁盘IO次数更多，性能更差，而且它们会频繁执行在平衡过程，来保证树形结构平衡&lt;/li>
+&lt;li>和B+树相比，跳表在极端情况下会退化为链表，平衡性差，而数据库查询需要一个可预期的查询时间，并且跳表需要更多的内存&lt;/li>
+&lt;li>和B+树相比，B树的数据结构存储在全部节点，对范围查询不友好，非叶子节点存储了数据，导致内存中难以放下全部非叶子节点，如果内存放不下非叶子节点，那么意味着查询非叶子节点的时候都需要磁盘IO&lt;/li>
+&lt;/ul>
+&lt;p>学习：&lt;a href="https://leeshengis.com/archives/672553">10｜数据库索引：为什么MySQL用B+树而不用B树？ | JUST DO IT&lt;/a>&lt;/p>
+&lt;h3 id="13-为什么索引用b树而不用红黑树">1.3 为什么索引用B+树？而不用红黑树？&lt;/h3>
+&lt;p>分析：InnoDB引擎的数据是存储在磁盘上的，所以选择数据结构的第一优先级是考虑从磁盘查询数据的成本，如果树的高度越高，意味着磁盘I/O就越多，这样会影响查询性能&lt;/p>
+&lt;p>对于N个叶子节点的B+树，其搜索复杂度为&lt;code>O(logdN)&lt;/code> ，其中d表示节点允许的最大子节点个数为d&lt;/p>
+&lt;p>在实际的应用中，即使数据达到了千万级别，B+树的高度依旧维持在3&lt;del>4层，也就是说一次数据查询操作只需要做3&lt;/del>4次的磁盘I/O操作&lt;/p>
+&lt;p>而红黑树本质上是二叉树，二叉树的每个父节点的儿子节点只能是2个，意味着其搜索复杂度为&lt;code>O(logN)&lt;/code> ，这已经比B+Tree高出不少，因此二叉树搜索到目标数据所经历的磁盘I/O次数要更多&lt;/p>
+&lt;p>回答：主要原因是随着数据量的增多，红黑树的树高会比B+树高 ，这样查询数据的时候会面临更多的磁盘I/O，查询性能没那么好。&lt;/p>
+&lt;p>因为红黑树本质是二叉树，而b+树是多叉树，存储相同数量的数据量下，红黑树的树高会比B+树的树高，由于InnoDB引擎的数据都是存储在磁盘上的，如果树的高度过高，意味着磁盘I/O就越多，会影响到查询性能，所以InnoDB引擎的索引选择了B+树&lt;/p>
+&lt;h3 id="14-为什么索引用b树而不是b树">1.4 为什么索引用B+树？而不是B树？&lt;/h3>
+&lt;p>分析：考察对B+树 和 B 树的理解，可以从三个角度分析&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>磁盘I/O角度&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>范围查询角度&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>增删改查角度&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;p>回答：我觉得主要有三个原因：&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>B+树的磁盘读写代价更低：B+树只有叶子节点存储索引和数据，非叶子节点只存放索引，而B树所有节点都会存放索引和数据，因此存储相同数据量的情况下，B+树可以比B树更矮胖，查询叶子节点的磁盘I/O次数也少&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>B+树便于范围查询：MySQL经常需要使用范围查询，B+树所有叶子节点间都有链表进行连接，这种设计对范围查询查询非常有帮助，B树没有将所有叶子节点用链表串联起来的结构，只能用中序遍历来完成范围查询，这会比B+树范围查询涉及多个节点的磁盘I/O操作，一次范围查询的效率不如B+树&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>B+树增删改查效率更加稳定：B+树有大量冗余节点，这些冗余数据可以让B+树在插入、删除的效率都更高，比如删除根节点的时候，不会像B树那样会发生复杂的树的变化。另外，B+树把所有指向数据的指针都放在叶子节点，因此查询、插入、删除数据都需要走到最后一层，这不同于B树可能在任意一层找到数据，所以B+树更为稳定&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="15-为什么索引用b树而不用哈希表">1.5 为什么索引用B+树？而不用哈希表？&lt;/h3>
+&lt;p>分析：&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>哈希表的数据是散列分布的，不具有序性，无法进行范围和排序&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>哈希表存在哈希冲突，哈希冲突严重，也会降低查询效率&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;p>回答：MySQL会有会多范围和排序的场景，虽然哈希表的搜索时间复杂度是O(1)，但是由于哈希表的数据都是通过哈希函数计算后散列分布的，所以哈希表索引不支持范围和排序操作，不支持联合索引最左匹配原则，如果重复键比较多，还容易操作哈希碰撞导致效率进一步降低。而B+树可以满足这些应用&lt;/p>
+&lt;h3 id="16聚簇索引和非聚簇索引有什么区别">1.6聚簇索引和非聚簇索引有什么区别？&lt;/h3>
+&lt;p>分析：先说聚簇索引和非聚簇索引B+树叶子节点存放内容的区别，然后再引出回表查询和覆盖索引查询&lt;/p></description></item></channel></rss>
