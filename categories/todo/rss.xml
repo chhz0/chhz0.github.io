@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Todo on ch.hugo</title><link>https://chhz0.github.io/categories/todo/</link><description>Recent content in Todo on ch.hugo</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Wed, 02 Jul 2025 15:37:39 +0800</lastBuildDate><atom:link href="https://chhz0.github.io/categories/todo/rss.xml" rel="self" type="application/rss+xml"/><item><title>MySQL - Todo</title><link>https://chhz0.github.io/notes/database/mysql/todo/</link><pubDate>Wed, 02 Jul 2025 15:37:39 +0800</pubDate><guid>https://chhz0.github.io/notes/database/mysql/todo/</guid><description>&lt;blockquote>
+&lt;p>MySQL 内容代办事项&lt;/p>&lt;/blockquote>
+&lt;ul>
+&lt;li>&lt;input disabled="" type="checkbox"> SQL基础语法&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> MySQL架构
+&lt;ul>
+&lt;li>&lt;input disabled="" type="checkbox"> client层&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> server层
+&lt;ul>
+&lt;li>&lt;input disabled="" type="checkbox"> 连接器&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 查询缓存&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 解析器&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 优化器&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 执行器&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 存储引擎
+&lt;ul>
+&lt;li>&lt;input disabled="" type="checkbox"> InnoDB
+&lt;ul>
+&lt;li>&lt;input disabled="" type="checkbox"> 表空间&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 数据页结构&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 行记录存储&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> Buffer Pool&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> MyISAM&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> Memory&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> MySQL索引
+&lt;ul>
+&lt;li>&lt;input disabled="" type="checkbox"> 数据结构
+&lt;ul>
+&lt;li>&lt;input disabled="" type="checkbox"> B+树索引&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> Hash索引&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> Full-text&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 索引类型
+&lt;ul>
+&lt;li>&lt;input disabled="" type="checkbox"> 聚簇索引&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 非聚簇索引&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 索引优化
+&lt;ul>
+&lt;li>&lt;input disabled="" type="checkbox"> 主键索引&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 唯一索引&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 普通索引&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 联合索引&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 前缀索引&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 索引失效
+&lt;ul>
+&lt;li>&lt;input disabled="" type="checkbox"> 索引覆盖&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 索引下推&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 索引选择&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> MySQL事务
+&lt;ul>
+&lt;li>&lt;input disabled="" type="checkbox"> ACID
+&lt;ul>
+&lt;li>&lt;input disabled="" type="checkbox"> 原子性&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 隔离性&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 持久性&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 一致性&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 事务并发
+&lt;ul>
+&lt;li>&lt;input disabled="" type="checkbox"> 脏读&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 不可重复读&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 幻读&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 事务隔离级别
+&lt;ul>
+&lt;li>&lt;input disabled="" type="checkbox"> 读未提交&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 读已提交&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 可重复读&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 串行化&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 隔离级别实现
+&lt;ul>
+&lt;li>&lt;input disabled="" type="checkbox"> MVCC&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 锁&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> MySQL锁
+&lt;ul>
+&lt;li>&lt;input disabled="" type="checkbox"> 全局锁&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 表级锁
+&lt;ul>
+&lt;li>&lt;input disabled="" type="checkbox"> 表锁&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> MDL锁&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 意向锁&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 自增锁&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 局部锁
+&lt;ul>
+&lt;li>&lt;input disabled="" type="checkbox"> 记录锁&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 间隙锁&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 临键锁&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 插入意见锁&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 死锁&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> MySQL日志
+&lt;ul>
+&lt;li>&lt;input disabled="" type="checkbox"> undo log&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> redo log
+&lt;ul>
+&lt;li>&lt;input disabled="" type="checkbox"> WAL&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 两阶段提交&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> bin log&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> MySQL调优
+&lt;ul>
+&lt;li>&lt;input disabled="" type="checkbox"> explain 解释计划&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 查询性能调优&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 分页调优&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 连接池&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> MySQL高可用
+&lt;ul>
+&lt;li>&lt;input disabled="" type="checkbox"> 读写分离&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 分库分表&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 分布式ID&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 分布式锁&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 数据迁移&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 分布式事务&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 高可用&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 分布式数据库&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 数据库设计
+&lt;ul>
+&lt;li>&lt;input disabled="" type="checkbox"> 设计规范(三范式)&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 设计原则&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 反范式设计&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul></description></item></channel></rss>
