@@ -1,4 +1,54 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Todo on ch.hugo</title><link>https://chhz0.github.io/categories/todo/</link><description>Recent content in Todo on ch.hugo</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Wed, 02 Jul 2025 15:37:39 +0800</lastBuildDate><atom:link href="https://chhz0.github.io/categories/todo/rss.xml" rel="self" type="application/rss+xml"/><item><title>MySQL - Todo</title><link>https://chhz0.github.io/notes/database/mysql/todo/</link><pubDate>Wed, 02 Jul 2025 15:37:39 +0800</pubDate><guid>https://chhz0.github.io/notes/database/mysql/todo/</guid><description>&lt;blockquote>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Todo on ch.hugo</title><link>https://chhz0.github.io/categories/todo/</link><description>Recent content in Todo on ch.hugo</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Thu, 03 Jul 2025 22:06:22 +0800</lastBuildDate><atom:link href="https://chhz0.github.io/categories/todo/rss.xml" rel="self" type="application/rss+xml"/><item><title>Redis - Todo</title><link>https://chhz0.github.io/notes/database/redis/todo/</link><pubDate>Thu, 03 Jul 2025 22:06:22 +0800</pubDate><guid>https://chhz0.github.io/notes/database/redis/todo/</guid><description>&lt;blockquote>
+&lt;p>Redis代办事项&lt;/p>&lt;/blockquote>
+&lt;ul>
+&lt;li>&lt;input disabled="" type="checkbox"> Redis 数据结构
+&lt;ul>
+&lt;li>&lt;input disabled="" type="checkbox"> 字符串 String&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 链表 LinkList&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 集合 Set&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 有序集合 ZSet&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 哈希表 Hash&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 跳表 SkipList&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> Redis 架构
+&lt;ul>
+&lt;li>&lt;input disabled="" type="checkbox"> 单线程模型&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> Reactor&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 多线程&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 过期淘汰算法&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> Redis 持久化
+&lt;ul>
+&lt;li>&lt;input disabled="" type="checkbox"> AOF&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> RDB&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 混合持久&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> Redis 缓存应用
+&lt;ul>
+&lt;li>&lt;input disabled="" type="checkbox"> 缓存击穿&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 缓存穿透&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 缓存雪崩&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 缓存一致性&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> Redis 集群
+&lt;ul>
+&lt;li>&lt;input disabled="" type="checkbox"> 主从模式&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 哨兵模式&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 集群模式&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 一致性hash&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> Redis 应用场景
+&lt;ul>
+&lt;li>&lt;input disabled="" type="checkbox"> 分布式锁&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 查询缓存&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul></description></item><item><title>MySQL - Todo</title><link>https://chhz0.github.io/notes/database/mysql/todo/</link><pubDate>Wed, 02 Jul 2025 15:37:39 +0800</pubDate><guid>https://chhz0.github.io/notes/database/mysql/todo/</guid><description>&lt;blockquote>
 &lt;p>MySQL 内容代办事项&lt;/p>&lt;/blockquote>
 &lt;ul>
 &lt;li>&lt;input disabled="" type="checkbox"> SQL基础语法&lt;/li>

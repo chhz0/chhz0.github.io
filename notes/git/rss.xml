@@ -51,7 +51,7 @@
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&amp;lt;!-- 这里链接上该项目的开源许可证 --&amp;gt;&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Git Commit(bate)</title><link>https://chhz0.github.io/notes/git/git-commit/</link><pubDate>Thu, 03 Jul 2025 23:08:59 +0800</pubDate><guid>https://chhz0.github.io/notes/git/git-commit/</guid><description>&lt;blockquote>
 &lt;p>写出符合Angular规范的Git Commit Message&lt;/p>&lt;/blockquote>
-&lt;h2 id="git-commit-规范">git commit 规范 &lt;Badge type="tip" text="Git Commit Message" />&lt;/h2>
+&lt;h2 id="git-commit-规范">git commit 规范&lt;/h2>
 &lt;h3 id="符合angular规范的commit-message">符合Angular规范的Commit Message&lt;/h3>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>&amp;lt;type&amp;gt;[(optional scope)]: &amp;lt;description&amp;gt;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>// 空行
@@ -127,9 +127,18 @@ description&amp;ndash;&amp;gt;对commit的简短描述，以动词开头&lt;/p>
 &lt;h4 id="body">Body&lt;/h4>
 &lt;p>Body对Commit Message的高度概况，方便查看具体做了什么变更&lt;/p>
 &lt;h4 id="footer">Footer&lt;/h4>
-&lt;p>Footer部分不是必选，可根据需要选择，主要用来说什么本次commit导致的后果，通常用来说明不兼容的改动或者关闭的issue&lt;/p></description></item><item><title>Git Commands(bate)</title><link>https://chhz0.github.io/notes/git/git-commands/</link><pubDate>Thu, 03 Jul 2025 23:08:11 +0800</pubDate><guid>https://chhz0.github.io/notes/git/git-commands/</guid><description>&lt;blockquote>
+&lt;p>Footer部分不是必选，可根据需要选择，主要用来说什么本次commit导致的后果，通常用来说明不兼容的改动或者关闭的issue&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>BREAKING CHANGE: &amp;lt;breaking change summary&amp;gt;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>// 空行
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&amp;lt;breaking change description + migration instructions&amp;gt;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>// 空行
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>// 空行
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Fixes(Closes) #&amp;lt;issue number&amp;gt;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h4 id="revert-commit">Revert Commit&lt;/h4>
+&lt;p>特殊的Commit Message。还原了先前的commit，则以&lt;code>revert&lt;/code>开头，后面跟还原的commit的Header，
+在Body必须写&lt;code>This reverts commit &amp;lt;hash&amp;gt;&lt;/code>，其中hash为要还原的commit的SHA标识&lt;/p></description></item><item><title>Git Commands(bate)</title><link>https://chhz0.github.io/notes/git/git-commands/</link><pubDate>Thu, 03 Jul 2025 23:08:11 +0800</pubDate><guid>https://chhz0.github.io/notes/git/git-commands/</guid><description>&lt;blockquote>
 &lt;p>git 命令&lt;/p>&lt;/blockquote>
-&lt;h3 id="git-rebase">git rebase&lt;/h3>
+&lt;h2 id="git-rebase">git rebase&lt;/h2>
 &lt;p>git rebase的最大作用是重写历史&lt;/p>
 &lt;p>使用&lt;code>git rebase -i &amp;lt;commit ID&amp;gt;&lt;/code>使用git rebase命令 修改某次 commit 的 message&lt;/p>
 &lt;table>
@@ -170,5 +179,5 @@ description&amp;ndash;&amp;gt;对commit的简短描述，以动词开头&lt;/p>
  &lt;/tr>
  &lt;/tbody>
 &lt;/table>
-&lt;h3 id="git-commit--amend">git commit -amend&lt;/h3>
+&lt;h2 id="git-commit--amend">git commit -amend&lt;/h2>
 &lt;p>git commit –amend：修改最近一次 commit 的 message&lt;/p></description></item></channel></rss>

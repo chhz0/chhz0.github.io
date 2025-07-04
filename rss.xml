@@ -1,4 +1,171 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>ch.hugo</title><link>https://chhz0.github.io/</link><description>Recent content on ch.hugo</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Thu, 03 Jul 2025 23:16:28 +0800</lastBuildDate><atom:link href="https://chhz0.github.io/rss.xml" rel="self" type="application/rss+xml"/><item><title>Mysql Transaction(bate)</title><link>https://chhz0.github.io/notes/database/mysql/mysql-transaction/</link><pubDate>Thu, 03 Jul 2025 23:16:28 +0800</pubDate><guid>https://chhz0.github.io/notes/database/mysql/mysql-transaction/</guid><description>&lt;blockquote>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>ch.hugo</title><link>https://chhz0.github.io/</link><description>Recent content on ch.hugo</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Fri, 04 Jul 2025 15:10:00 +0800</lastBuildDate><atom:link href="https://chhz0.github.io/rss.xml" rel="self" type="application/rss+xml"/><item><title>Makefile-learn</title><link>https://chhz0.github.io/blogs/2025/0704.makefile-learn/</link><pubDate>Fri, 04 Jul 2025 15:10:00 +0800</pubDate><guid>https://chhz0.github.io/blogs/2025/0704.makefile-learn/</guid><description>&lt;blockquote>
+&lt;p>Makefile 快速入门&lt;/p>&lt;/blockquote>
+&lt;h2 id="概述">概述&lt;/h2>
+&lt;hr>
+&lt;p>&lt;code>makefile&lt;/code> 关系到了整个工程的编译规则，&lt;code>makefile&lt;/code> 定义了一系列的规则来指定，哪些文件需要先编译，哪些文件后需要编译，哪些文件需要重新编译，甚者进行更复杂的功能操作，&lt;code>makefile&lt;/code> 像 &lt;code>shell&lt;/code>脚本一样，其中也可以执行操作系统的命令。&lt;/p>
+&lt;p>&lt;code>makefile&lt;/code>带来的好处是-“自动化编译”，一旦写好，一个&lt;code>make&lt;/code>命令，整个工程完全自动编译，极大提高了软件开发的效率。&lt;code>make&lt;/code>是一个命令工具，是一个解释&lt;code>makefile&lt;/code>中指令的命令工具。&lt;/p>
+&lt;h2 id="makefile结构说明">Makefile结构说明&lt;/h2>
+&lt;hr>
+&lt;p>&lt;code>makefile&lt;/code> 主要包含了五个东西：变量定义，显示规则，隐晦规则，文件标示和注释。&lt;/p>
+&lt;ol>
+&lt;li>变量定义。在&lt;code>makefile&lt;/code>中我们需要定义一系列的变量，一般是字符串，当&lt;code>makefile&lt;/code>被执行时，其中的变量都会被扩展到相应的引用位置上。&lt;/li>
+&lt;li>显示规则。说明了如何生成一个或者多个目标文件，由&lt;code>makefile&lt;/code>的书写者明显指出，要生成的文件，文件的依赖文件，生成的文件。【可类似&lt;code>shell&lt;/code>脚本】&lt;/li>
+&lt;li>隐晦规则。由于make有自动推导功能，使用隐晦的规则可以让我们比较粗糙地简略书写&lt;code>makefile&lt;/code>&lt;/li>
+&lt;li>文件指示。其中包括了三个部分。\&lt;/li>
+&lt;li>注释。&lt;code>Makefile&lt;/code>中只有行注释，使用 &lt;code>#&lt;/code> 字符&lt;/li>
+&lt;/ol>
+&lt;h2 id="makefile中的预定义变量">Makefile中的预定义变量&lt;/h2>
+&lt;hr>
+&lt;table>
+ &lt;thead>
+ &lt;tr>
+ &lt;th>预定变量&lt;/th>
+ &lt;th>说明&lt;/th>
+ &lt;/tr>
+ &lt;/thead>
+ &lt;tbody>
+ &lt;tr>
+ &lt;td>$* 　&lt;/td>
+ &lt;td>　不包含扩展名的目标文件名称&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>$+ 　&lt;/td>
+ &lt;td>　所有的依赖文件，以空格分开，并以出现的先后为序，可能包含重复的依赖文件&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>$&amp;lt; 　&lt;/td>
+ &lt;td>　第一个依赖文件的名称&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>$? 　&lt;/td>
+ &lt;td>　所有的依赖文件，以空格分开，这些依赖文件的修改日期比目标的创建日期晚&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>$@ 　&lt;/td>
+ &lt;td>目标的完整名称&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>$^ 　&lt;/td>
+ &lt;td>　所有的依赖文件，以空格分开，不包含重复的依赖文件&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>$%&lt;/td>
+ &lt;td>如果目标是归档成员，则该变量表示目标的归档成员名称&lt;/td>
+ &lt;/tr>
+ &lt;/tbody>
+&lt;/table>
+&lt;h2 id="go-makefile">Go Makefile&lt;/h2>
+&lt;hr>
+&lt;p>使用&lt;code>makefile&lt;/code>快速编译Go web程序，期望：&lt;/p>
+&lt;ul>
+&lt;li>高级、简单的命令。比如：&lt;code>compile&lt;/code> &lt;code>start&lt;/code> &lt;code>stop&lt;/code> &lt;code>watch&lt;/code> 等等&lt;/li>
+&lt;li>管理具体项目环境的变量，它应该包含 &lt;code>.env&lt;/code> 文件&lt;/li>
+&lt;li>开发模式，修改时自动编译&lt;/li>
+&lt;li>开发模式，修改时自动重启服务&lt;/li>
+&lt;li>开发模式，简洁地显示编译的错误信息&lt;/li>
+&lt;li>具体项目的GOPATH，可以在&lt;code>vendor&lt;/code>目录维护依赖包&lt;/li>
+&lt;li>简化文件查看，&lt;/li>
+&lt;/ul>
+&lt;h3 id="1-环境变量">1. 环境变量&lt;/h3>
+&lt;p>在&lt;code>makefile&lt;/code>中 &lt;code>include&lt;/code>为项目定义环境变量，第一行如下&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-Plaintext" data-lang="Plaintext">&lt;span style="display:flex;">&lt;span>include .env
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>^^^
+(待补充&amp;hellip;)&lt;/p>
+&lt;h2 id="final最终版本">final.最终版本&lt;/h2>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-makefile" data-lang="makefile">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#960050;background-color:#1e0010">include&lt;/span> &lt;span style="color:#960050;background-color:#1e0010">.env&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>PROJECTNAME&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#66d9ef">$(&lt;/span>shell basename &lt;span style="color:#e6db74">&amp;#34;&lt;/span>&lt;span style="color:#66d9ef">$(&lt;/span>PWD&lt;span style="color:#66d9ef">)&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&lt;/span>&lt;span style="color:#66d9ef">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># Go related variables.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>GOBASE&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#66d9ef">$(&lt;/span>shell pwd&lt;span style="color:#66d9ef">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>GOPATH&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&lt;/span>&lt;span style="color:#66d9ef">$(&lt;/span>GOBASE&lt;span style="color:#66d9ef">)&lt;/span>&lt;span style="color:#e6db74">/vendor:&lt;/span>&lt;span style="color:#66d9ef">$(&lt;/span>GOBASE&lt;span style="color:#66d9ef">)&lt;/span>&lt;span style="color:#e6db74">
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#e6db74">&lt;/span>GOBIN&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#66d9ef">$(&lt;/span>GOBASE&lt;span style="color:#66d9ef">)&lt;/span>/bin
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>GOFILES&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#66d9ef">$(&lt;/span>wildcard *.go&lt;span style="color:#66d9ef">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># Redirect error output to a file, so we can show it in development mode.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>STDERR&lt;span style="color:#f92672">=&lt;/span>/tmp/.&lt;span style="color:#66d9ef">$(&lt;/span>PROJECTNAME&lt;span style="color:#66d9ef">)&lt;/span>-stderr.txt
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># PID file will keep the process id of the server
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>PID&lt;span style="color:#f92672">=&lt;/span>/tmp/.&lt;span style="color:#66d9ef">$(&lt;/span>PROJECTNAME&lt;span style="color:#66d9ef">)&lt;/span>.pid
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e"># Make is verbose in Linux. Make it silent.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>MAKEFLAGS &lt;span style="color:#f92672">+=&lt;/span> --silent
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">## install: Install missing dependencies. Runs `go get` internally. e.g; make install get=github.com/foo/bar
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>&lt;span style="color:#a6e22e">install&lt;/span>&lt;span style="color:#f92672">:&lt;/span> go-get
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">## start: Start in development mode. Auto-starts when code changes.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>&lt;span style="color:#a6e22e">start&lt;/span>&lt;span style="color:#f92672">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> bash -c &lt;span style="color:#e6db74">&amp;#34;trap &amp;#39;make stop&amp;#39; EXIT; &lt;/span>&lt;span style="color:#66d9ef">$(&lt;/span>MAKE&lt;span style="color:#66d9ef">)&lt;/span>&lt;span style="color:#e6db74"> compile start-server watch run=&amp;#39;make compile start-server&amp;#39;&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">## stop: Stop development mode.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>&lt;span style="color:#a6e22e">stop&lt;/span>&lt;span style="color:#f92672">:&lt;/span> stop-server
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">start-server&lt;/span>&lt;span style="color:#f92672">:&lt;/span> stop-server
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> @echo &lt;span style="color:#e6db74">&amp;#34; &amp;gt; &lt;/span>&lt;span style="color:#66d9ef">$(&lt;/span>PROJECTNAME&lt;span style="color:#66d9ef">)&lt;/span>&lt;span style="color:#e6db74"> is available at &lt;/span>&lt;span style="color:#66d9ef">$(&lt;/span>ADDR&lt;span style="color:#66d9ef">)&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> @-&lt;span style="color:#66d9ef">$(&lt;/span>GOBIN&lt;span style="color:#66d9ef">)&lt;/span>/&lt;span style="color:#66d9ef">$(&lt;/span>PROJECTNAME&lt;span style="color:#66d9ef">)&lt;/span> 2&amp;gt;&amp;amp;&lt;span style="color:#ae81ff">1&lt;/span> &amp;amp; echo $$! &amp;gt; &lt;span style="color:#66d9ef">$(&lt;/span>PID&lt;span style="color:#66d9ef">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> @cat &lt;span style="color:#66d9ef">$(&lt;/span>PID&lt;span style="color:#66d9ef">)&lt;/span> | sed &lt;span style="color:#e6db74">&amp;#34;/^/s/^/ \&amp;gt; PID: /&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">stop-server&lt;/span>&lt;span style="color:#f92672">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> @-touch &lt;span style="color:#66d9ef">$(&lt;/span>PID&lt;span style="color:#66d9ef">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> @-kill &lt;span style="color:#e6db74">`&lt;/span>cat &lt;span style="color:#66d9ef">$(&lt;/span>PID&lt;span style="color:#66d9ef">)&lt;/span>&lt;span style="color:#e6db74">`&lt;/span> 2&amp;gt; /dev/null &lt;span style="color:#f92672">||&lt;/span> true
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> @-rm &lt;span style="color:#66d9ef">$(&lt;/span>PID&lt;span style="color:#66d9ef">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">## watch: Run given command when code changes. e.g; make watch run=&amp;#34;echo &amp;#39;hey&amp;#39;&amp;#34;
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>&lt;span style="color:#a6e22e">watch&lt;/span>&lt;span style="color:#f92672">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> @GOPATH&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#66d9ef">$(&lt;/span>GOPATH&lt;span style="color:#66d9ef">)&lt;/span> GOBIN&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#66d9ef">$(&lt;/span>GOBIN&lt;span style="color:#66d9ef">)&lt;/span> yolo -i . -e vendor -e bin -c &lt;span style="color:#e6db74">&amp;#34;&lt;/span>&lt;span style="color:#66d9ef">$(&lt;/span>run&lt;span style="color:#66d9ef">)&lt;/span>&lt;span style="color:#e6db74">&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">restart-server&lt;/span>&lt;span style="color:#f92672">:&lt;/span> stop-server start-server
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">## compile: Compile the binary.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>&lt;span style="color:#a6e22e">compile&lt;/span>&lt;span style="color:#f92672">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> @-touch &lt;span style="color:#66d9ef">$(&lt;/span>STDERR&lt;span style="color:#66d9ef">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> @-rm &lt;span style="color:#66d9ef">$(&lt;/span>STDERR&lt;span style="color:#66d9ef">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> @-&lt;span style="color:#66d9ef">$(&lt;/span>MAKE&lt;span style="color:#66d9ef">)&lt;/span> -s go-compile 2&amp;gt; &lt;span style="color:#66d9ef">$(&lt;/span>STDERR&lt;span style="color:#66d9ef">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> @cat &lt;span style="color:#66d9ef">$(&lt;/span>STDERR&lt;span style="color:#66d9ef">)&lt;/span> | sed -e &lt;span style="color:#e6db74">&amp;#39;1s/.*/\nError:\n/&amp;#39;&lt;/span> | sed &lt;span style="color:#e6db74">&amp;#39;s/make\[.*/ /&amp;#39;&lt;/span> | sed &lt;span style="color:#e6db74">&amp;#34;/^/s/^/ /&amp;#34;&lt;/span> 1&amp;gt;&amp;amp;&lt;span style="color:#ae81ff">2&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">## exec: Run given command, wrapped with custom GOPATH. e.g; make exec run=&amp;#34;go test ./...&amp;#34;
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>&lt;span style="color:#a6e22e">exec&lt;/span>&lt;span style="color:#f92672">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> @GOPATH&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#66d9ef">$(&lt;/span>GOPATH&lt;span style="color:#66d9ef">)&lt;/span> GOBIN&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#66d9ef">$(&lt;/span>GOBIN&lt;span style="color:#66d9ef">)&lt;/span> &lt;span style="color:#66d9ef">$(&lt;/span>run&lt;span style="color:#66d9ef">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">## clean: Clean build files. Runs `go clean` internally.
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>&lt;span style="color:#a6e22e">clean&lt;/span>&lt;span style="color:#f92672">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> @&lt;span style="color:#f92672">(&lt;/span>MAKEFILE&lt;span style="color:#f92672">)&lt;/span> go-clean
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">go-compile&lt;/span>&lt;span style="color:#f92672">:&lt;/span> go-clean go-get go-build
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">go-build&lt;/span>&lt;span style="color:#f92672">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> @echo &lt;span style="color:#e6db74">&amp;#34; &amp;gt; Building binary...&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> @GOPATH&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#66d9ef">$(&lt;/span>GOPATH&lt;span style="color:#66d9ef">)&lt;/span> GOBIN&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#66d9ef">$(&lt;/span>GOBIN&lt;span style="color:#66d9ef">)&lt;/span> go build -o &lt;span style="color:#66d9ef">$(&lt;/span>GOBIN&lt;span style="color:#66d9ef">)&lt;/span>/&lt;span style="color:#66d9ef">$(&lt;/span>PROJECTNAME&lt;span style="color:#66d9ef">)&lt;/span> &lt;span style="color:#66d9ef">$(&lt;/span>GOFILES&lt;span style="color:#66d9ef">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">go-generate&lt;/span>&lt;span style="color:#f92672">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> @echo &lt;span style="color:#e6db74">&amp;#34; &amp;gt; Generating dependency files...&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> @GOPATH&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#66d9ef">$(&lt;/span>GOPATH&lt;span style="color:#66d9ef">)&lt;/span> GOBIN&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#66d9ef">$(&lt;/span>GOBIN&lt;span style="color:#66d9ef">)&lt;/span> go generate &lt;span style="color:#66d9ef">$(&lt;/span>generate&lt;span style="color:#66d9ef">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">go-get&lt;/span>&lt;span style="color:#f92672">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> @echo &lt;span style="color:#e6db74">&amp;#34; &amp;gt; Checking if there is any missing dependencies...&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> @GOPATH&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#66d9ef">$(&lt;/span>GOPATH&lt;span style="color:#66d9ef">)&lt;/span> GOBIN&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#66d9ef">$(&lt;/span>GOBIN&lt;span style="color:#66d9ef">)&lt;/span> go get &lt;span style="color:#66d9ef">$(&lt;/span>get&lt;span style="color:#66d9ef">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">go-install&lt;/span>&lt;span style="color:#f92672">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> @GOPATH&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#66d9ef">$(&lt;/span>GOPATH&lt;span style="color:#66d9ef">)&lt;/span> GOBIN&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#66d9ef">$(&lt;/span>GOBIN&lt;span style="color:#66d9ef">)&lt;/span> go install &lt;span style="color:#66d9ef">$(&lt;/span>GOFILES&lt;span style="color:#66d9ef">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">go-clean&lt;/span>&lt;span style="color:#f92672">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> @echo &lt;span style="color:#e6db74">&amp;#34; &amp;gt; Cleaning build cache&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> @GOPATH&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#66d9ef">$(&lt;/span>GOPATH&lt;span style="color:#66d9ef">)&lt;/span> GOBIN&lt;span style="color:#f92672">=&lt;/span>&lt;span style="color:#66d9ef">$(&lt;/span>GOBIN&lt;span style="color:#66d9ef">)&lt;/span> go clean
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">.PHONY&lt;/span>&lt;span style="color:#f92672">:&lt;/span> help
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">all&lt;/span>&lt;span style="color:#f92672">:&lt;/span> help
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#a6e22e">help&lt;/span>&lt;span style="color:#f92672">:&lt;/span> Makefile
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> @echo
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> @echo &lt;span style="color:#e6db74">&amp;#34; Choose a command run in &amp;#34;&lt;/span>&lt;span style="color:#66d9ef">$(&lt;/span>PROJECTNAME&lt;span style="color:#66d9ef">)&lt;/span>&lt;span style="color:#e6db74">&amp;#34;:&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> @echo
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> @sed -n &lt;span style="color:#e6db74">&amp;#39;s/^##//p&amp;#39;&lt;/span> $&amp;lt; | column -t -s &lt;span style="color:#e6db74">&amp;#39;:&amp;#39;&lt;/span> | sed -e &lt;span style="color:#e6db74">&amp;#39;s/^/ /&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> @echo
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="相关资料">相关资料&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://blog.csdn.net/haoel/article/details/2886">(陈皓) 跟我一起写 Makefile（一）_haoel的博客-CSDN博客_makefile标签&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://zhuanlan.zhihu.com/p/47390641">Makefile由浅入深&amp;ndash;教程、干货 - 知乎 (zhihu.com)&lt;/a>&lt;/li>
+&lt;/ul></description></item><item><title>Mysql Transaction(bate)</title><link>https://chhz0.github.io/notes/database/mysql/mysql-transaction/</link><pubDate>Thu, 03 Jul 2025 23:16:28 +0800</pubDate><guid>https://chhz0.github.io/notes/database/mysql/mysql-transaction/</guid><description>&lt;blockquote>
 &lt;p>MySQL 事务&lt;/p>&lt;/blockquote>
 &lt;h2 id="1事务有哪些特征">1.事务有哪些特征&lt;/h2>
 &lt;p>原子性，隔离性，一致性，持久性&lt;/p>
@@ -469,7 +636,7 @@ B+ 树只在叶子节点存储数据，B树的非叶子节点也要存储数据�
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&amp;lt;!-- 这里链接上该项目的开源许可证 --&amp;gt;&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Git Commit(bate)</title><link>https://chhz0.github.io/notes/git/git-commit/</link><pubDate>Thu, 03 Jul 2025 23:08:59 +0800</pubDate><guid>https://chhz0.github.io/notes/git/git-commit/</guid><description>&lt;blockquote>
 &lt;p>写出符合Angular规范的Git Commit Message&lt;/p>&lt;/blockquote>
-&lt;h2 id="git-commit-规范">git commit 规范 &lt;Badge type="tip" text="Git Commit Message" />&lt;/h2>
+&lt;h2 id="git-commit-规范">git commit 规范&lt;/h2>
 &lt;h3 id="符合angular规范的commit-message">符合Angular规范的Commit Message&lt;/h3>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>&amp;lt;type&amp;gt;[(optional scope)]: &amp;lt;description&amp;gt;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>// 空行
@@ -545,9 +712,18 @@ description&amp;ndash;&amp;gt;对commit的简短描述，以动词开头&lt;/p>
 &lt;h4 id="body">Body&lt;/h4>
 &lt;p>Body对Commit Message的高度概况，方便查看具体做了什么变更&lt;/p>
 &lt;h4 id="footer">Footer&lt;/h4>
-&lt;p>Footer部分不是必选，可根据需要选择，主要用来说什么本次commit导致的后果，通常用来说明不兼容的改动或者关闭的issue&lt;/p></description></item><item><title>Git Commands(bate)</title><link>https://chhz0.github.io/notes/git/git-commands/</link><pubDate>Thu, 03 Jul 2025 23:08:11 +0800</pubDate><guid>https://chhz0.github.io/notes/git/git-commands/</guid><description>&lt;blockquote>
+&lt;p>Footer部分不是必选，可根据需要选择，主要用来说什么本次commit导致的后果，通常用来说明不兼容的改动或者关闭的issue&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>BREAKING CHANGE: &amp;lt;breaking change summary&amp;gt;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>// 空行
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&amp;lt;breaking change description + migration instructions&amp;gt;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>// 空行
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>// 空行
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Fixes(Closes) #&amp;lt;issue number&amp;gt;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h4 id="revert-commit">Revert Commit&lt;/h4>
+&lt;p>特殊的Commit Message。还原了先前的commit，则以&lt;code>revert&lt;/code>开头，后面跟还原的commit的Header，
+在Body必须写&lt;code>This reverts commit &amp;lt;hash&amp;gt;&lt;/code>，其中hash为要还原的commit的SHA标识&lt;/p></description></item><item><title>Git Commands(bate)</title><link>https://chhz0.github.io/notes/git/git-commands/</link><pubDate>Thu, 03 Jul 2025 23:08:11 +0800</pubDate><guid>https://chhz0.github.io/notes/git/git-commands/</guid><description>&lt;blockquote>
 &lt;p>git 命令&lt;/p>&lt;/blockquote>
-&lt;h3 id="git-rebase">git rebase&lt;/h3>
+&lt;h2 id="git-rebase">git rebase&lt;/h2>
 &lt;p>git rebase的最大作用是重写历史&lt;/p>
 &lt;p>使用&lt;code>git rebase -i &amp;lt;commit ID&amp;gt;&lt;/code>使用git rebase命令 修改某次 commit 的 message&lt;/p>
 &lt;table>
@@ -588,7 +764,7 @@ description&amp;ndash;&amp;gt;对commit的简短描述，以动词开头&lt;/p>
  &lt;/tr>
  &lt;/tbody>
 &lt;/table>
-&lt;h3 id="git-commit--amend">git commit -amend&lt;/h3>
+&lt;h2 id="git-commit--amend">git commit -amend&lt;/h2>
 &lt;p>git commit –amend：修改最近一次 commit 的 message&lt;/p></description></item><item><title>Deploy Go applications using docker(bate)</title><link>https://chhz0.github.io/notes/docker/docker-deploy/</link><pubDate>Thu, 03 Jul 2025 22:17:26 +0800</pubDate><guid>https://chhz0.github.io/notes/docker/docker-deploy/</guid><description>&lt;blockquote>
 &lt;p>使用Docker 以及Docker Compose部署Go程序&lt;/p>&lt;/blockquote>
 &lt;h3 id="部署示例">部署示例&lt;/h3>
@@ -714,7 +890,57 @@ description&amp;ndash;&amp;gt;对commit的简短描述，以动词开头&lt;/p>
 &lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>具体选项可以从&lt;code>docker pull --help&lt;/code> 命令查看，&lt;/p>
 &lt;ul>
 &lt;li>
-&lt;p>Docker镜像仓库地址：地址格式一般为 &lt;code>&amp;lt;域名/IP&amp;gt;[:端口号]&lt;/code>。默认地址是 Docker Hub&lt;/p></description></item><item><title>MySQL - Todo</title><link>https://chhz0.github.io/notes/database/mysql/todo/</link><pubDate>Wed, 02 Jul 2025 15:37:39 +0800</pubDate><guid>https://chhz0.github.io/notes/database/mysql/todo/</guid><description>&lt;blockquote>
+&lt;p>Docker镜像仓库地址：地址格式一般为 &lt;code>&amp;lt;域名/IP&amp;gt;[:端口号]&lt;/code>。默认地址是 Docker Hub&lt;/p></description></item><item><title>Redis - Todo</title><link>https://chhz0.github.io/notes/database/redis/todo/</link><pubDate>Thu, 03 Jul 2025 22:06:22 +0800</pubDate><guid>https://chhz0.github.io/notes/database/redis/todo/</guid><description>&lt;blockquote>
+&lt;p>Redis代办事项&lt;/p>&lt;/blockquote>
+&lt;ul>
+&lt;li>&lt;input disabled="" type="checkbox"> Redis 数据结构
+&lt;ul>
+&lt;li>&lt;input disabled="" type="checkbox"> 字符串 String&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 链表 LinkList&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 集合 Set&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 有序集合 ZSet&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 哈希表 Hash&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 跳表 SkipList&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> Redis 架构
+&lt;ul>
+&lt;li>&lt;input disabled="" type="checkbox"> 单线程模型&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> Reactor&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 多线程&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 过期淘汰算法&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> Redis 持久化
+&lt;ul>
+&lt;li>&lt;input disabled="" type="checkbox"> AOF&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> RDB&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 混合持久&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> Redis 缓存应用
+&lt;ul>
+&lt;li>&lt;input disabled="" type="checkbox"> 缓存击穿&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 缓存穿透&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 缓存雪崩&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 缓存一致性&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> Redis 集群
+&lt;ul>
+&lt;li>&lt;input disabled="" type="checkbox"> 主从模式&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 哨兵模式&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 集群模式&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 一致性hash&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> Redis 应用场景
+&lt;ul>
+&lt;li>&lt;input disabled="" type="checkbox"> 分布式锁&lt;/li>
+&lt;li>&lt;input disabled="" type="checkbox"> 查询缓存&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul></description></item><item><title>MySQL - Todo</title><link>https://chhz0.github.io/notes/database/mysql/todo/</link><pubDate>Wed, 02 Jul 2025 15:37:39 +0800</pubDate><guid>https://chhz0.github.io/notes/database/mysql/todo/</guid><description>&lt;blockquote>
 &lt;p>MySQL 内容代办事项&lt;/p>&lt;/blockquote>
 &lt;ul>
 &lt;li>&lt;input disabled="" type="checkbox"> SQL基础语法&lt;/li>
@@ -873,7 +1099,469 @@ description&amp;ndash;&amp;gt;对commit的简短描述，以动词开头&lt;/p>
 &lt;li>&lt;input disabled="" type="checkbox"> 反范式设计&lt;/li>
 &lt;/ul>
 &lt;/li>
-&lt;/ul></description></item><item><title>Redis-core</title><link>https://chhz0.github.io/notes/database/redis/redis-core/</link><pubDate>Tue, 10 Jun 2025 22:36:08 +0800</pubDate><guid>https://chhz0.github.io/notes/database/redis/redis-core/</guid><description>&lt;blockquote>
+&lt;/ul></description></item><item><title>Redis - Encoding&lt;HashTable></title><link>https://chhz0.github.io/notes/database/redis/datatypes/encoding/hashtable/</link><pubDate>Tue, 10 Jun 2025 22:36:08 +0800</pubDate><guid>https://chhz0.github.io/notes/database/redis/datatypes/encoding/hashtable/</guid><description>&lt;h2 id="redis-enc-hashtable-">Redis&amp;lt; enc-HashTable &amp;gt;&lt;/h2>
+&lt;p>&lt;code>HASHTABLE&lt;/code>可以使用O(1)时间复杂度能够快速找到&lt;code>field&lt;/code>对应的&lt;code>value&lt;/code>，简单理解，&lt;code>HASHTABLE&lt;/code>是一个目录，可以帮助我们快速找到需要内容&lt;/p>
+&lt;p>&lt;code>HASHTABLE&lt;/code>的结构:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">typedef&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span> dictht {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> dictEntry &lt;span style="color:#f92672">**&lt;/span>table;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">unsigned&lt;/span> &lt;span style="color:#66d9ef">long&lt;/span> size;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">unsigned&lt;/span> &lt;span style="color:#66d9ef">long&lt;/span> sizemask;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">unsigned&lt;/span> &lt;span style="color:#66d9ef">long&lt;/span> used;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>} dictht;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>最外层封装一个&lt;code>dictht&lt;/code>结构，字段含义如下：&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>Table&lt;/code>: 指向实际hash存储。存储可以看做一个数组&lt;/li>
+&lt;li>&lt;code>Size&lt;/code>: 哈希表大小，实际就是dictEntry有多少元素空间&lt;/li>
+&lt;li>&lt;code>Sizemask&lt;/code>: 哈希表大小的掩码表示，总是等于size-1. 这个属性和哈希值一起决定一个键应该放到table数组的那个索引上面，规则 &lt;strong>Index = hash &amp;amp; sizemask&lt;/strong>.&lt;/li>
+&lt;li>&lt;code>Used&lt;/code>: 表示已经使用的节点数量。通过这个字段可以查询目前HASHTABLE元素总量&lt;/li>
+&lt;/ul>
+&lt;p>&lt;code>dictEntry&lt;/code>结构如下：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">typedef&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span> dictEntry {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#f92672">*&lt;/span>key;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">union&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#f92672">*&lt;/span>val;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">uint64_t&lt;/span> u64;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">int64_t&lt;/span> s64;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">double&lt;/span> d;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> } v;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">struct&lt;/span> dictEntry &lt;span style="color:#f92672">*&lt;/span>next;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#f92672">*&lt;/span>metadata[];
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>} dictEntry;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;img src="https://chhz0.github.io/redis/redis-encoding-hashtable-struct.drawio.svg" alt="redis-encodng-hashtable-struct">&lt;/p>
+&lt;h3 id="hash-渐进式扩容缩容">Hash 渐进式扩容/缩容&lt;/h3>
+&lt;h4 id="扩容">扩容&lt;/h4>
+&lt;p>渐进式扩容就是一点一点扩大&lt;code>HASHTABLE&lt;/code>的容量，默认值为4 (#define DICT_HT_INTTIAL_SIZE 4)
+为了实现渐进式扩容，Redis没有直接把dictht暴露给上层，而是再封装了一层&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">typedef&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span> dict {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> dictType &lt;span style="color:#f92672">*&lt;/span>type;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#f92672">*&lt;/span>privdata;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> dictht ht[&lt;span style="color:#ae81ff">2&lt;/span>];
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">long&lt;/span> rehashidx;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">unsigned&lt;/span> &lt;span style="color:#66d9ef">long&lt;/span> iterators;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>} dict;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;code>dict&lt;/code>结构里面，包含了2个dictht结构，也就是2个HASHTABLE结构。&lt;/p></description></item><item><title>Redis - Encoding&lt;sds></title><link>https://chhz0.github.io/notes/database/redis/datatypes/encoding/sds/</link><pubDate>Tue, 10 Jun 2025 22:36:08 +0800</pubDate><guid>https://chhz0.github.io/notes/database/redis/datatypes/encoding/sds/</guid><description>&lt;h2 id="redis-enc-sds-">Redis&amp;lt; enc-SDS &amp;gt;&lt;/h2>
+&lt;p>sds(Simple Synamic String)，简单动态字符串，是redis内部作为基石的字符串封装（很重要）&lt;/p>
+&lt;p>sds是redis封装字符串结构，用以解决字符串追加和长度计算操作来带的性能瓶颈问题&lt;/p>
+&lt;p>redis中SDS分为sdshdr8、sdshdr16、sdshdr32、sdshdr64，字段属性一致，区别再对应不同大小的字符串&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">struct&lt;/span> &lt;span style="color:#a6e22e">__attribute__&lt;/span>((__packed__)) sdshdr8 {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">uint8_t&lt;/span> len; &lt;span style="color:#75715e">// 使用了多少内部
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#66d9ef">uint8_t&lt;/span> alloc; &lt;span style="color:#75715e">// 分配了多少内存
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#66d9ef">unsigned&lt;/span> &lt;span style="color:#66d9ef">char&lt;/span> flags; &lt;span style="color:#75715e">// 标记是什么分类 例如： #define SDS_TYPE_8 1
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#66d9ef">char&lt;/span> buf[];
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>从上面的结构可以看出SDS是怎么解决问题的：&lt;/p>
+&lt;ol>
+&lt;li>增加len字段，快速返回长度&lt;/li>
+&lt;li>增加空余空间(alloc - len)，为后续追加数据留余地&lt;/li>
+&lt;li>不要以&amp;rsquo;\0&amp;rsquo;作为判断标准，二进制安全&lt;/li>
+&lt;/ol>
+&lt;p>SDS预留空间大小的规则：alloc = min(len, 1M) + len：&lt;/p>
+&lt;ul>
+&lt;li>len小于1M的情况下，alloc=2*len, 预留len大小的空间&lt;/li>
+&lt;li>len大于1M的情况下，alloc=1M+lne, 预留1M大小的空间&lt;/li>
+&lt;/ul></description></item><item><title>Redis - Encoding&lt;SkipList></title><link>https://chhz0.github.io/notes/database/redis/datatypes/encoding/skiplist/</link><pubDate>Tue, 10 Jun 2025 22:36:08 +0800</pubDate><guid>https://chhz0.github.io/notes/database/redis/datatypes/encoding/skiplist/</guid><description>&lt;h2 id="redis-enc-skiplist-">Redis&amp;lt; enc-SkipList &amp;gt;&lt;/h2>
+&lt;p>跳表是Redis有序集合ZSet底层的数据结构&lt;/p>
+&lt;p>redis中跳表的两处应用：&lt;/p>
+&lt;pre>&lt;code>1. 实现有序集合键
+2. 在集群节点中作为内部数据结构
+&lt;/code>&lt;/pre>
+&lt;p>从本质上看是链表，这种结构虽然简单清晰，但是查询某个节点的效率比较低，而在有序集合场景，无论是查找还是添加删除元素，我们是需要快速通过score定位到具体位置，如果是链表的话时间复杂度是O(N)&lt;/p>
+&lt;p>为了提高查找的性能，Redis引入跳表，跳表在链表的基础上，给链表增加了多级的索引，通过索引可以一次实现多个节点的跳跃，提高性能&lt;/p>
+&lt;h3 id="skiplist-结构">SKIPLIST 结构&lt;/h3>
+&lt;p>Redis &lt;code>SKIPLIST&lt;/code> 单节点的结构:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">typedef&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span> zskiplistNode {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> sds ele;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">double&lt;/span> score;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">struct&lt;/span> zskiplistNode &lt;span style="color:#f92672">*&lt;/span>backward;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">struct&lt;/span> zskiplistLevel {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">struct&lt;/span> zskiplistNode &lt;span style="color:#f92672">*&lt;/span>forward;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">unsigned&lt;/span> &lt;span style="color:#66d9ef">long&lt;/span> span;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> } level[];
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>} zskiplistNode;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>字段的定义：&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>Ele&lt;/code>: SDS结构，用来存储数据&lt;/li>
+&lt;li>&lt;code>Score&lt;/code>: 节点的分数，浮点型数据&lt;/li>
+&lt;li>&lt;code>Backward&lt;/code>: 指向上一个节点的回退指针，支持从表尾向表头遍历，也就是ZREVRANGE这个命令&lt;/li>
+&lt;li>&lt;code>level&lt;/code>: 是个zskiplistLevel结构体数组，包含两个字段，一个是forward，指向该层下个能跳到的节点，span记录距离下个节点的步数，数组结构表示每个节点可能是多层结构&lt;/li>
+&lt;/ul>
+&lt;blockquote>
+&lt;p>在标准的跳表中，score值是不可重复的，但是在Redis ZIPLIST中，score值是可重复的，增加了回退指针&lt;/p>&lt;/blockquote>
+&lt;h3 id="skiplist-细节">SKIPLIST 细节&lt;/h3>
+&lt;ul>
+&lt;li>Redis跳表单个节点有几层？&lt;/li>
+&lt;/ul>
+&lt;p>层次的决定，需要比较随机，才能在各个场景表现出较平均的性能，这里Redis使用概率均衡的思路来确定插入节点的层数：&lt;/p>
+&lt;p>Redis跳表决定每一个节点，是否能增加一层的概率为25%，而最大层数限制在Redis 5.0是64层，在Redis 7.0是32层&lt;/p>
+&lt;ul>
+&lt;li>Redis跳表的性能优化了多少？&lt;/li>
+&lt;/ul>
+&lt;p>平均时间复杂度为O(log(n))，跳表的最坏平均时间复杂度是O(N)，当然实际的生产过程中，体现出来的基本是跳表的平均时间复杂度&lt;/p></description></item><item><title>Redis - Encoding&lt;ZipList></title><link>https://chhz0.github.io/notes/database/redis/datatypes/encoding/ziplist/</link><pubDate>Tue, 10 Jun 2025 22:36:08 +0800</pubDate><guid>https://chhz0.github.io/notes/database/redis/datatypes/encoding/ziplist/</guid><description>&lt;h2 id="redis-enc-ziplist-">Redis&amp;lt; enc-ZipList &amp;gt;&lt;/h2>
+&lt;p>&lt;code>ZIPLIST&lt;/code>压缩列表，是排列紧凑的列表，为Redis供紧凑型的数据存储方式，能节约内存（节省链表指针的开销），数据量小的时候遍历访问性能好（连续+缓存命中率友好）&lt;/p>
+&lt;p>关于&lt;code>LISTPACK&lt;/code>是Redis 5.0引入，Redis 7.0完全替代&lt;code>ZIPLIST&lt;/code>.&lt;/p>
+&lt;h3 id="ziplsit-整体结构">ZIPLSIT 整体结构&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>// redis代码注释，描述了ZIPLIST的结构
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &amp;lt;zlbytes&amp;gt; &amp;lt;zltail&amp;gt; &amp;lt;zllen&amp;gt; &amp;lt;entry&amp;gt; &amp;lt;entry&amp;gt; ... &amp;lt;entry&amp;gt; &amp;lt;zlend&amp;gt;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>各字段定义：&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>zlbytes&lt;/code>: 表示该ZIPLIST一共占了多少字节，这个数字是包含zlbytes本身占据的字节的&lt;/li>
+&lt;li>&lt;code>zltail&lt;/code>: ZIPLIST尾巴节点，相对于ZIPLIST的开头，偏移的字节数&lt;/li>
+&lt;li>&lt;code>zllen&lt;/code>: 表示有多少个数据节点&lt;/li>
+&lt;li>&lt;code>entry&lt;/code>: 表示压缩列表的数据节点&lt;/li>
+&lt;li>&lt;code>zlend&lt;/code>: 一个特殊的entry节点，为1个字节&lt;code>11111111&lt;/code>即255占据，表示ZIPLIST的结束&lt;/li>
+&lt;/ul>
+&lt;h3 id="ziplist-节点结构---entrys">ZIPLIST 节点结构 - entrys&lt;/h3>
+&lt;p>其定义如下&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span> * &amp;lt;prevlen&amp;gt; &amp;lt;encoding&amp;gt; &amp;lt;entry-data&amp;gt;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>各字段含义：&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>&lt;code>prevlen&lt;/code>: 表示前一个节点的长度。通过该节点定位到前一个节点的起始地址，如果前一个节点是压缩列表的开头，那么这个字段的值为0，通过该字段，可以实现往前操作，即&lt;code>ZIPLIST&lt;/code>可以从后往前遍历.&lt;/p>
+&lt;blockquote>
+&lt;p>有关上一个&lt;code>entry&lt;/code>的长度，从&lt;code>prevlen&lt;/code>字段可以获得，根据&lt;code>entry&lt;/code>的大小，&lt;code>prevlen&lt;/code>所占字节也会有所变化:&lt;/p>
+&lt;ul>
+&lt;li>entry &amp;lt; 254 : &lt;code>prevlen&lt;/code>为1字节，(值得注意的是255在entry中是个特殊数字，被&lt;code>zlend&lt;/code>使用，表示&lt;code>ZIPLIST&lt;/code>的结束)&lt;/li>
+&lt;li>entry &amp;gt;= 254 : &lt;code>prevlen&lt;/code>为5字节，在这5个字节中，第一个字节作为标志位，固定为&lt;code>11111110&lt;/code>，表示&lt;code>prevlen&lt;/code>是5个字节，后面4个字节才是&lt;code>prevlen&lt;/code>记录的上一个节点长度.&lt;/li>
+&lt;/ul>&lt;/blockquote>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;code>encoding&lt;/code>: 编码类型，包含了entry的长度信息，用于正序遍历.&lt;/p>
+&lt;blockquote>
+&lt;p>encoding是一个整型数据，其二进制数据由&lt;code>entry-data&lt;/code>的类型和字节长度组成&lt;/p>
+&lt;ul>
+&lt;li>如果是string类型，那么encoding由两部分，前几位为标识位、后几位标识长度&lt;/li>
+&lt;li>如果是int类型，整体1字节编码，那么仅标识类型，根据不同的int类型，确定其长度，例如int32就是32位，4字节&lt;/li>
+&lt;/ul>&lt;/blockquote>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;code>entry-data&lt;/code>: 实际的数据&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="ziplist-查询数据">ZIPLIST 查询数据&lt;/h3>
+&lt;ul>
+&lt;li>获取节点数量
+&lt;code>ZIPLIST&lt;/code>可以在O(1)时间复杂度返回节点数量，因为其header定义了记录节点数量的&lt;code>zllen&lt;/code>，但是&lt;code>zllen&lt;/code>仅占2字节长度，最大记录&lt;strong>65534&lt;/strong>，当节点数量超过65535时，就需要通过遍历节点获取节点数量.&lt;/li>
+&lt;/ul>
+&lt;p>之所以zllen是2个字节，原因是redis中应用ZIPLIST是为了节点个数少的场景，所以将zllen设计得比较小，节约内存空间&lt;/p></description></item><item><title>Redis - Hash</title><link>https://chhz0.github.io/notes/database/redis/datatypes/hash/</link><pubDate>Tue, 10 Jun 2025 22:36:08 +0800</pubDate><guid>https://chhz0.github.io/notes/database/redis/datatypes/hash/</guid><description>&lt;h2 id="redis--hash-">Redis &amp;lt; Hash &amp;gt;&lt;/h2>
+&lt;p>Redis Hash 是结构化为字段值(field)-&amp;gt;值(value)集合的记录类型. 可以使用&lt;code>Hash&lt;/code>来表示基础对象并存储计数器分组.&lt;/p>
+&lt;blockquote>
+&lt;p>创建的&lt;code>Hash&lt;/code>数量没有实际限制，除了受到可用内存的限制，
+但是每个&lt;code>Hash&lt;/code>最多可以存储 4,294,967,295 (2^32 - 1) 个字段值对&lt;/p>&lt;/blockquote>
+&lt;p>&lt;code>Hash&lt;/code>可以很方便的表示对象&lt;/p>
+&lt;h3 id="hash-命令">Hash 命令&lt;/h3>
+&lt;p>Hash常用命令：&lt;/p>
+&lt;ul>
+&lt;li>创建：&lt;code>HSET&lt;/code>, &lt;code>HSETNX&lt;/code>
+&lt;ul>
+&lt;li>&lt;code>HSET key field value&lt;/code> # 为集合对于field设置value，可以一次设置多个field-value&lt;/li>
+&lt;li>&lt;code>HSETNX key field value&lt;/code> # 如果field不存在，则为集合对应field设置value数据&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>查询：&lt;code>HGETALL&lt;/code>, &lt;code>HGET&lt;/code>, &lt;code>HLEN&lt;/code>, &lt;code>HSCAN&lt;/code>
+&lt;ul>
+&lt;li>&lt;code>HGETALL key&lt;/code> # 查找全部数据&lt;/li>
+&lt;li>&lt;code>HGET key field&lt;/code> # 查找某个key（field）&lt;/li>
+&lt;li>&lt;code>HLEN key&lt;/code> # 查找Hash中元素总数&lt;/li>
+&lt;li>&lt;code>HSCAN key cursor [MATCH pattern] [COUNT count]&lt;/code> # 从指定位置查询一定数量的数据，这里注意如果是小数据量下，处于ZIPLIST时，COUNT不管填多少，都是返回全部，因为ZIPLIST本身就用于小集合，没必要切分几段返回&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>更新：&lt;code>HSET&lt;/code>, &lt;code>HSETNX&lt;/code>, &lt;code>HDEL&lt;/code>
+&lt;ul>
+&lt;li>&lt;code>HDEL key field [field ...]&lt;/code> # 删除指定field，可以一次删除多个&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>删除：&lt;code>DEL&lt;/code>
+&lt;ul>
+&lt;li>&lt;code>DEL key [key ...]&lt;/code> # 删除Hash对象&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="hash-编码底层实现">Hash 编码(底层实现)&lt;/h3>
+&lt;p>Hash底层有两个编码方式：&lt;code>ZIPLIST&lt;/code>, &lt;code>HASHTABLE&lt;/code>&lt;/p></description></item><item><title>Redis - List</title><link>https://chhz0.github.io/notes/database/redis/datatypes/list/</link><pubDate>Tue, 10 Jun 2025 22:36:08 +0800</pubDate><guid>https://chhz0.github.io/notes/database/redis/datatypes/list/</guid><description>&lt;h2 id="redis--list-">Redis &amp;lt; List &amp;gt;&lt;/h2>
+&lt;p>Redis List是一组连续的字符串值&lt;strong>链表&lt;/strong>，这意味着向List的头部或者尾部中添加新元素的操作会在恒定的时间内完成，
+无论其已经存储了多少元素，但是缺点是访问元素的操作则需要遍历List，时间复杂度为O(N)&lt;/p>
+&lt;p>Redis List经常用于:&lt;/p>
+&lt;ul>
+&lt;li>实现堆栈和队列&lt;/li>
+&lt;li>为后台系统构建队列管理&lt;/li>
+&lt;/ul>
+&lt;h3 id="list-命令">List 命令&lt;/h3>
+&lt;p>常用命令:&lt;/p>
+&lt;ul>
+&lt;li>创建 &amp;ndash;&amp;gt; &lt;code>LPUSH&lt;/code>, &lt;code>RPUSH&lt;/code>
+&lt;ul>
+&lt;li>&lt;code>LPUSH key value [value ...]&lt;/code> # 从头部增加元素，返回List中元素总数&lt;/li>
+&lt;li>&lt;code>RPUSH key value [value ...]&lt;/code> # 从尾部增加元素，返回List中元素总数&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>查询 &amp;ndash;&amp;gt; &lt;code>LLEN&lt;/code>, &lt;code>LRANGE&lt;/code>
+&lt;ul>
+&lt;li>&lt;code>LLEN&lt;/code> # 查看List的长度，即List中元素的总数&lt;/li>
+&lt;li>&lt;code>LRANGE key start stop&lt;/code> # 查看start到stop为角标的元素&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>更新 &amp;ndash;&amp;gt; &lt;code>LPUSH&lt;/code>, &lt;code>RPUSH&lt;/code>, &lt;code>LPOP&lt;/code>, &lt;code>RPOP&lt;/code>, &lt;code>LREM&lt;/code>
+&lt;ul>
+&lt;li>&lt;code>LPOP key&lt;/code> # 移除并获取列表的第一个元素&lt;/li>
+&lt;li>&lt;code>RPOP key&lt;/code> # 移除并获取列表的第一个元素&lt;/li>
+&lt;li>&lt;code>LREM key count value&lt;/code> # 移除值等于value的元素
+&lt;ul>
+&lt;li>count = 0 ，则移除所有等于value的元素；&lt;/li>
+&lt;li>count &amp;gt; 0 ，则从左到右开始移除count个value元素；&lt;/li>
+&lt;li>count &amp;lt; 0，则从右往左移除count个元素&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>删除 &amp;ndash;&amp;gt; &lt;code>DEL&lt;/code>, &lt;code>UNLINK&lt;/code>
+&lt;ul>
+&lt;li>&lt;code>DEL key [key ...]&lt;/code> # 删除对象，返回值为删除成功了几个键&lt;/li>
+&lt;li>&lt;code>UNLIKN key [key ...]&lt;/code> # 删除对象，返回值为删除成功了几个键&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;blockquote>
+&lt;p>del命令与unlink命令均为删除对象，不同的是del命令是同步删除目录，会阻塞客户端，直到删除完成；
+unlink命令是异步删除命令，只是取消key在键空间的关联，让其不在能查到，删除是异步进行，所以不会阻塞客户端.&lt;/p></description></item><item><title>Redis - Multi Thread</title><link>https://chhz0.github.io/notes/database/redis/arch/multi-thread/</link><pubDate>Tue, 10 Jun 2025 22:36:08 +0800</pubDate><guid>https://chhz0.github.io/notes/database/redis/arch/multi-thread/</guid><description>&lt;blockquote>
+&lt;p>Redis 多线程持久化 | IO复用&lt;/p>&lt;/blockquote>
+&lt;h2 id="redis-多线程持久化">Redis 多线程持久化&lt;/h2>
+&lt;p>Redis多线程模型&lt;/p>
+&lt;p>redis一开始就是基于单线程模型，Redis里所有的数据结构都是非线程安全，规避了数据竞争问题，使得Redis对各种数据结构的操作非常简单&lt;/p>
+&lt;blockquote>
+&lt;p>redis选择单线程的核心原因是Redis都是内存操作，CPU处理都非常快，瓶颈更容易出现在I/O而不是CPU，所以选择了单线程模型&lt;/p>&lt;/blockquote>
+&lt;p>随着数据量的增大，redis的瓶颈更容易出现在I/O而不是CPU&lt;/p>
+&lt;p>因为上述情况，Redis选择了引入多线程来处理网络I/O，这样即保持了Redis核心的单线程处理价格，又引入了多线程解决提高网络I/O的性能&lt;/p></description></item><item><title>Redis - redisDB</title><link>https://chhz0.github.io/notes/database/redis/arch/redisdb/</link><pubDate>Tue, 10 Jun 2025 22:36:08 +0800</pubDate><guid>https://chhz0.github.io/notes/database/redis/arch/redisdb/</guid><description>&lt;blockquote>
+&lt;p>Redis是一个基于内存的数据库，数据存储在内存中，以键值对的形式存储.&lt;/p>&lt;/blockquote>
+&lt;h2 id="redis-数据库结构">Redis 数据库结构&lt;/h2>
+&lt;p>Redis的数据库结构：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">// redisDb 结构
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>type &lt;span style="color:#66d9ef">struct&lt;/span> redisDb {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> dict &lt;span style="color:#f92672">*&lt;/span>dict; &lt;span style="color:#75715e">//字典
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> dict &lt;span style="color:#f92672">*&lt;/span>expires; &lt;span style="color:#75715e">// 过期键
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> dict &lt;span style="color:#f92672">*&lt;/span>blocking_keys;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> dict &lt;span style="color:#f92672">*&lt;/span>ready_keys;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> dict &lt;span style="color:#f92672">*&lt;/span>watched_keys;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">int&lt;/span> id;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">long&lt;/span> &lt;span style="color:#66d9ef">long&lt;/span> avg_ttl;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> list &lt;span style="color:#f92672">*&lt;/span>defrag_later;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>} redisDb;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">// dict 结构
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>&lt;span style="color:#66d9ef">typedef&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span> dict {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> dictType &lt;span style="color:#f92672">*&lt;/span>type;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#f92672">*&lt;/span>privdata;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> dictht ht[&lt;span style="color:#ae81ff">2&lt;/span>];
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">long&lt;/span> rehashidx;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">unsigned&lt;/span> &lt;span style="color:#66d9ef">long&lt;/span> iterators;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>} dict;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;code>redisDb&lt;/code> 代表Redis数据库结构，各种操作对象，都存储在dict数据结构里.&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>dict&lt;/code> 是Redis的字典结构，存储键值对.&lt;/li>
+&lt;li>&lt;code>expires&lt;/code> 是Redis的过期键字典结构，存储过期键.&lt;/li>
+&lt;/ul>
+&lt;p>&lt;img src="https://chhz0.github.io/redis/redis-redisDb-struct.drawio.svg" alt="redis-redisDb-struct">&lt;/p>
+&lt;h3 id="操作redis在内存中的表现">操作Redis在内存中的表现&lt;/h3>
+&lt;ul>
+&lt;li>&lt;code>添加数据&lt;/code> # 即添加键值对，添加到dict结构字典中，Key必须为String对象，value为任何类型的对象，添加数据后，会在redisDb里字段dict上添加dict对象&lt;/li>
+&lt;li>&lt;code>查询数据&lt;/code> # 直接在dict找到对应的key，即完成查询&lt;/li>
+&lt;li>&lt;code>更新数据&lt;/code> # 对已经Key对象的任何变更操作，都是更新&lt;/li>
+&lt;li>&lt;code>删除数据&lt;/code> # 删除即把key和value从dict结构里删除&lt;/li>
+&lt;/ul>
+&lt;h3 id="关于过期键-expireskey">关于过期键 expiresKey&lt;/h3>
+&lt;p>Redis可以设置过期键，到达一定时间，这些对象会被自动过期并回收&lt;/p></description></item><item><title>Redis - Set</title><link>https://chhz0.github.io/notes/database/redis/datatypes/set/</link><pubDate>Tue, 10 Jun 2025 22:36:08 +0800</pubDate><guid>https://chhz0.github.io/notes/database/redis/datatypes/set/</guid><description>&lt;h2 id="redis-set-">Redis&amp;lt; Set &amp;gt;&lt;/h2>
+&lt;p>Redis Set是一个唯一字符串的集合&lt;/p>
+&lt;p>适用于：&lt;/p>
+&lt;ol>
+&lt;li>跟踪唯一目标(e.g., 跟踪访问给定博客的所有唯一IP地址)&lt;/li>
+&lt;li>表示关系(e.g., 具有给定角色的所有用户集合)&lt;/li>
+&lt;li>执行常见的集合运算(e.g., 根据集合运算能力获取不同用户的共同信息)&lt;/li>
+&lt;/ol>
+&lt;blockquote>
+&lt;p>Redis Set的最大大小为2^32-1(4294967295)&lt;/p>&lt;/blockquote>
+&lt;h3 id="set-命令">Set 命令&lt;/h3>
+&lt;p>Set的基本操作有：&lt;/p>
+&lt;ul>
+&lt;li>创建：&lt;code>SADD&lt;/code>
+&lt;ul>
+&lt;li>&lt;code>SADD key member [member ...]&lt;/code> # 添加元素，返回值为成功添加了几个元素&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>查询：&lt;code>SISMEMBR&lt;/code>, &lt;code>SCARD&lt;/code>, &lt;code>SMEMBERS&lt;/code>, &lt;code>SSCAN&lt;/code>, &lt;code>SINTER&lt;/code>, &lt;code>SUNION&lt;/code>, &lt;code>SDIFF&lt;/code>
+&lt;ul>
+&lt;li>&lt;code>SISMEMBER key member&lt;/code> # 查询元素是否存在&lt;/li>
+&lt;li>&lt;code>SCARD key&lt;/code> # 查询集合元素个数&lt;/li>
+&lt;li>&lt;code>SMEMBERS key&lt;/code> # 查看集合的所有元素&lt;/li>
+&lt;li>&lt;code>SSCAN key cursor[MATCH pattern][COUNT count]&lt;/code> # 查看集合元素，可以理解为指定游标进行查询，可以指定个数，默认为10&lt;/li>
+&lt;li>&lt;code>SINTER key [key ...]&lt;/code> # 返回在第一个集合，同时在后面所有集合都存在元素&lt;/li>
+&lt;li>&lt;code>SUNION key [key ...]&lt;/code> # 返回所有集合的并集，集合个数大于等于2&lt;/li>
+&lt;li>&lt;code>SDIFF key [key ...]&lt;/code> # 返回第一个集合有，且后续集合中不存在的元素，结合个数大于等于2，注意&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>更新：&lt;code>SADD&lt;/code>, &lt;code>SREM&lt;/code>
+&lt;ul>
+&lt;li>&lt;code>SADD&lt;/code> &amp;ndash; &amp;gt; 参考上文&lt;/li>
+&lt;li>&lt;code>SREM key member [member ...]&lt;/code> # 删除元素，返回值为成功删除几个元素&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>删除：&lt;code>DEL&lt;/code>
+&lt;ul>
+&lt;li>&lt;code>DEL key&lt;/code> 删除元素&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;p>::: tip 详细Set命令
+🔗 &lt;a href="https://redis.io/docs/latest/commands/?group=set">Set命令列表&lt;/a>
+:::&lt;/p></description></item><item><title>Redis - Single Thread</title><link>https://chhz0.github.io/notes/database/redis/arch/single-thread/</link><pubDate>Tue, 10 Jun 2025 22:36:08 +0800</pubDate><guid>https://chhz0.github.io/notes/database/redis/arch/single-thread/</guid><description>&lt;blockquote>
+&lt;p>Redis的单线程模型&lt;/p>&lt;/blockquote>
+&lt;h2 id="redis-单线程模型">Redis 单线程模型&lt;/h2>
+&lt;p>redis是一个能高效处理请求的组件&lt;/p>
+&lt;p>核心处理逻辑：Redis一直都是单线程，其他辅助模块会有一些多线程、多进程的功能，例如：复制模块用的多进程；某些异步流程从4.0开始用多线程；网络I/O解包从6.0开始用多线程；&lt;/p>
+&lt;blockquote>
+&lt;p>Redis在处理客户端的请求时，包括获取（socket写）、解析、执行、内容返回等都是由一个顺序串行的主线程处理，这就是所谓的单线程&lt;/p>&lt;/blockquote>
+&lt;h3 id="redis-单线程的选择">Redis 单线程的选择&lt;/h3>
+&lt;p>Redis的定位是内存k-v存储，是做短平快的热点数据处理，一般来说执行会很快，执行本身不会成为瓶颈，瓶颈通常在网络I/O，处理逻辑多线程并不会有太大收益&lt;/p>
+&lt;p>同时Redis本身秉持简洁高效的理念，代码的简单性、可维护性是redis一直依赖的追求，执行本身不应该成为瓶颈，而且多线程本身也会引起额外成本&lt;/p>
+&lt;h4 id="引入多线程带来复杂度和额外成本">引入多线程带来复杂度和额外成本&lt;/h4>
+&lt;ol>
+&lt;li>
+&lt;p>多线程引入的复杂度是极大的&lt;/p>
+&lt;ul>
+&lt;li>多线程引入后，redis原来的顺序执行特性就不复存在，为了事务的原子性、隔离性，redis就不得不引入一些很复杂的实现&lt;/li>
+&lt;li>redis的数据结构是极其高效，在单线程模式下做了很多特性的优化，如果引入多线程，那么所有底层数据都要改为线性安全，这很复杂&lt;/li>
+&lt;li>多线程模式使得程序调试更加复杂和麻烦，会带来额外的开发成本及运营成本&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>多线程带来额外的成本&lt;/p>
+&lt;ul>
+&lt;li>上下文切换成本，多线程调度需要切换线程上下文，这个操作先存储当前线程的本地数据，程序指针，然后载入另一个线程数据，这种内核操作的成本不可忽略&lt;/li>
+&lt;li>同步机制的开销，一些公共资源，在单线程模式下直接访问就行，多线程需要通过加锁等方式进行同步&lt;/li>
+&lt;li>一个线程本身也占据内存大小，对redis这种内存数据库来说，内存非常珍贵，多线程本身带来的内存使用的成本也需要谨慎决策&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ol>
+&lt;h3 id="redis-单线程的高性能">Redis 单线程的高性能&lt;/h3>
+&lt;p>Redis 核心的请求处理是&lt;code>单线程&lt;/code>，但是Redis却能使用单线程模型达到每秒数万级别的处理能力，这是Redis多方面极致设计的一个综合结果.&lt;/p>
+&lt;ol>
+&lt;li>Redis的大部分操作在内存上完成，内存操作本身就特别快&lt;/li>
+&lt;li>Redis选择了很多高效的数据结构，并做了很多优化，比如&lt;code>ziplist&lt;/code>，&lt;code>hash&lt;/code>，&lt;code>skiplist&lt;/code>等，有时候一种对象底层有几种实现以应对不同场景&lt;/li>
+&lt;li>Redis采用了多路复用机制，使其在网络IO操作中能并发处理大量的客户端请求，实现高吞并量&lt;/li>
+&lt;/ol>
+&lt;h4 id="redis-io多路复用">Redis I/O多路复用&lt;/h4>
+&lt;p>Redis在内存中处理数据，其性能瓶颈更多是在I/O&lt;/p>
+&lt;p>Redis的I/O多路复用机制，是指Redis在处理客户端请求时，通过使用操作系统提供的I/O多路复用功能，实现同时处理多个客户端的请求，而不是阻塞等待每个请求的处理完成&lt;/p>
+&lt;p>Redis做了一层包装，叫&lt;code>Reactor模型&lt;/code>，本质就是监听各种事件，当事件发生时，将事件分发给不同的处理器&lt;/p>
+&lt;p>&lt;img src="https://chhz0.github.io/redis/redis-reactor.drawio.svg" alt="redis-reactor">&lt;/p>
+&lt;p>I/O多路复用让redis单线程有了较大的并发度，这里是并发，不是并行，这种模式下，Redis单核的性能可以是被充分利用&lt;/p></description></item><item><title>Redis - Stream</title><link>https://chhz0.github.io/notes/database/redis/datatypes/stream/</link><pubDate>Tue, 10 Jun 2025 22:36:08 +0800</pubDate><guid>https://chhz0.github.io/notes/database/redis/datatypes/stream/</guid><description>&lt;h2 id="redis-stream-">Redis&amp;lt; Stream &amp;gt;&lt;/h2>
+&lt;p>Redis Stream是一种数据结构，其作用类似于仅追加日志，但也实现了多种操作克服典型的仅追加日志的限制. 包括O(1)时间内的随机访问和复杂的消费策略&lt;/p>
+&lt;p>Stream的使用示例：&lt;/p>
+&lt;pre>&lt;code>1. 事件溯源(追踪用户操作、点击)；
+2. 传感器健康;
+3. 通知(将每个用户的通知存储在单独的流中)
+&lt;/code>&lt;/pre>
+&lt;p>Redis为每个流条目生成一个唯一ID，可以使用这些ID检索其关联条目或读取并处理流中的所有后续条目&lt;/p>
+&lt;p>Redis支持多种修剪策略和多种消费策略&lt;/p>
+&lt;h3 id="stream-命令">Stream 命令&lt;/h3>
+&lt;ul>
+&lt;li>&lt;code>XADD&lt;/code> # 将新条目添加到流中&lt;/li>
+&lt;li>&lt;code>XREAD&lt;/code> # 读取一个或多个条目，从给定位置开始并及时向前移动&lt;/li>
+&lt;li>&lt;code>XRANGE&lt;/code> # 返回两个提供的条目ID之间的条目范围&lt;/li>
+&lt;li>&lt;code>XLEN&lt;/code> # 返回流的长度&lt;/li>
+&lt;/ul>
+&lt;blockquote>
+&lt;p>Redis Stream 详细请阅读
+&lt;a href="https://redis.io/docs/latest/develop/data-types/streams/">Redis Stream&lt;/a>&lt;/p>&lt;/blockquote></description></item><item><title>Redis - String</title><link>https://chhz0.github.io/notes/database/redis/datatypes/string/</link><pubDate>Tue, 10 Jun 2025 22:36:08 +0800</pubDate><guid>https://chhz0.github.io/notes/database/redis/datatypes/string/</guid><description>&lt;h2 id="redis-string-">Redis&amp;lt; String &amp;gt;&lt;/h2>
+&lt;p>Redis String 类型，存储字节，包括文本，序列化对象和二进制数组，因此 &lt;em>&lt;strong>String是Redis最基本的数据结构&lt;/strong>&lt;/em>. 通常用于&lt;strong>缓存&lt;/strong>，而且Redis支持其他功能，允许实现&lt;strong>计数器&lt;/strong>并执行按位运算.&lt;/p>
+&lt;p>由于Redis中key是一个字符串，因此Redis使用String数据结构作为key的值.&lt;/p>
+&lt;p>在默认情况下，Stirng最大为512MB，可以通过配置项&lt;code>proto-max-bulk-len&lt;/code>进行修改.&lt;/p>
+&lt;h3 id="string-适用场景">String 适用场景&lt;/h3>
+&lt;p>使用场景：一般用来存放字节数据、文本数据、序列化后的对象数据.&lt;/p>
+&lt;ol>
+&lt;li>缓存场景：Value存Json字符串等信息.&lt;/li>
+&lt;li>计数场景：因为Redis处理命令是单线程，所以执行命令的过程是原子的，因此String数据结构适合计数场景.&lt;/li>
+&lt;/ol>
+&lt;h3 id="string-命令">String 命令&lt;/h3>
+&lt;p>常用命令:&lt;/p>
+&lt;ul>
+&lt;li>创建 &amp;ndash;&amp;gt; &lt;code>set&lt;/code>, &lt;code>setnx&lt;/code>, &lt;code>getset&lt;/code>
+&lt;ul>
+&lt;li>&lt;code>SET key value&lt;/code> # 设置一个key值为特定的value&lt;/li>
+&lt;/ul>
+&lt;blockquote>
+&lt;p>set命令扩展参数：
+EX（键过期时间秒）、PX（键过期时间毫秒）、NX（只有键不存在时才对键进行操作，基本替代下面的SETNX操作）、XX（键存在时才对键进行操作）&lt;/p>&lt;/blockquote>
+&lt;ul>
+&lt;li>&lt;code>SETNX key value&lt;/code> # 用于在指定的key不存在时，为key设置指定的值，对于实现锁很有用&lt;/li>
+&lt;li>&lt;code>GETSET key value&lt;/code> # 设置一个key的值，并返回原来的值&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>查询 &amp;ndash;&amp;gt; &lt;code>get&lt;/code>, &lt;code>mget&lt;/code>
+&lt;ul>
+&lt;li>&lt;code>Get key&lt;/code> # 查询某个key，存在就返回对应的value，不存在返回nil&lt;/li>
+&lt;li>&lt;code>Mget key [key ...]&lt;/code> # 一次查询多个key，如果某个key不存在，对应位置返回nil&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>更新 &amp;ndash;&amp;gt; &lt;code>set&lt;/code>
+&lt;ul>
+&lt;li>见上面的set命令&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>删除 &amp;ndash;&amp;gt; &lt;code>del&lt;/code>
+&lt;ul>
+&lt;li>&lt;code>DEL key [key ...]&lt;/code> # 删除对象，返回值为删除成功了几行&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;p>其他命令：&lt;code>incr&lt;/code>, &lt;code>incrby&lt;/code>, &lt;code>incrbyfloat&lt;/code>&lt;/p></description></item><item><title>Redis - ZSet</title><link>https://chhz0.github.io/notes/database/redis/datatypes/zset/</link><pubDate>Tue, 10 Jun 2025 22:36:08 +0800</pubDate><guid>https://chhz0.github.io/notes/database/redis/datatypes/zset/</guid><description>&lt;h2 id="redis-zset-">Redis&amp;lt; ZSet &amp;gt;&lt;/h2>
+&lt;p>Redis ZSet 是一个关联分数排序的唯一字符串集合. 当多个字符串具有相同分数时，字符串会按照字典顺序排列。&lt;/p>
+&lt;p>&lt;code>ZSet&lt;/code>可以适用于:&lt;/p>
+&lt;ul>
+&lt;li>排行榜. 使用ZSet维护大型游戏中最高分数的有序列表.&lt;/li>
+&lt;li>速率限制器. 使用ZSet构建滑动窗口速率限制器，以防止过多的API请求.&lt;/li>
+&lt;/ul>
+&lt;p>&lt;code>ZSet&lt;/code>可以视为是集合和哈希的混合，一方面，其与集合类似，由唯一的、不重复的字符串元素组成；另一方面，集合内元素没有排序，但是排序集合中每个元素都和一个浮点值相关联，也就是类似于哈希，每个元素映射一个值&lt;/p>
+&lt;p>此外，排序集中的元素是按顺序获取的，这个顺序遵守以下规则：&lt;/p>
+&lt;ol>
+&lt;li>如果 B 和 A 是具有不同分数的两个元素，则如果 A.score 是 &amp;gt; B.score，则 A &amp;gt; B.&lt;/li>
+&lt;li>如果 B 和 A 的分数完全相同，则如果 A 字符串按字典顺序大于 B 字符串，则 A &amp;gt; B。 B 和 A 字符串不能相等，因为排序集仅具有唯一元素&lt;/li>
+&lt;/ol>
+&lt;h3 id="zset-命令">ZSet 命令&lt;/h3>
+&lt;p>ZSet常见命令：&lt;/p>
+&lt;ul>
+&lt;li>创建：&lt;code>ZADD&lt;/code>
+&lt;ul>
+&lt;li>&lt;code>ZADD key score member [score member]&lt;/code> # 向Sorted Set增加数据，如果key已经存在的Key，则更新对应的数据
+&lt;ul>
+&lt;li>扩展参数：XX, NX, LT, GT&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>查询：&lt;code>ZRANGE&lt;/code>, &lt;code>ZCOUNT&lt;/code>, &lt;code>ZRANK&lt;/code>, &lt;code>ZCARD&lt;/code>, &lt;code>ZSCORE&lt;/code>
+&lt;ul>
+&lt;li>&lt;code>ZCARD key&lt;/code> # 查看ZSet中的成员&lt;/li>
+&lt;li>&lt;code>ZRANGE key start stop [WITHSCORES]&lt;/code> # 查询从start到stop范围的ZSet数据，WITHSCORES选填，不写输出里只有key，没有score值&lt;/li>
+&lt;li>&lt;code>ZREVRANGE key start stop [WITHSCORES]&lt;/code> # 即reverse range，从大到小遍历，WITHSCORES选项，不写不会输出score&lt;/li>
+&lt;li>&lt;code>ZCOUNT key min max&lt;/code> # 计算min-max积分范围的成员&lt;/li>
+&lt;li>&lt;code>ZRANK key member&lt;/code> # 查看ZSet中member的排名索引，索引从0开始，所以排名是第一，索引就是0&lt;/li>
+&lt;li>&lt;code>ZSCORE key member&lt;/code> # 查询ZSet成员的分数&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>更新：&lt;code>ZADD&lt;/code>, &lt;code>ZREM&lt;/code>
+&lt;ul>
+&lt;li>&lt;code>ZREM key member [member ...]&lt;/code> # 删除ZSet中的元素&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>删除：&lt;code>DEL&lt;/code>, &lt;code>UNLINK&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;p>::: tip 详细ZSet命令
+🔗 &lt;a href="https://redis.io/docs/latest/commands/?group=sorted-set">ZSets命令列表&lt;/a>
+:::&lt;/p></description></item><item><title>Redis - 过期淘汰算法</title><link>https://chhz0.github.io/notes/database/redis/arch/lru-lfu/</link><pubDate>Tue, 10 Jun 2025 22:36:08 +0800</pubDate><guid>https://chhz0.github.io/notes/database/redis/arch/lru-lfu/</guid><description>&lt;blockquote>
+&lt;p>Redis 中使用的过期淘汰算法 LRU &amp;amp;&amp;amp; LFU&lt;/p>&lt;/blockquote>
+&lt;h2 id="redis-过期淘汰算法">Redis 过期淘汰算法&lt;/h2></description></item><item><title>Redis-core</title><link>https://chhz0.github.io/notes/database/redis/redis-core/</link><pubDate>Tue, 10 Jun 2025 22:36:08 +0800</pubDate><guid>https://chhz0.github.io/notes/database/redis/redis-core/</guid><description>&lt;blockquote>
 &lt;p>一文详解 &lt;em>Redis&lt;/em> 核心内容&lt;/p>&lt;/blockquote>
 &lt;h2 id="1-redis-简介">1. Redis 简介&lt;/h2>
 &lt;h3 id="11-redis-安装">1.1 Redis 安装&lt;/h3>
@@ -976,7 +1664,241 @@ description&amp;ndash;&amp;gt;对commit的简短描述，以动词开头&lt;/p>
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>│ └── hugo-docs.md
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>├── about.md
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>└── search.md
-&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>在&lt;code>content/blogs&lt;/code> 目录下，将以 date.title.md 的markdown文件列表. &lt;code>content/archive/**/*&lt;/code> 将存在目录层级，以方便查找想要阅读的博客，&lt;/p></description></item><item><title/><link>https://chhz0.github.io/interviews/mysql/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://chhz0.github.io/interviews/mysql/</guid><description>&lt;h2 id="0-sql语法">0. SQL语法&lt;/h2>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>在&lt;code>content/blogs&lt;/code> 目录下，将以 date.title.md 的markdown文件列表. &lt;code>content/archive/**/*&lt;/code> 将存在目录层级，以方便查找想要阅读的博客，&lt;/p></description></item><item><title>Go-常见设计模式</title><link>https://chhz0.github.io/notes/langs/golang/go-design-pattern/</link><pubDate>Tue, 19 Nov 2024 00:00:00 +0000</pubDate><guid>https://chhz0.github.io/notes/langs/golang/go-design-pattern/</guid><description>&lt;blockquote>
+&lt;p>Go项目开发中比较常用的设计模式介绍&lt;/p>&lt;/blockquote>
+&lt;ul>
+&lt;li>创建型模式
+&lt;ul>
+&lt;li>单例模式&lt;/li>
+&lt;li>工厂模式&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>结构型模式
+&lt;ul>
+&lt;li>策略模式&lt;/li>
+&lt;li>模板模式&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>行为型模式
+&lt;ul>
+&lt;li>代理模式&lt;/li>
+&lt;li>选项模式&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="创建型模式">创建型模式&lt;/h2>
+&lt;h3 id="单例模式">单例模式&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">package&lt;/span> &lt;span style="color:#a6e22e">singleton&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">import&lt;/span> &lt;span style="color:#e6db74">&amp;#34;sync&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">type&lt;/span> &lt;span style="color:#a6e22e">singleton&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span> {}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">var&lt;/span> &lt;span style="color:#a6e22e">ins&lt;/span> &lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">singleton&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">var&lt;/span> &lt;span style="color:#a6e22e">once&lt;/span> &lt;span style="color:#a6e22e">sync&lt;/span>.&lt;span style="color:#a6e22e">Once&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> &lt;span style="color:#a6e22e">GetInsOr&lt;/span>() &lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">singleton&lt;/span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">once&lt;/span>.&lt;span style="color:#a6e22e">Do&lt;/span>(&lt;span style="color:#66d9ef">func&lt;/span>(){
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">ins&lt;/span> = &lt;span style="color:#f92672">&amp;amp;&lt;/span>&lt;span style="color:#a6e22e">singleton&lt;/span>{}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> })
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#66d9ef">nil&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>使用&lt;code>once.Do&lt;/code>可以确保ins实例全局被创建一次&lt;/p>
+&lt;p>单例模式实际上有饿汉方式和懒汉方式，这里只介绍在Go项目中单例模式最优雅的实现方式&lt;/p>
+&lt;h3 id="工厂模式">工厂模式&lt;/h3>
+&lt;p>工厂模式是&lt;strong>面向对象编程中的常用模式&lt;/strong>。可以通过不同的工厂模式来带得Go项目变得简洁&lt;/p>
+&lt;ul>
+&lt;li>简单工厂模式&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">package&lt;/span> &lt;span style="color:#a6e22e">factory&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">type&lt;/span> &lt;span style="color:#a6e22e">Person&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">Name&lt;/span> &lt;span style="color:#66d9ef">string&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">Age&lt;/span> &lt;span style="color:#66d9ef">string&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> (&lt;span style="color:#a6e22e">p&lt;/span> &lt;span style="color:#a6e22e">Person&lt;/span>) &lt;span style="color:#a6e22e">Greet&lt;/span>() {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">fmt&lt;/span>.&lt;span style="color:#a6e22e">Printf&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;name := %s, age := %s&amp;#34;&lt;/span>, &lt;span style="color:#a6e22e">p&lt;/span>.&lt;span style="color:#a6e22e">Name&lt;/span>, &lt;span style="color:#a6e22e">p&lt;/span>.&lt;span style="color:#a6e22e">Age&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> &lt;span style="color:#a6e22e">NewPerson&lt;/span>(&lt;span style="color:#a6e22e">name&lt;/span> &lt;span style="color:#66d9ef">string&lt;/span>, &lt;span style="color:#a6e22e">age&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span>) &lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">Person&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#f92672">&amp;amp;&lt;/span>&lt;span style="color:#a6e22e">Person&lt;/span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">Name&lt;/span>: &lt;span style="color:#a6e22e">name&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">Age&lt;/span>: &lt;span style="color:#a6e22e">age&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>通过&lt;code>NewPerson&lt;/code>创建实例，可以确保实例的Name和Age属性被设置&lt;/p>
+&lt;ul>
+&lt;li>抽象工厂模式&lt;/li>
+&lt;/ul>
+&lt;p>抽象工厂模式和简单工厂模式的唯一区别，返回的是&lt;strong>接口&lt;/strong>而不是结构体&lt;/p>
+&lt;p>通过返回接口，可以在不公开内部实现的情况下，让调用者使用提供的各种功能&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">package&lt;/span> &lt;span style="color:#a6e22e">factory&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">type&lt;/span> &lt;span style="color:#a6e22e">PersonIntf&lt;/span> &lt;span style="color:#66d9ef">interface&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">Greet&lt;/span>()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">type&lt;/span> &lt;span style="color:#a6e22e">person&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">name&lt;/span> &lt;span style="color:#66d9ef">string&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">age&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> (&lt;span style="color:#a6e22e">p&lt;/span> &lt;span style="color:#a6e22e">person&lt;/span>) &lt;span style="color:#a6e22e">Greet&lt;/span>() {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">fmt&lt;/span>.&lt;span style="color:#a6e22e">Printf&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;Hi! My name is %s&amp;#34;&lt;/span>, &lt;span style="color:#a6e22e">p&lt;/span>.&lt;span style="color:#a6e22e">name&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">// Here, NewPerson returns an interface, and not the person struct itself&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> &lt;span style="color:#a6e22e">NewPerson&lt;/span>(&lt;span style="color:#a6e22e">name&lt;/span> &lt;span style="color:#66d9ef">string&lt;/span>, &lt;span style="color:#a6e22e">age&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span>) &lt;span style="color:#a6e22e">PersonIntf&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#a6e22e">person&lt;/span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">name&lt;/span>: &lt;span style="color:#a6e22e">name&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">age&lt;/span>: &lt;span style="color:#a6e22e">age&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>工厂方式模式&lt;/li>
+&lt;/ul>
+&lt;p>在工厂方法模式，依赖工厂函数，通过实现工厂函数来创建多种工厂，将对象创建从由一个对象辅助所有具体类的实例化，变成由一群子类来负责具体类的实例化&lt;/p></description></item><item><title>[计网] HTTP</title><link>https://chhz0.github.io/notes/cs/net/http/</link><pubDate>Thu, 31 Oct 2024 00:00:00 +0000</pubDate><guid>https://chhz0.github.io/notes/cs/net/http/</guid><description>&lt;p>接下来将从以下6个方面，逐渐学习和了解HTTP&lt;/p>
+&lt;ol>
+&lt;li>HTTP基本概念&lt;/li>
+&lt;li>Get与Post&lt;/li>
+&lt;li>HTTP特征&lt;/li>
+&lt;li>HTTP缓存&lt;/li>
+&lt;li>HTTPS与HTTP&lt;/li>
+&lt;li>HTTP/1.1、HTTP/2、HTTP/3演变&lt;/li>
+&lt;/ol>
+&lt;p>&lt;img src="https://rt5bap83jl.feishu.cn/space/api/box/stream/download/asynccode/?code=YzgxNTk2MGIwMjM0ODdhZWNiYjM1YTdhNTM0NTMwOTJfaDdMekY5THZXQ0plelVaR2lCV1ZWWGptTUZISUMzcElfVG9rZW46TU5pOWJ0elBEbzVIa0p4bzdvTGM1N1VybkxoXzE3MjE4Mzk5Nzc6MTcyMTg0MzU3N19WNA" alt="">&lt;/p>
+&lt;h2 id="http基本概念">&lt;strong>HTTP基本概念&lt;/strong>&lt;/h2>
+&lt;hr>
+&lt;h3 id="1http是什么">&lt;strong>1.HTTP是什么？&lt;/strong>&lt;/h3>
+&lt;blockquote>
+&lt;p>HTTP是超文本传输协议，也就是&lt;strong>HyperText&lt;/strong> &lt;strong>Transfer Protocol&lt;/strong>&lt;/p>&lt;/blockquote>
+&lt;p>HTTP的名字【超文本传输协议】，可以拆成三个部分：&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>超文本&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>传输&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>协议&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;p>&lt;img src="https://rt5bap83jl.feishu.cn/space/api/box/stream/download/asynccode/?code=MWVjMWE4ZmI3M2M3YjczMWRmMDE3OWVmZjUwYTE0ODBfRXhVcm5qbEUxNlZaVGpid3I5Z25sQTJzV1ZlSVpGUTdfVG9rZW46UHhGZGJVNFI2b25hWDl4TmlsS2NoaVI2bjJpXzE3MjE4Mzk5Nzc6MTcyMTg0MzU3N19WNA" alt="">&lt;/p>
+&lt;p>针对 HTTP &lt;strong>协议&lt;/strong>，我们可以这么理解。&lt;/p>
+&lt;ol start="7">
+&lt;li>&lt;em>「协议」&lt;/em>&lt;/li>
+&lt;/ol>
+&lt;p>HTTP 是一个用在计算机世界里的&lt;strong>协议&lt;/strong>。它使用计算机能够理解的语言确立了一种计算机之间交流通信的规范（&lt;strong>两个以上的参与者&lt;/strong>），以及相关的各种控制和错误处理方式（&lt;strong>行为约定和规范&lt;/strong>）。&lt;/p>
+&lt;ol start="8">
+&lt;li>&lt;em>「传输」&lt;/em>&lt;/li>
+&lt;/ol>
+&lt;p>HTTP 协议是一个&lt;strong>双向协议&lt;/strong>。&lt;/p>
+&lt;p>针对&lt;strong>传输&lt;/strong>，我们可以进一步理解了 HTTP。&lt;/p>
+&lt;p>HTTP 是一个在计算机世界里专门用来在&lt;strong>两点之间传输数据&lt;/strong>的约定和规范。&lt;/p>
+&lt;ol start="9">
+&lt;li>&lt;em>「超文本」&lt;/em>&lt;/li>
+&lt;/ol>
+&lt;p>HTTP 传输的内容是「超文本」。&lt;/p>
+&lt;p>理解「超文本」，它就是&lt;strong>超越了普通文本的文本&lt;/strong>，它是文字、图片、视频等的混合体，最关键有超链接，能从一个超文本跳转到另外一个超文本。&lt;/p>
+&lt;p>&lt;strong>HTTP 是一个在计算机世界里专门在「两点」之间「传输」文字、图片、音频、视频等「超文本」数据的「约定和规范」。&lt;/strong>&lt;/p>
+&lt;blockquote>
+&lt;p>HTTP是用于从互联网服务器传输超文本到本地浏览器的协议，这个说法是错误的，因为HTTP也可以服务于【服务器&amp;lt;&amp;mdash;&amp;gt;服务器】，所有采用&lt;strong>两点之间&lt;/strong>的描述比较准确&lt;/p>&lt;/blockquote>
+&lt;h3 id="2http常见的状态码">&lt;strong>2.HTTP常见的状态码&lt;/strong>&lt;/h3>
+&lt;p>&lt;img src="https://rt5bap83jl.feishu.cn/space/api/box/stream/download/asynccode/?code=NzMzNjU4MzA0ZWM3ZGY0ZWRjM2MzOWQyMzA1NmIyMjJfN01YaTBhejQ1RVlOMFdWcWphQXNXaHNLYUhGekNOWFdfVG9rZW46WFRQcGJWUWdBb1VYdVp4YmM2ZWNWdmd0bnJjXzE3MjE4Mzk5Nzc6MTcyMTg0MzU3N19WNA" alt="">&lt;/p>
+&lt;p>&lt;code>1xx&lt;/code> 类状态码属于&lt;strong>提示信息&lt;/strong>，是协议处理中的一种中间状态，实际用到的比较少。&lt;/p>
+&lt;p>&lt;code>2xx&lt;/code> 类状态码表示服务器&lt;strong>成功&lt;/strong>处理了客户端的请求，也是我们最愿意看到的状态。&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>「&lt;strong>200 OK&lt;/strong>」是最常见的成功状态码，表示一切正常。如果是非 &lt;code>HEAD&lt;/code> 请求，服务器返回的响应头都会有 body 数据。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>「&lt;strong>204 No Content&lt;/strong>」也是常见的成功状态码，与 200 OK 基本相同，但响应头没有 body 数据。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>「&lt;strong>206 Partial Content&lt;/strong>」是应用于 HTTP 分块下载或断点续传，表示响应返回的 body 数据并不是资源的全部，而是其中的一部分，也是服务器处理成功的状态。&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;p>&lt;code>3xx&lt;/code> 类状态码表示客户端请求的资源发生了变动，需要客户端用新的 URL 重新发送请求获取资源，也就是&lt;strong>重定向&lt;/strong>。&lt;/p></description></item><item><title>[计网] 键入网址的过程</title><link>https://chhz0.github.io/notes/cs/net/%E9%94%AE%E5%85%A5%E7%BD%91%E5%9D%80%E7%9A%84%E8%BF%87%E7%A8%8B/</link><pubDate>Thu, 31 Oct 2024 00:00:00 +0000</pubDate><guid>https://chhz0.github.io/notes/cs/net/%E9%94%AE%E5%85%A5%E7%BD%91%E5%9D%80%E7%9A%84%E8%BF%87%E7%A8%8B/</guid><description>&lt;h2 id="当键入网址后到网页显示期间发生了什么">当键入网址后，到网页显示，期间发生了什么？&lt;/h2>
+&lt;h3 id="http">&lt;strong>HTTP&lt;/strong>&lt;/h3>
+&lt;blockquote>
+&lt;p>浏览器做的第一步工作是&lt;strong>解析****URL&lt;/strong>&lt;/p>&lt;/blockquote>
+&lt;p>首先浏览器做的第一步工作就是要对&lt;code>URL&lt;/code>进行解析，从而生成发生给&lt;code>Web&lt;/code>服务器的请求信息&lt;/p>
+&lt;p>在一条长长的URL里的各个元素的代表是什么&lt;/p>
+&lt;p>&lt;img src="https://rt5bap83jl.feishu.cn/space/api/box/stream/download/asynccode/?code=NWQ4MGEyMTY1MWRiNGE0MjliMjBhNTRhNmM3OTkwOWZfS0tDMENDOUNRb05hZkxXZ0JJNkZIZWRFTklGZDI5R1VfVG9rZW46RnF1TWJpVklTb0pUSUR4Njg3N2NMVGRvbkZlXzE3MjE4Mzk5MzY6MTcyMTg0MzUzNl9WNA" alt="">&lt;/p>
+&lt;blockquote>
+&lt;p>这里的URL实际上是请求服务器里的文件资源&lt;/p>
+&lt;p>当上图的蓝色部分URL元素都省略了，那么请求的是哪个文件呢？&lt;/p>&lt;/blockquote>
+&lt;p>当没有路径名时，就代表访问根目录下事先设置的&lt;strong>默认文件&lt;/strong>，也就是&lt;code>/index.html&lt;/code>或者&lt;code>/default.html&lt;/code>这些文件，这样就不好发生混乱&lt;/p>
+&lt;blockquote>
+&lt;p>生产HTTP请求信息&lt;/p>&lt;/blockquote>
+&lt;p>对&lt;code>URL&lt;/code>进行解析之后，浏览器确定了Web服务器和文件名，接下来就是根据这些信息来生产HTTP请求信息&lt;/p>
+&lt;p>&lt;img src="https://rt5bap83jl.feishu.cn/space/api/box/stream/download/asynccode/?code=YjQ5OTZhMDE0M2U1NDg3YjkxOGM0YTBlMmZmZGNhODNfSU5nQW93c3pXYUppT1FKaGJ4WWd1VEZrU0hIUVVDd2JfVG9rZW46R1U3bWJ4aTZ6b0l5b1Z4VzdUUmN1a1FlblFQXzE3MjE4Mzk5MzY6MTcyMTg0MzUzNl9WNA" alt="">&lt;/p>
+&lt;h3 id="真实地址查询dns">&lt;strong>真实地址查询——DNS&lt;/strong>&lt;/h3>
+&lt;hr>
+&lt;p>通过浏览器解析URL并生成HTTP消息后，需要委托操作系统将消息发送给&lt;code>Web&lt;/code>服务器&lt;/p>
+&lt;p>但是在发送之前，还需要&lt;strong>查询服务器域名对应的IP地址&lt;/strong>，因为委托操作系统发送消息时，必须提供通信对象的IP地址&lt;/p>
+&lt;p>这里，有一种服务器就专门保存了&lt;code>Web&lt;/code>服务器域名与&lt;code>IP&lt;/code>的对应关系——DNS服务器&lt;/p>
+&lt;blockquote>
+&lt;p>域名的层级关系&lt;/p>&lt;/blockquote>
+&lt;p>DNS中的域名都是用&lt;strong>句点&lt;/strong>来分隔的，比如&lt;code>www.server.com&lt;/code>，这里的句点带不了不同层次之间的界限&lt;/p>
+&lt;p>在域名中，&lt;strong>越靠右&lt;/strong>的位置表示其&lt;strong>层级越高&lt;/strong>&lt;/p>
+&lt;p>实际上&lt;strong>域名&lt;/strong>最后还有一个点，比如&lt;code>www``.server.com.&lt;/code>，这个最后一个点代表根域名&lt;/p>
+&lt;p>也就是说，&lt;code>.&lt;/code>根域是最顶层，它的下一层是&lt;code>.com&lt;/code>顶级域,再下面是&lt;code>server.com&lt;/code>&lt;/p>
+&lt;p>所以，域名的层级关系类似一个树状结构&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>根DNS服务器&lt;code>.&lt;/code>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>顶级域DNS服务器&lt;code>.com&lt;/code>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>权威DNS服务器&lt;code>server.com&lt;/code>&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;p>&lt;img src="https://rt5bap83jl.feishu.cn/space/api/box/stream/download/asynccode/?code=YzA0NDVhMjA2MDAxMDFkNTUxNTg4Yzg2MDhlYjk0ZTRfcVJsVzU0WHl0cXZFT1h5WHpDMEpjYnlRWnkxSEhWUkNfVG9rZW46RUhFTWIwWFBFb04yZ3V4RHVNSGM1V0dBbnc0XzE3MjE4Mzk5MzY6MTcyMTg0MzUzNl9WNA" alt="">&lt;/p>
+&lt;blockquote>
+&lt;p>根域的DNS服务器信息保存在互联网中所有的DNS服务器中，这样一来任何DNS服务器都可以找到并访问根域DNS服务器&lt;/p>
+&lt;p>因此，客户端只要能够找到任意一台 DNS 服务器，就可以通过它找到根域 DNS 服务器，然后再一路顺藤摸瓜找到位于下层的某台目标 DNS 服务器。&lt;/p>
+&lt;p>域名解析的工作流程&lt;/p>&lt;/blockquote>
+&lt;ol>
+&lt;li>
+&lt;p>&lt;strong>客户端&lt;/strong>首先会发出一个DNS请求，问&lt;a href="http://www.server.com">www.server.com&lt;/a>的IP是啥，并发给本地DNS服务器（也就是客户端的TCP/IP设置中填写的DNS服务器地址）&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>本地域名服务器收到客户端的请求后，如果&lt;strong>缓存里的表格&lt;/strong>能找到&lt;a href="http://www.server.com">www.server.com&lt;/a>，则直接返回IP地址，如果没有，本地DNS会去问它的根域名服务器， 根域名服务器是最高层次的，它不直接用于域名解析，但能指明一条道路。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>根DNS收到本地DNS的请求后，根据&lt;a href="http://www.server.com">www.server.com&lt;/a>的后置是&lt;code>.com&lt;/code>，这个域名归于&lt;code>.com&lt;/code>区域管理，返回&lt;code>.com&lt;/code>顶级域名服务器地址给本地&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>本地DNS收到顶级域名服务器地址后，向顶级域名服务器请求负责&lt;a href="http://www.server.com">www.server.com&lt;/a>的权威DNS服务器的地址，&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>本地DNS最后向权威DNS服务器请求&lt;a href="http://www.server.com">www.server.com&lt;/a>的IP地址，该server.com的权威服务器就是域名解析结果的出处。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>权威DNS服务器查询结后将对应的IP地址X.X.X.X返回到本地DNS&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>本地DNS再将IP地址返回客户端，客户端和目标建立连接&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;p>至此，DNS的解析过程完成了，其过程可见下图&lt;/p>
+&lt;p>&lt;img src="https://rt5bap83jl.feishu.cn/space/api/box/stream/download/asynccode/?code=ZjI2MmYzMWEzODdiOWY0YjcxMjZjMmEzZmUzNzEwZDFfTENsN3NZRWxDc1pVVlpKaTB3RzJwWEpGOEdhU1NBYU5fVG9rZW46SE9EVmJ5NzFlb3VHdlV4cHBPV2NiRVZ5bjZnXzE3MjE4Mzk5MzY6MTcyMTg0MzUzNl9WNA" alt="">&lt;/p>
+&lt;blockquote>
+&lt;p>域名解析并不是每次都需要经过这么多步骤&lt;/p>&lt;/blockquote>
+&lt;p>还有&lt;strong>缓存&lt;/strong>的存在。&lt;/p>
+&lt;p>浏览器会先看自身有没有对这个域名的缓存，如果有，就直接返回，如果没有，就去问操作系统，操作系统也会去看自己的缓存，如果有，就直接返回，如果没有，再去 hosts 文件看，也没有，才会去问「本地 DNS 服务器」。&lt;/p>
+&lt;h3 id="协议栈">&lt;strong>协议栈&lt;/strong>&lt;/h3>
+&lt;hr>
+&lt;p>通过DNS获取IP后，就可以把HTTP的传输工具交给操作系统中的&lt;strong>协议栈&lt;/strong>&lt;/p>
+&lt;p>协议栈的内部分为几个部分，分别承担不同的工作。上下关系是有一定的规则的，上面的部分会向下面的部分委托工作，下面的部分收到委托的工作并执行。&lt;/p>
+&lt;p>&lt;img src="https://rt5bap83jl.feishu.cn/space/api/box/stream/download/asynccode/?code=OTJiYWJjOTQwZjU3YTI3ODUyMWExMzU2MTlhNjkxZTNfaU5halB3SXMwdzRTdTdXVUVWQnBPYjhTWnpIN1ZEbWhfVG9rZW46WDJTQWIyU3R6b1RvQzN4aGc2OWNWczZJblNiXzE3MjE4Mzk5MzY6MTcyMTg0MzUzNl9WNA" alt="">&lt;/p>
+&lt;p>应用程序（浏览器）通过调用 Socket 库，来委托协议栈工作。协议栈的上半部分有两块，分别是负责收发数据的 TCP 和 UDP 协议，这两个传输协议会接受应用层的委托执行收发数据的操作。&lt;/p>
+&lt;p>协议栈的下面一半是用 IP 协议控制网络包收发操作，在互联网上传数据时，数据会被切分成一块块的网络包，而将网络包发送给对方的操作就是由 IP 负责的。&lt;/p></description></item><item><title/><link>https://chhz0.github.io/interviews/mysql/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://chhz0.github.io/interviews/mysql/</guid><description>&lt;h2 id="0-sql语法">0. SQL语法&lt;/h2>
 &lt;h3 id="01-count主键和count非主键结果会不同吗">0.1 count主键和count非主键结果会不同吗？&lt;/h3>
 &lt;p>分析：count()函数是返回表中某个列的非NULL值数量&lt;/p>
 &lt;ul>
@@ -1052,7 +1974,314 @@ description&amp;ndash;&amp;gt;对commit的简短描述，以动词开头&lt;/p>
 &lt;/ol>
 &lt;p>回答：MySQL会有会多范围和排序的场景，虽然哈希表的搜索时间复杂度是O(1)，但是由于哈希表的数据都是通过哈希函数计算后散列分布的，所以哈希表索引不支持范围和排序操作，不支持联合索引最左匹配原则，如果重复键比较多，还容易操作哈希碰撞导致效率进一步降低。而B+树可以满足这些应用&lt;/p>
 &lt;h3 id="16聚簇索引和非聚簇索引有什么区别">1.6聚簇索引和非聚簇索引有什么区别？&lt;/h3>
-&lt;p>分析：先说聚簇索引和非聚簇索引B+树叶子节点存放内容的区别，然后再引出回表查询和覆盖索引查询&lt;/p></description></item><item><title>Search</title><link>https://chhz0.github.io/search/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://chhz0.github.io/search/</guid><description>&lt;h1 id="search">Search&lt;/h1>
+&lt;p>分析：先说聚簇索引和非聚簇索引B+树叶子节点存放内容的区别，然后再引出回表查询和覆盖索引查询&lt;/p></description></item><item><title/><link>https://chhz0.github.io/interviews/network/http/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://chhz0.github.io/interviews/network/http/</guid><description>&lt;h2 id="http的协议有什么特点">HTTP的协议有什么特点？&lt;/h2>
+&lt;p>HTTP协议&lt;strong>基于文本传输&lt;/strong>的，&lt;strong>支持不同的****数据格式&lt;/strong>，例如HTML、JSON、XML等数据格式，并且&lt;strong>http是无状态的&lt;/strong>，每个http请求之间相互独立，&lt;strong>采用了请求-应答模式&lt;/strong>，&lt;strong>有很好的扩展性&lt;/strong>，可以通过扩展头部、方法等支持行方式&lt;/p>
+&lt;h2 id="http报文格式怎么分割">HTTP报文格式？怎么分割&lt;/h2>
+&lt;p>http的报文格式分为请求头、请求行、请求体，请求头包含了请求方式、url、http版本，请求行包含了key-value对的信息，有connection，content-lenth等字段，请求体包含了实际的请求数据；请求头和请求行通过/r/n进行分割，请求行和请求体通过一行空白行进行分割&lt;/p>
+&lt;h2 id="http有什么方法">HTTP有什么方法？&lt;/h2>
+&lt;p>GET、PUT、DELETE、post、head、options、trace、connect&lt;/p>
+&lt;h2 id="哪些http方法是安全的哪些是幂等的">哪些http方法是安全的？哪些是幂等的&lt;/h2>
+&lt;p>get、head是安全的
+post、put、delete是不安全的&lt;/p>
+&lt;p>get、head、put、delete是幂等的
+post是不幂等的&lt;/p>
+&lt;h2 id="get和post请求的区别追问get请求一定是安全且幂等的吗">GET和POST请求的区别？追问：GET请求一定是安全且幂等的吗？&lt;/h2>
+&lt;p>get请求是从服务器获取资源，post请求向服务器提交数据，&lt;/p>
+&lt;p>get请求是读操作，是安全且幂等的；post请求因为会修改服务器的资源，且多次post请求会创建多个资源，所以是不安全且不幂等的
+get请求一般是将请求参数放在url的查询字符串中，浏览器对url的长度有限制，所以get请求的请求参数有长度限制。post请求的数据放在请求体，post请求的请求参数没有长度限制&lt;/p>
+&lt;h2 id="http有哪些状态码">HTTP有哪些状态码？&lt;/h2>
+&lt;p>100类：属于提示信息，为协议处理中的中间状态
+200类：表示服务器成功处理客户端的请求&lt;/p>
+&lt;ul>
+&lt;li>200：表示成功处理，返回期望的结果&lt;/li>
+&lt;li>204：与200状态码相似，但是响应头没有body数据&lt;/li>
+&lt;li>206：http分块下载或断点续传的几次，
+300类：表示请求的资源发生了变动，需要客户端用新的URL重新发送请求，就是重定向&lt;/li>
+&lt;li>301：永久性的重定向，后续请求可以直接重定向访问&lt;/li>
+&lt;li>302：临时访问，&lt;/li>
+&lt;li>304：
+400类：表示客户端发送的报文有误，服务器无法处理&lt;/li>
+&lt;li>403：请求的权限不够&lt;/li>
+&lt;li>404：请求的资源不存在
+500类：表示服务器处理 时内部发生了错误，属于服务器端的错误码&lt;/li>
+&lt;/ul>
+&lt;h2 id="什么情况下会出现502错误码">什么情况下会出现502错误码？&lt;/h2>
+&lt;p>502（Bad GateWay）表示码表示服务器在充当网关或代理时，在尝试满足请求时从它访问的入站服务器接收到无效响应
+如果客户端访问服务是通过nginx来反向代理到应用服务器，那么如果应用服务器出现故障，导致nginx无法从应用服务获得响应，这时候nginx就会返回502错误码给客户端&lt;/p>
+&lt;h2 id="有个服务出现504错误码这个服务出现了什么问题">有个服务出现504错误码，这个服务出现了什么问题&lt;/h2>
+&lt;p>504是网关超时错误，通过nginx将请求代理到后端应用，后端程序没有在规定时间内返回数据，需要开发检查接口超时问题，比如是否出现死循环、sql慢查询等&lt;/p>
+&lt;h2 id="重定向是哪一类状态码临时重定向和永久重定向有什么区别">重定向是哪一类状态码？临时重定向和永久重定向有什么区别？&lt;/h2>
+&lt;p>重定向是300类状态码，301表示永久重定向，302表示临时重定向
+永久重定向，客户端会记忆重定向后的url，下次访问的时候不需要访问旧url，直接跳转新url访问
+临时重定向，客户端会收到302状态码，不会记忆重定向后的url，下次访问依旧访问旧url，再跳转到新的url&lt;/p>
+&lt;h2 id="http11和20的区别">HTTP1.1和2.0的区别&lt;/h2>
+&lt;p>2.0引入stream概念，可以在同一个tcp连接中，实现并发传输，而1.1不能并发传输，必须在一个请求结束之后才能进行下一个请求应答，浏览器是通过建立多个tcp连接，实现http1.1的并发，比较消耗内存&lt;/p>
+&lt;p>报文改进，1.1发生的是文本数据，2.0发生二进制数据，通过HPACK算法压缩HTTP头部，提高了传输效率&lt;/p>
+&lt;p>http2.0支持服务器主动推送数据&lt;/p>
+&lt;h2 id="http20和http30的区别">HTTP2.0和HTTP3.0的区别？&lt;/h2>
+&lt;p>HTTP2.0和HTTP3.0的最大区别是传输层使用的协议不同了，HTTP2.0使用的是TCP协议连接，HTTP3.0使用UDP协议；&lt;/p>
+&lt;p>HTTP2.0会出现TCP队头阻塞问题，（http2.0的tcp阻塞问题，是因为http2.0的并发传输是在一条TCP连接上实现的，在传输过程中，如果某个stream发生了丢包，服务端不仅不能处理这个stream，也不会处理其他的stream，必须等丢失的包重传，才能继续处理其他stream，这个就发生了tcp队头阻塞），但是HTTP3.0通过一个在UDP协议上实现了一个可靠的QUIC协议，当stream发生丢包时，只会阻塞这个stream，其他stream不会受影响&lt;/p>
+&lt;p>http3.0建立连接比http2.0高效，http3.0：3次握手就能建立连接+TLS握手成功；http2.0需要3次TCP握手+TLS四次握手&lt;/p>
+&lt;p>http3.0在网络切换的环境下无需重新建立连接，通过在应用层的唯一id来确定连接&lt;/p>
+&lt;h2 id="简述jwt的原理和校验机制">简述JWT的原理和校验机制&lt;/h2>
+&lt;p>jwt的数据个数是header.payload.signature，头部、负载、签名三部分组成，&lt;/p>
+&lt;p>header包含：令牌的类型以及令牌签名的算法&lt;/p>
+&lt;p>payload：向服务器传递的数据，比如包含认证信息&lt;/p>
+&lt;p>签名：对前面两部分的签名，防止数据篡改（使用在Header中公开的特点签名算法，通过特定的密钥（由服务器进行保密），对前面两部分进行加密计算&lt;/p>
+&lt;p>验证JWT令牌的流程：&lt;/p>
+&lt;ul>
+&lt;li>服务端接收到客户端发来的JWT，取出header+payload，然后服务端根据自己的加密密钥进行加密计算&lt;/li>
+&lt;li>把加密的结果和客户端发来JWT的signature进行对比，如果完全相同，则表示前面两部分没有动，如果不相同表示被篡改了&lt;/li>
+&lt;li>当令牌没有被篡改后，服务端可以进行其它验证：令牌过期，用户是否有权限访问等&lt;/li>
+&lt;/ul>
+&lt;p>jwt令牌是由3个部分组成，分别是头部、负载、签名，头部包括类型和签名算法，负载包含了用户信息等数据，签名是对头部和负载两部分的签名，使用头部的签名算法，通过服务器的密钥对前面两部分内容进行加密计算&lt;/p>
+&lt;p>校验jwt的过程是服务端接收到客户端发过来的jwt令牌后，服务端会取出头部和负载数据，然后用自己的密钥对头部和负载进行加密计算，将得到的加密结果和客户端发送过来的jwt的签名机械能对比，如果相同，表示前面两部分没有内中间人篡改，这个时候服务器可以进行其他检查，比如检查jwt是否过期，如果没有问题，正常执行业务逻辑&lt;/p>
+&lt;h2 id="什么是跨域什么情况下会发生跨域">什么是跨域？什么情况下会发生跨域？&lt;/h2>
+&lt;p>当网页尝试访问不同源的资源的使用，就会发生跨域，只要域名、协议、端口这三个信息任意一个不同，都认为是不同源的URL
+可以用跨域资源共享技术，在服务器需要的响应头上添加Access-Control-Allow-Origin的字段，&lt;/p>
+&lt;h2 id="什么是restfulrestful请求的url有什么特点">什么是Restful？RestFul请求的url有什么特点？&lt;/h2>
+&lt;p>restful是一种api接口设计规范，用url定位资源，用http方法表示接口的动作，用http状态码表示接口处理的情况&lt;/p>
+&lt;h2 id="http和https有什么区别">HTTP和HTTPS有什么区别？&lt;/h2>
+&lt;p>安全性：HTTP使用明文传输，HTTPS通过SSL/TLS协议对数据进行加密处理，提供更高的安全性和数据保护&lt;/p>
+&lt;p>建立连接：HTTP建立只需要TCP三次握手；HTTPS在TCP三次握手后还需要进行SSL/TLS的握手过程&lt;/p>
+&lt;p>端口：HTTP的端口是80；HTTPS的端口是443&lt;/p>
+&lt;p>证书：HTTPS需要使用数字证书来验证服务器的身份，并确保数据传输的安全性。证书由第三方机构颁发，用于证明服务器的身份和所有权。而HTTP没有使用证书进行身份验证和加密。&lt;/p></description></item><item><title/><link>https://chhz0.github.io/interviews/network/tcp/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://chhz0.github.io/interviews/network/tcp/</guid><description>&lt;h2 id="tcp三次握手">TCP三次握手&lt;/h2>
+&lt;h3 id="tcp头部有哪些字段">TCP头部有哪些字段？&lt;/h3>
+&lt;p>tcp报文段 ： tcp头部+tcp数据部分&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>tcp头部：&lt;/p>
+&lt;ul>
+&lt;li>源端口：16位&lt;/li>
+&lt;li>目的端口：16位&lt;/li>
+&lt;li>序号：32位&lt;/li>
+&lt;li>确认号：32位&lt;/li>
+&lt;li>数据偏移：4位&lt;/li>
+&lt;li>保留：6位&lt;/li>
+&lt;li>窗口：16位&lt;/li>
+&lt;li>校验和：16位&lt;/li>
+&lt;li>紧急指针：16位&lt;/li>
+&lt;li>选项和填充：最多为40字节&lt;/li>
+&lt;li>控制位：
+&lt;ul>
+&lt;li>URG：紧急指针标志，为1时标识紧急指针有效，该报文应该优先传送，为0则忽略紧急指针&lt;/li>
+&lt;li>ACK：确认序号标志，为1时表示确认号有效。携带ACK标识的TCP报文段被称为确认报文段&lt;/li>
+&lt;li>RST：重置连接&lt;/li>
+&lt;li>SYN：表示请求建立一个连接&lt;/li>
+&lt;li>FIN：用于释放连接&lt;/li>
+&lt;li>PSH：为1表示带有push标志的数据，优先将这个报文提交给应用程序，而不是缓冲区排队&lt;/li>
+&lt;/ul>
+&lt;blockquote>
+&lt;p>tcp头部的最长是60字节&lt;/p>&lt;/blockquote>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>数据部分：。。。&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;p>回答：tcp头部主要是源端口、目的端口、序列号、确认号、标记位：SYN、RST、ACK、FIN、头部长度、窗口大小，可扩展的选项等&lt;/p>
+&lt;p>其中序列号和确认号的大小为32位，序列号保证数据的有序性，接收方按照发送方顺序发来的数据来组装有序的数据；确认号保证数据的可靠性，当发送方已发送的数据，超过一段时间没收到确认报文，就会重传报文。&lt;/p>
+&lt;p>源端口和目的端口的大小是16位，源端口是发送方的端口号，目的端口是接收方使用的端口号，端口的作用是标识TCP连接是哪个进程&lt;/p>
+&lt;p>&lt;a href="https://www.cnblogs.com/Jummyer/p/11026966.html">TCP之报文首部格式 - Jummyer - 博客园&lt;/a>&lt;/p>
+&lt;h3 id="tcp三次握手连接过程">TCP三次握手连接过程&lt;/h3>
+&lt;ul>
+&lt;li>
+&lt;p>客户端和服务端一开始都处于close状态，服务端会监听一个端口，处于listen状态&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>第一次握手：客户端产生随机初始化序号，放到tcp报文头部的序号字段，同时把SYN标志设置位1，标识SYN报文。接着把SYN报文发送给服务端，之后客户端处于SYN_SEND状态&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>服务端收到SYN报文后，服务端也生成随机初始化序号，放到TCP报文头部的序号字段中，对客户端的初始化序号+1作为确认号，放到TCP报文头部的确认应答字段中，并将SYN和ACK标志设置为1，表示SYN-ACK报文，把报文发送给客户端，之后服务端处于SYN_RECD状态&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>客户端收到服务端SYN-ACK报文后，客户端发送一个ACK确认报文，该报文的确认号为服务端的初始化序号+1，并将ACK标志设置为1。客户端处于ESTABLISHED状态&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>服务端收到ACK确认报文，服务端也处于ESTABLISHED状态&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;p>以上就是TCP三次握手的过程&lt;/p>
+&lt;p>&lt;a href="https://xiaolincoding.com/network/3_tcp/tcp_interview.html#tcp-%E5%A4%B4%E6%A0%BC%E5%BC%8F%E6%9C%89%E5%93%AA%E4%BA%9B">4.1 TCP 三次握手与四次挥手面试题&lt;/a>&lt;/p>
+&lt;h3 id="为什么需要三次握手两次握手不行吗">为什么需要三次握手？两次握手不行吗？&lt;/h3>
+&lt;ul>
+&lt;li>
+&lt;p>避免历史连接的建立，避免资源浪费&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>三次握手可以确认客户端和服务端是否同时具备发送和接收的能力&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="如果第二次握手丢包会发送什么">如果第二次握手丢包，会发送什么？&lt;/h3>
+&lt;p>超时重传机制，第二次SYN-ACK报文中有&lt;/p>
+&lt;p>第二次报文中的ACK，是第一次握手的确认报文，那么当第二次报文丢包时，会导致客户端一直没有接收到ACK而触发超时重传机制，重传SYN包，即第一次握手&lt;/p>
+&lt;p>第二次报文中的SYN，是服务端建立TCP连接的报文，当第二次报文丢失后，客户端没有发送ACK报文，服务端没有收到第三次握手，于是服务端会触发超时重传机制，重传SYN-ACK报文&lt;/p>
+&lt;h3 id="如果第三次握手丢包会发生什么">如果第三次握手丢包，会发生什么？&lt;/h3>
+&lt;p>我的理解是第三次握手如果发生丢包，服务端会迟迟接收不到第三次握手的ACK包，触发超时重传机制，服务端会重新发生第二次握手的SYN-ACK包，直到最大重传次数的限制，或者收到第三次握手&lt;/p>
+&lt;h3 id="tcp的半连接队列和全连接队列">TCP的半连接队列和全连接队列？&lt;/h3>
+&lt;p>在tcp三次握手的时候，linux内核会维护两个队列，分别是：&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>syn队列：半连接队列&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>accept队列：全连接队列&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;p>服务端收到客户端发起的SYN请求后，内核会将为握手完成的连接存储到半连接队列，等待完成三次握手后转移到全连接队列&lt;/p>
+&lt;p>全连接队列：服务端收到客户端的第三次握手，内核会将连接从半连接队列移除，然后创建新的完全连接，并将其添加到全连接队列，等待进程调用accept函数将连接取出&lt;/p>
+&lt;p>&lt;a href="https://xiaolincoding.com/network/3_tcp/tcp_queue.html">4.4 TCP 半连接队列和全连接队列&lt;/a>&lt;/p>
+&lt;h2 id="tcp四次挥手">TCP四次挥手&lt;/h2>
+&lt;h3 id="tcp四次挥手的过程">TCP四次挥手的过程&lt;/h3>
+&lt;p>tcp的四次挥手（断开连接）是可以客户端或者服务端断开&lt;/p>
+&lt;p>客户端关闭连接，此时会发生一个fin报文，之后客户端进入fin_wait_1状态，&lt;/p>
+&lt;p>服务端收到fin报文后，将向客户端发送ack报文，接着服务端进入close_wait状态&lt;/p>
+&lt;p>客户端接收到ack应答报文后，之后进入fin_wait_2状态&lt;/p>
+&lt;p>等待服务端处理完数据后，向客户端发送fin报文，服务端进入last_ack状态&lt;/p>
+&lt;p>客户端收到服务端的fin报文后，回一个ack应答报文，客户端进入time_wait状态&lt;/p></description></item><item><title/><link>https://chhz0.github.io/interviews/network/%E7%BD%91%E7%BB%9C%E5%B1%82/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://chhz0.github.io/interviews/network/%E7%BD%91%E7%BB%9C%E5%B1%82/</guid><description>&lt;h2 id="ping的原理简述">ping的原理简述：&lt;/h2>
+&lt;p>ping命令是用来探测目标ip地址是否可以访问
+Ping是通过ICMP协议实现的，ping的时候，会向接收方发送回送请求的ICMP报文，对方接收到后，会回复类型为回送应答的ICMP报文&lt;/p>
+&lt;h2 id="交换机和路由器有什么区别">交换机和路由器有什么区别？&lt;/h2>
+&lt;ul>
+&lt;li>交换机工作在MAC层，称为二层网络设备，主要负责数据帧的转发和交换，交换机会根据MAC地址来转发数据包，是实现局域网内设备的通信&lt;/li>
+&lt;li>路由器工作在IP层，称为三层网络设备，主要负责IP数据包的转发和路由选择，路由器会根据IP地址来转发数据包，实现不同网络间的通信&lt;/li>
+&lt;/ul>
+&lt;h2 id="ip地址和mac地址有什么区别">IP地址和MAC地址有什么区别？&lt;/h2>
+&lt;ul>
+&lt;li>IP地址用于网络中唯一标识和定位设备，它是网络层使用的地址，用于实现不同网络之间的通信&lt;/li>
+&lt;li>MAC地址用于局域网中唯一标识和定位设备，它在数据链路层使用的地址，实现局域网内设备之间的通信&lt;/li>
+&lt;/ul>
+&lt;h2 id="nat协议">NAT协议&lt;/h2>
+&lt;p>&lt;a href="https://zhuanlan.zhihu.com/p/26992935">网络地址转换协议NAT功能详解及NAT基础知识介绍&lt;/a>&lt;/p>
+&lt;p>&lt;a href="https://xiaolincoding.com/network/4_ip/ip_base.html">5.1 IP 基础知识全家桶&lt;/a>&lt;/p>
+&lt;h2 id="192168110024中斜杠代表什么意思">192.168.1.100/24中斜杠代表什么意思？&lt;/h2>
+&lt;p>斜杠（/）后面的数字表示子网掩码的位数&lt;/p>
+&lt;p>比如，192.168.1.100/24中的斜杠后面数字表示子网掩码的位数，子网掩码用于划分IP地址中的网络部分和主机部分。将子网掩码和IP地址进行与运算，就可以得到网络号&lt;/p>
+&lt;p>具体来说：192.168.1.100/24表示前24位是网络部分，后8位是主机部分&lt;/p></description></item><item><title/><link>https://chhz0.github.io/interviews/network/%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://chhz0.github.io/interviews/network/%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/</guid><description>&lt;h2 id="osi的7层网络模型各层的协议有什么">OSI的7层网络模型？各层的协议有什么？&lt;/h2>
+&lt;ul>
+&lt;li>应用层：确定进程间通信的性质以及满足用户需要以及提高网络和用户应用&lt;/li>
+&lt;li>表示层：主要解决用户信息的语法表达&lt;/li>
+&lt;li>会话层：复制建立、管理和终止表示层实体之间的通信会话&lt;/li>
+&lt;li>传输层：实现网络不同主机上的用户进程间的数据通信，可靠和不可靠的传输&lt;/li>
+&lt;li>网络层：本层通过IP寻址来建立两个节点之间的连接&lt;/li>
+&lt;li>数据链路层：将上层数据封装成帧，用MAC地址访问媒介&lt;/li>
+&lt;li>物理层：设备之间比特流的传输，物理接口&lt;/li>
+&lt;/ul>
+&lt;p>回答：
+OSI参考模型有7层，应用层、表示层、会话层、传输层、网络层、数据链路层、物理层
+应用层有HTTP、HTTPS，传输层有TCP和UDP协议，网络层有IP、ICMP、ARP协议&lt;/p>
+&lt;blockquote>
+&lt;p>网络分层的好处：对各层之间进行解耦，层与层之间不产生关联，比如应用层HTTP协议从HTTP1.1升级到HTTP2.0的时候，不会对传输层和网络层有影响，或者网络层的IPv4协议升级到IPv6协议的时候，不会影响到应用，传输层&lt;/p>&lt;/blockquote>
+&lt;blockquote>
+&lt;p>TCP/IP协议是将OSI模型的应用层、表示层、会话层统一为应用层，数据链路层和物理层统一为网络接口层&lt;/p>&lt;/blockquote>
+&lt;h2 id="tcpip的四层网络模型">TCP/IP的四层网络模型？&lt;/h2>
+&lt;ul>
+&lt;li>应用层&lt;/li>
+&lt;li>传输层&lt;/li>
+&lt;li>网络层&lt;/li>
+&lt;li>数据链路层（网络接口层）&lt;/li>
+&lt;/ul>
+&lt;h2 id="五层因特网协议栈">五层因特网协议栈？&lt;/h2>
+&lt;p>应用层、运输层、网络层、链路层、物理层&lt;/p>
+&lt;table>
+ &lt;thead>
+ &lt;tr>
+ &lt;th>OSI七层网络协议&lt;/th>
+ &lt;th>TCP/IP四层概念模型&lt;/th>
+ &lt;th>对于网络协议&lt;/th>
+ &lt;/tr>
+ &lt;/thead>
+ &lt;tbody>
+ &lt;tr>
+ &lt;td>应用层&lt;br>&amp;mdash;&lt;br>表示层&lt;br>&amp;mdash;&lt;br>会话层&lt;/td>
+ &lt;td>应用层（4）&lt;/td>
+ &lt;td>HTTP、TFTP、FTP、NFS、WAIS、SMTP&lt;br>&amp;ndash;&lt;br>Telnet、Rlogin、SNMP、Gopher&lt;br>&amp;ndash;&lt;br>SMTP、DNS&lt;/td>
+ &lt;/tr>
+ &lt;/tbody>
+&lt;/table>
+&lt;h2 id="键入网址场景问题">键入网址场景问题&lt;/h2>
+&lt;h3 id="键入网址后期间发送了什么">键入网址后，期间发送了什么？&lt;/h3>
+&lt;blockquote>
+&lt;p>http/https -&amp;gt; dns -&amp;gt; tcp -&amp;gt; ip -&amp;gt; arp&lt;/p>&lt;/blockquote>
+&lt;ol>
+&lt;li>浏览器会解析网址，解析出域名，资源路径，端口等信息，构造HTTP请求报文&lt;/li>
+&lt;li>将域名解析为IP地址，先查看系统缓存是否有域名信息，有的话返回IP地址；没有就查看本地host文件没有域名信息，有就返回IP地址；如果再没有就查看本地DNS服务器，如果本地DNS服务器中有域名信息，就返回IP地址，否则本地DNS服务器分别去根域名服务器-&amp;gt;顶级域名服务器-&amp;gt;权威域名服务器询问，最后拿到IP地址&lt;/li>
+&lt;li>HTTP协议是基于TCP协议传输的，所以要先进行TCP三次握手，&lt;/li>
+&lt;li>然后到网络层，加上IP头，同时填上目标IP地址和源IP地址&lt;/li>
+&lt;li>然后到数据链路层，通过ARP协议，获取路由器的MAC地址，然后加上MAC头，填上目标MAC地址和源MAC地址&lt;/li>
+&lt;li>然后到物理层，直接把数据包转发给路由器，路由器再通过下一跳，找到最终的目的服务器&lt;/li>
+&lt;li>当双方完成三次握手后，如果是HTTP协议，客户端就会把HTTP请求发送给目标服务器；如果是HTTPS协议，还需要进行TLS四次握手，客户端才会把HTTP报文发送给目标服务器&lt;/li>
+&lt;li>目标服务器收到HTTP报文后，返回HTTP响应消息，浏览器对响应消息进行解析渲染，呈现给用户&lt;/li>
+&lt;/ol>
+&lt;h3 id="dns是如何解析的属于哪一层的协议">DNS是如何解析的？属于哪一层的协议？&lt;/h3>
+&lt;p>DNS属于应用层的协议，客户端在进行DNS解析时，首先会查看浏览器和操作系统是否缓存域名对应的IP地址，如果没有就向本地DNS服务器发出查询请求，接着本地DNS向根DNS发送查询请求，根DNS服务器返回顶级域名服务器地址，本地DNS服务器向顶级域名服务器发送查询请求，顶级域名服务器返回权威域名服务器的IP地址，本地DNS服务器再向权威域名服务器发出查询请求，权威域名服务器收到请求后，就返回域名对应的IP地址了，本地DNS服务器返回查询结果给客户端，然后将本次查询得到的结果保存到缓存里，以备下次使用&lt;/p>
+&lt;h3 id="dns域名解析使用的是什么协议">DNS域名解析使用的是什么协议？&lt;/h3>
+&lt;p>DNS中，域名的解析是通过UDP协议进行的&lt;/p>
+&lt;p>UPD是一种无连接的传输层协议，提供了一种简单的传输机制，适用于实时性比较高的应用场景。DNS使用UDP协议进行域名解析是因为域名解析是短小且频繁的请求，UDP的无连接特性可以减少建立连接和断开连接的开销，提高传输效率&lt;/p>
+&lt;p>UPD协议对于TCP协议的缺点是没办法保证数据传输的可靠性，针对这个缺点可以在应用层实现超时重传机制，如果域名解决请求在一定的时间内没有收到响应，那么就重发域名解析&lt;/p>
+&lt;h3 id="输入域名怎么找到端口号">输入域名怎么找到端口号？&lt;/h3>
+&lt;p>http的默认端口是80；https的默认端口号是443；
+如果用户指定了端口，可以在url中获取，比如域名:8080，这时候使用的端口是8080&lt;/p>
+&lt;h2 id="网络传输场景">网络传输场景&lt;/h2>
+&lt;h3 id="tcp连接一个不存在的ip地址会发生什么">tcp连接一个不存在的IP地址会发生什么？&lt;/h3>
+&lt;ul>
+&lt;li>如果IP地址是局域网内，客户端的内核在发生arp请求的时候，广播这个目标IP是谁的，但是由于网络中不存在这个IP地址，所以没有设备应答，会卡在arp协议，客户端的SYN报文无法发送出去&lt;/li>
+&lt;li>如果这个IP地址不是局域网的，客户端会将SYN报文交给路由器，由路由器继续转发，由于目标IP地址是不存在的，该SYN报文会在网络中消亡；客户端由于一直接收不到SYN报文的确认报文，会触发超时重传机制，直到最大的重试次数，客户端的连接会被释放&lt;/li>
+&lt;/ul>
+&lt;h3 id="tcp连接一个ip地址存在但是端口不存在的服务端会发生什么">tcp连接一个IP地址存在但是端口不存在的服务端会发生什么？&lt;/h3>
+&lt;p>端口不存在的话，代表服务端没有监听这个端口，服务端在接收到客户端的SYN包后，返回RST报文，客户端接收到RST报文后，会断开连接&lt;/p>
+&lt;h3 id="udp发送一个ip地址存在但是端口不存在报文会发生什么">UDP发送一个IP地址存在但是端口不存在报文会发生什么？&lt;/h3>
+&lt;p>服务端会回ICMP报文，报告端口不可用&lt;/p></description></item><item><title/><link>https://chhz0.github.io/notes/cs/net/tcpip%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://chhz0.github.io/notes/cs/net/tcpip%E7%BD%91%E7%BB%9C%E6%A8%A1%E5%9E%8B/</guid><description>&lt;h2 id="21-tcpip网络模型">2.1 TCP/IP网络模型&lt;/h2>
+&lt;blockquote>
+&lt;p>&lt;a href="https://xiaolincoding.com/network/1_base/tcp_ip_model.html">2.1 TCP/IP 网络模型有哪几层？&lt;/a>&lt;/p>&lt;/blockquote>
+&lt;p>前言：为什么要有TCP/IP网络模型？&lt;/p>
+&lt;blockquote>
+&lt;p>答：为了提供一套 &lt;strong>通用的&lt;/strong> 网络协议&lt;/p>&lt;/blockquote>
+&lt;p>因为在一台设备上的进程间通信有很多方式，比如管道、消息队列、共享内存、信号等方式，而对于不同的设备上的进程间通信，就需要网络通信，而设备是多样性的，需要兼容多种多样的设备，就需要一套 &lt;code>通用的网络协议&lt;/code>&lt;/p>
+&lt;p>这个网络协议是分层的，每一层都有各自的作用和责任&lt;/p>
+&lt;p>TCP/IP网络模型分为4层：应用层&amp;ndash;&amp;gt;传输层&amp;ndash;&amp;gt;网络层&amp;ndash;&amp;gt;网络接口层(由上到下)&lt;/p>
+&lt;p>接下来根据 [TCP/IP 网络模型 ]分别对每一层进行介绍：&lt;/p>
+&lt;h3 id="应用层最上层">&lt;strong>应用层（最上层）&lt;/strong>&lt;/h3>
+&lt;p>最上层的，也是我们能直接接触到的就是&lt;strong>应用层&lt;/strong>(Application Layer)，我们使用的应用软件都是在应用层实现的，当两台不同的设备的应用需要通信的时候，应用就把应用数据传给下一层，也就是&lt;strong>传输层&lt;/strong>。&lt;/p>
+&lt;blockquote>
+&lt;p>&lt;strong>应用层&lt;/strong>接收数据后把数据传入&lt;strong>传输层&lt;/strong>&lt;/p>&lt;/blockquote>
+&lt;p>所以，&lt;strong>应用层&lt;/strong>只需要专注于为用户提供应用功能，比如HTTP、FTP、Telnet、DNS、SMTP等&lt;/p>
+&lt;p>应用层不用关心数据是如何传输&lt;/p>
+&lt;blockquote>
+&lt;p>&lt;strong>应用层&lt;/strong>是工作在操作系统的用户态，&lt;strong>传输层****及其一下&lt;/strong>则工作在内核态&lt;/p>&lt;/blockquote>
+&lt;h3 id="传输层">&lt;strong>传输层&lt;/strong>&lt;/h3>
+&lt;p>&lt;strong>应用层&lt;/strong>的数据包会传输到传输层，&lt;strong>传输层&lt;/strong>(Transport Layer) 是为应用层提供网络支持&lt;/p>
+&lt;p>&lt;img src="https://rt5bap83jl.feishu.cn/space/api/box/stream/download/asynccode/?code=OTM5NGVmNjMyYmZhOTE2Y2JiZTlhZjRkMzJhMGU4NTVfM3F5dVFqUnppQzA2cXFoQ2F6c1RwdVlpa3QzR0U2N3lfVG9rZW46RTgwT2JPenk5b1VQaW14Y1pFY2NkYTBmbmtoXzE3MjE4Mzk4OTE6MTcyMTg0MzQ5MV9WNA" alt="">&lt;/p>
+&lt;p>在&lt;strong>传输层&lt;/strong>会有两个传输协议，分别为&lt;code>TCP&lt;/code>和&lt;code>UDP&lt;/code>&lt;/p>
+&lt;p>&lt;strong>TCP&lt;/strong>的全称是“传输控制协议”(Transmission Control Protocol)，大部分应用使用的正是TCP传输层协议，比如HTTP应用层协议。&lt;/p>
+&lt;blockquote>
+&lt;p>&lt;strong>TCP&lt;/strong>有很多特征：流量控制、超时重传、拥塞控制等，这些保证了数据包能可靠地传输给对方&lt;/p>&lt;/blockquote>
+&lt;p>&lt;strong>UDP&lt;/strong>相对来说比较协议，简单到&lt;strong>只负责发送数据包&lt;/strong>，不保证数据包是否能抵达对方，但是实时性相对更好，传输效率也高。&lt;/p>
+&lt;blockquote>
+&lt;p>&lt;strong>UDP&lt;/strong>也可以实现可靠传输，把&lt;strong>TCP&lt;/strong>的特性在应用层上实现就行，（不过要实现一个商用的可靠UDP传输协议也不简单）&lt;/p>&lt;/blockquote>
+&lt;p>应用需要传输的数据可能会非常大，如果直接传输就不好控制，因此当传输层的数据包大小超过&lt;strong>MSS&lt;/strong>（TCP最大报文段长度），就要将数据包分块，这样即使在传输过程中一个分块缺失或者损坏了，只需要重新发送这一分开，而不用重新发送整个数据包。&lt;/p>
+&lt;p>在TCP协议中，每一个分块称为一个&lt;strong>TCP段&lt;/strong>(TCP Segment)&lt;/p>
+&lt;p>&lt;img src="https://rt5bap83jl.feishu.cn/space/api/box/stream/download/asynccode/?code=OTE4YjBkOWU1ZTVlYmViZDkxNDQ1NTFmYWZkMTQzMTFfNllQajladEFQVERJUDFNWUZHNWxZRGVaWFZoanVZeE9fVG9rZW46VG5ZM2JrUzVGb1ZrN1N4UkF5b2NMdW5KbmZrXzE3MjE4Mzk4OTE6MTcyMTg0MzQ5MV9WNA" alt="">&lt;/p>
+&lt;p>当设备作为接收方时，传输层则要负责把数据包传给应用层，但是一台设备上可能会有很多应用在接收或者传输数据，因此需要一个编号将应用区分开来，这个编号就是&lt;strong>端口&lt;/strong>&lt;/p>
+&lt;p>比如 80 端口通常是 Web 服务器用的，22 端口通常是远程登录服务器用的。而对于浏览器（客户端）中的每个标签栏都是一个独立的进程，操作系统会为这些进程分配临时的端口号。&lt;/p>
+&lt;p>由于传输层的报文中会携带端口号，因此接收方可以识别出该报文是发送给哪个应用。&lt;/p>
+&lt;blockquote>
+&lt;p>&lt;strong>传输层&lt;/strong>并不负责将数据从一个设备传输到另一个设备&lt;/p>&lt;/blockquote>
+&lt;h3 id="网络层">&lt;strong>网络层&lt;/strong>&lt;/h3>
+&lt;p>在实际场景中，一个设备的数据要传输给另一个设备，就需要在各种各样的路径和节点进行选择，其中的网络环节是错综复杂的。而&lt;strong>传输层&lt;/strong>的设计理念是简单、高效、专注，如果传输层还负责这一块功能就有点违背设计原则&lt;/p>
+&lt;p>我们不希望传输层协议处理太多的事情，只需要服务好应用即可，让其作为应用间数据传输的媒介，帮助实现应用到应用的通信，而实际的传输功能就交给下一层，也就是&lt;strong>网络层&lt;/strong>(Internet Layer)&lt;/p>
+&lt;p>&lt;img src="https://rt5bap83jl.feishu.cn/space/api/box/stream/download/asynccode/?code=NDBiZTU5ZmFlMmQyNGNiYzdkMTA1M2YxNmZmNmMwYjhfeUhWM2IyVzAxbWdwdHZud0N3eWtsbVdDbHZoMGNiR1RfVG9rZW46RmIxTWJ2TEF6b1RaZU94S29SRmNIazNRbnJFXzE3MjE4Mzk4OTE6MTcyMTg0MzQ5MV9WNA" alt="">&lt;/p>
+&lt;blockquote>
+&lt;p>个人理解：应用层把大量的数据发送给传输层，传输层将这些大量的数据进行打包，分段，确定好目的应用，然后由网络层进行传输。&lt;/p>&lt;/blockquote>
+&lt;p>&lt;strong>网络层&lt;/strong>最常用的是&lt;strong>IP协议&lt;/strong>(Internet Protocol)，IP协议会将传输层的报文作为数据部分，再加上IP包头组装成&lt;strong>IP报文&lt;/strong>，如果IP报文大小超过了&lt;strong>MTU&lt;/strong>(以太网中一般为1500字节)就会&lt;strong>再次进行分片&lt;/strong>，得到一个继续发送网络的IP报文&lt;/p>
+&lt;p>&lt;img src="https://rt5bap83jl.feishu.cn/space/api/box/stream/download/asynccode/?code=YjBhODFlM2VmZWRiYWI5MTYyOTdjY2Q3NTlmNGQ4OTNfMWhGUGlQbmszY2FmYnhmYlhUU1dHTGw3VmxEU0JXV3pfVG9rZW46WnFoWmJwM09Ub2F6VDV4ek5FMGN6dnY3bmpmXzE3MjE4Mzk4OTE6MTcyMTg0MzQ5MV9WNA" alt="">&lt;/p>
+&lt;p>&lt;strong>网络层&lt;/strong>负责将数据从一个设备传输到另一个设备，但是世界上那么多设备，如何找到对方呢，因此，网络层需要有区分设备的编号&lt;/p>
+&lt;p>一般用&lt;strong>IP地址&lt;/strong>给设备进行编号，对于IPv4协议，IP地址共32位，分成了四段（比如127.0.0.1，分成四段，每段8位）。但是寻址起来特别麻烦，不能一个一个去匹配。&lt;/p>
+&lt;p>因此，需要将IP地址分成两种意义：&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>一个是&lt;strong>网络号&lt;/strong>，负责标识该IP地址是属于那个[ 子网 ]的&lt;/p></description></item><item><title>Search</title><link>https://chhz0.github.io/search/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://chhz0.github.io/search/</guid><description>&lt;h1 id="search">Search&lt;/h1>
 &lt;p>Here you can search for indexable pages, like posts and alike. There&amp;rsquo;s also support for URL param &amp;ldquo;q&amp;rdquo; which then auto searches upon page load event.&lt;/p>
 &lt;blockquote>
 &lt;p>你可以在此处搜索可索引的页面，例如帖子等内容。该功能还支持 URL 参数 &amp;ldquo;q&amp;rdquo;，在页面加载时会自动根据该参数进行搜索。&lt;/p>&lt;/blockquote>

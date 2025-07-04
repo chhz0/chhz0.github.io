@@ -469,7 +469,7 @@ B+ 树只在叶子节点存储数据，B树的非叶子节点也要存储数据�
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&amp;lt;!-- 这里链接上该项目的开源许可证 --&amp;gt;&lt;/span>
 &lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Git Commit(bate)</title><link>https://chhz0.github.io/notes/git/git-commit/</link><pubDate>Thu, 03 Jul 2025 23:08:59 +0800</pubDate><guid>https://chhz0.github.io/notes/git/git-commit/</guid><description>&lt;blockquote>
 &lt;p>写出符合Angular规范的Git Commit Message&lt;/p>&lt;/blockquote>
-&lt;h2 id="git-commit-规范">git commit 规范 &lt;Badge type="tip" text="Git Commit Message" />&lt;/h2>
+&lt;h2 id="git-commit-规范">git commit 规范&lt;/h2>
 &lt;h3 id="符合angular规范的commit-message">符合Angular规范的Commit Message&lt;/h3>
 &lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>&amp;lt;type&amp;gt;[(optional scope)]: &amp;lt;description&amp;gt;
 &lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>// 空行
@@ -545,9 +545,18 @@ description&amp;ndash;&amp;gt;对commit的简短描述，以动词开头&lt;/p>
 &lt;h4 id="body">Body&lt;/h4>
 &lt;p>Body对Commit Message的高度概况，方便查看具体做了什么变更&lt;/p>
 &lt;h4 id="footer">Footer&lt;/h4>
-&lt;p>Footer部分不是必选，可根据需要选择，主要用来说什么本次commit导致的后果，通常用来说明不兼容的改动或者关闭的issue&lt;/p></description></item><item><title>Git Commands(bate)</title><link>https://chhz0.github.io/notes/git/git-commands/</link><pubDate>Thu, 03 Jul 2025 23:08:11 +0800</pubDate><guid>https://chhz0.github.io/notes/git/git-commands/</guid><description>&lt;blockquote>
+&lt;p>Footer部分不是必选，可根据需要选择，主要用来说什么本次commit导致的后果，通常用来说明不兼容的改动或者关闭的issue&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>BREAKING CHANGE: &amp;lt;breaking change summary&amp;gt;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>// 空行
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&amp;lt;breaking change description + migration instructions&amp;gt;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>// 空行
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>// 空行
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>Fixes(Closes) #&amp;lt;issue number&amp;gt;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h4 id="revert-commit">Revert Commit&lt;/h4>
+&lt;p>特殊的Commit Message。还原了先前的commit，则以&lt;code>revert&lt;/code>开头，后面跟还原的commit的Header，
+在Body必须写&lt;code>This reverts commit &amp;lt;hash&amp;gt;&lt;/code>，其中hash为要还原的commit的SHA标识&lt;/p></description></item><item><title>Git Commands(bate)</title><link>https://chhz0.github.io/notes/git/git-commands/</link><pubDate>Thu, 03 Jul 2025 23:08:11 +0800</pubDate><guid>https://chhz0.github.io/notes/git/git-commands/</guid><description>&lt;blockquote>
 &lt;p>git 命令&lt;/p>&lt;/blockquote>
-&lt;h3 id="git-rebase">git rebase&lt;/h3>
+&lt;h2 id="git-rebase">git rebase&lt;/h2>
 &lt;p>git rebase的最大作用是重写历史&lt;/p>
 &lt;p>使用&lt;code>git rebase -i &amp;lt;commit ID&amp;gt;&lt;/code>使用git rebase命令 修改某次 commit 的 message&lt;/p>
 &lt;table>
@@ -588,7 +597,7 @@ description&amp;ndash;&amp;gt;对commit的简短描述，以动词开头&lt;/p>
  &lt;/tr>
  &lt;/tbody>
 &lt;/table>
-&lt;h3 id="git-commit--amend">git commit -amend&lt;/h3>
+&lt;h2 id="git-commit--amend">git commit -amend&lt;/h2>
 &lt;p>git commit –amend：修改最近一次 commit 的 message&lt;/p></description></item><item><title>Deploy Go applications using docker(bate)</title><link>https://chhz0.github.io/notes/docker/docker-deploy/</link><pubDate>Thu, 03 Jul 2025 22:17:26 +0800</pubDate><guid>https://chhz0.github.io/notes/docker/docker-deploy/</guid><description>&lt;blockquote>
 &lt;p>使用Docker 以及Docker Compose部署Go程序&lt;/p>&lt;/blockquote>
 &lt;h3 id="部署示例">部署示例&lt;/h3>
@@ -714,7 +723,469 @@ description&amp;ndash;&amp;gt;对commit的简短描述，以动词开头&lt;/p>
 &lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>具体选项可以从&lt;code>docker pull --help&lt;/code> 命令查看，&lt;/p>
 &lt;ul>
 &lt;li>
-&lt;p>Docker镜像仓库地址：地址格式一般为 &lt;code>&amp;lt;域名/IP&amp;gt;[:端口号]&lt;/code>。默认地址是 Docker Hub&lt;/p></description></item><item><title>Redis-core</title><link>https://chhz0.github.io/notes/database/redis/redis-core/</link><pubDate>Tue, 10 Jun 2025 22:36:08 +0800</pubDate><guid>https://chhz0.github.io/notes/database/redis/redis-core/</guid><description>&lt;blockquote>
+&lt;p>Docker镜像仓库地址：地址格式一般为 &lt;code>&amp;lt;域名/IP&amp;gt;[:端口号]&lt;/code>。默认地址是 Docker Hub&lt;/p></description></item><item><title>Redis - Encoding&lt;HashTable></title><link>https://chhz0.github.io/notes/database/redis/datatypes/encoding/hashtable/</link><pubDate>Tue, 10 Jun 2025 22:36:08 +0800</pubDate><guid>https://chhz0.github.io/notes/database/redis/datatypes/encoding/hashtable/</guid><description>&lt;h2 id="redis-enc-hashtable-">Redis&amp;lt; enc-HashTable &amp;gt;&lt;/h2>
+&lt;p>&lt;code>HASHTABLE&lt;/code>可以使用O(1)时间复杂度能够快速找到&lt;code>field&lt;/code>对应的&lt;code>value&lt;/code>，简单理解，&lt;code>HASHTABLE&lt;/code>是一个目录，可以帮助我们快速找到需要内容&lt;/p>
+&lt;p>&lt;code>HASHTABLE&lt;/code>的结构:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">typedef&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span> dictht {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> dictEntry &lt;span style="color:#f92672">**&lt;/span>table;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">unsigned&lt;/span> &lt;span style="color:#66d9ef">long&lt;/span> size;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">unsigned&lt;/span> &lt;span style="color:#66d9ef">long&lt;/span> sizemask;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">unsigned&lt;/span> &lt;span style="color:#66d9ef">long&lt;/span> used;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>} dictht;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>最外层封装一个&lt;code>dictht&lt;/code>结构，字段含义如下：&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>Table&lt;/code>: 指向实际hash存储。存储可以看做一个数组&lt;/li>
+&lt;li>&lt;code>Size&lt;/code>: 哈希表大小，实际就是dictEntry有多少元素空间&lt;/li>
+&lt;li>&lt;code>Sizemask&lt;/code>: 哈希表大小的掩码表示，总是等于size-1. 这个属性和哈希值一起决定一个键应该放到table数组的那个索引上面，规则 &lt;strong>Index = hash &amp;amp; sizemask&lt;/strong>.&lt;/li>
+&lt;li>&lt;code>Used&lt;/code>: 表示已经使用的节点数量。通过这个字段可以查询目前HASHTABLE元素总量&lt;/li>
+&lt;/ul>
+&lt;p>&lt;code>dictEntry&lt;/code>结构如下：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">typedef&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span> dictEntry {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#f92672">*&lt;/span>key;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">union&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#f92672">*&lt;/span>val;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">uint64_t&lt;/span> u64;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">int64_t&lt;/span> s64;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">double&lt;/span> d;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> } v;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">struct&lt;/span> dictEntry &lt;span style="color:#f92672">*&lt;/span>next;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#f92672">*&lt;/span>metadata[];
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>} dictEntry;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;img src="https://chhz0.github.io/redis/redis-encoding-hashtable-struct.drawio.svg" alt="redis-encodng-hashtable-struct">&lt;/p>
+&lt;h3 id="hash-渐进式扩容缩容">Hash 渐进式扩容/缩容&lt;/h3>
+&lt;h4 id="扩容">扩容&lt;/h4>
+&lt;p>渐进式扩容就是一点一点扩大&lt;code>HASHTABLE&lt;/code>的容量，默认值为4 (#define DICT_HT_INTTIAL_SIZE 4)
+为了实现渐进式扩容，Redis没有直接把dictht暴露给上层，而是再封装了一层&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">typedef&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span> dict {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> dictType &lt;span style="color:#f92672">*&lt;/span>type;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#f92672">*&lt;/span>privdata;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> dictht ht[&lt;span style="color:#ae81ff">2&lt;/span>];
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">long&lt;/span> rehashidx;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">unsigned&lt;/span> &lt;span style="color:#66d9ef">long&lt;/span> iterators;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>} dict;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;code>dict&lt;/code>结构里面，包含了2个dictht结构，也就是2个HASHTABLE结构。&lt;/p></description></item><item><title>Redis - Encoding&lt;sds></title><link>https://chhz0.github.io/notes/database/redis/datatypes/encoding/sds/</link><pubDate>Tue, 10 Jun 2025 22:36:08 +0800</pubDate><guid>https://chhz0.github.io/notes/database/redis/datatypes/encoding/sds/</guid><description>&lt;h2 id="redis-enc-sds-">Redis&amp;lt; enc-SDS &amp;gt;&lt;/h2>
+&lt;p>sds(Simple Synamic String)，简单动态字符串，是redis内部作为基石的字符串封装（很重要）&lt;/p>
+&lt;p>sds是redis封装字符串结构，用以解决字符串追加和长度计算操作来带的性能瓶颈问题&lt;/p>
+&lt;p>redis中SDS分为sdshdr8、sdshdr16、sdshdr32、sdshdr64，字段属性一致，区别再对应不同大小的字符串&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">struct&lt;/span> &lt;span style="color:#a6e22e">__attribute__&lt;/span>((__packed__)) sdshdr8 {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">uint8_t&lt;/span> len; &lt;span style="color:#75715e">// 使用了多少内部
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#66d9ef">uint8_t&lt;/span> alloc; &lt;span style="color:#75715e">// 分配了多少内存
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#66d9ef">unsigned&lt;/span> &lt;span style="color:#66d9ef">char&lt;/span> flags; &lt;span style="color:#75715e">// 标记是什么分类 例如： #define SDS_TYPE_8 1
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> &lt;span style="color:#66d9ef">char&lt;/span> buf[];
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>从上面的结构可以看出SDS是怎么解决问题的：&lt;/p>
+&lt;ol>
+&lt;li>增加len字段，快速返回长度&lt;/li>
+&lt;li>增加空余空间(alloc - len)，为后续追加数据留余地&lt;/li>
+&lt;li>不要以&amp;rsquo;\0&amp;rsquo;作为判断标准，二进制安全&lt;/li>
+&lt;/ol>
+&lt;p>SDS预留空间大小的规则：alloc = min(len, 1M) + len：&lt;/p>
+&lt;ul>
+&lt;li>len小于1M的情况下，alloc=2*len, 预留len大小的空间&lt;/li>
+&lt;li>len大于1M的情况下，alloc=1M+lne, 预留1M大小的空间&lt;/li>
+&lt;/ul></description></item><item><title>Redis - Encoding&lt;SkipList></title><link>https://chhz0.github.io/notes/database/redis/datatypes/encoding/skiplist/</link><pubDate>Tue, 10 Jun 2025 22:36:08 +0800</pubDate><guid>https://chhz0.github.io/notes/database/redis/datatypes/encoding/skiplist/</guid><description>&lt;h2 id="redis-enc-skiplist-">Redis&amp;lt; enc-SkipList &amp;gt;&lt;/h2>
+&lt;p>跳表是Redis有序集合ZSet底层的数据结构&lt;/p>
+&lt;p>redis中跳表的两处应用：&lt;/p>
+&lt;pre>&lt;code>1. 实现有序集合键
+2. 在集群节点中作为内部数据结构
+&lt;/code>&lt;/pre>
+&lt;p>从本质上看是链表，这种结构虽然简单清晰，但是查询某个节点的效率比较低，而在有序集合场景，无论是查找还是添加删除元素，我们是需要快速通过score定位到具体位置，如果是链表的话时间复杂度是O(N)&lt;/p>
+&lt;p>为了提高查找的性能，Redis引入跳表，跳表在链表的基础上，给链表增加了多级的索引，通过索引可以一次实现多个节点的跳跃，提高性能&lt;/p>
+&lt;h3 id="skiplist-结构">SKIPLIST 结构&lt;/h3>
+&lt;p>Redis &lt;code>SKIPLIST&lt;/code> 单节点的结构:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">typedef&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span> zskiplistNode {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> sds ele;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">double&lt;/span> score;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">struct&lt;/span> zskiplistNode &lt;span style="color:#f92672">*&lt;/span>backward;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">struct&lt;/span> zskiplistLevel {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">struct&lt;/span> zskiplistNode &lt;span style="color:#f92672">*&lt;/span>forward;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">unsigned&lt;/span> &lt;span style="color:#66d9ef">long&lt;/span> span;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> } level[];
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>} zskiplistNode;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>字段的定义：&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>Ele&lt;/code>: SDS结构，用来存储数据&lt;/li>
+&lt;li>&lt;code>Score&lt;/code>: 节点的分数，浮点型数据&lt;/li>
+&lt;li>&lt;code>Backward&lt;/code>: 指向上一个节点的回退指针，支持从表尾向表头遍历，也就是ZREVRANGE这个命令&lt;/li>
+&lt;li>&lt;code>level&lt;/code>: 是个zskiplistLevel结构体数组，包含两个字段，一个是forward，指向该层下个能跳到的节点，span记录距离下个节点的步数，数组结构表示每个节点可能是多层结构&lt;/li>
+&lt;/ul>
+&lt;blockquote>
+&lt;p>在标准的跳表中，score值是不可重复的，但是在Redis ZIPLIST中，score值是可重复的，增加了回退指针&lt;/p>&lt;/blockquote>
+&lt;h3 id="skiplist-细节">SKIPLIST 细节&lt;/h3>
+&lt;ul>
+&lt;li>Redis跳表单个节点有几层？&lt;/li>
+&lt;/ul>
+&lt;p>层次的决定，需要比较随机，才能在各个场景表现出较平均的性能，这里Redis使用概率均衡的思路来确定插入节点的层数：&lt;/p>
+&lt;p>Redis跳表决定每一个节点，是否能增加一层的概率为25%，而最大层数限制在Redis 5.0是64层，在Redis 7.0是32层&lt;/p>
+&lt;ul>
+&lt;li>Redis跳表的性能优化了多少？&lt;/li>
+&lt;/ul>
+&lt;p>平均时间复杂度为O(log(n))，跳表的最坏平均时间复杂度是O(N)，当然实际的生产过程中，体现出来的基本是跳表的平均时间复杂度&lt;/p></description></item><item><title>Redis - Encoding&lt;ZipList></title><link>https://chhz0.github.io/notes/database/redis/datatypes/encoding/ziplist/</link><pubDate>Tue, 10 Jun 2025 22:36:08 +0800</pubDate><guid>https://chhz0.github.io/notes/database/redis/datatypes/encoding/ziplist/</guid><description>&lt;h2 id="redis-enc-ziplist-">Redis&amp;lt; enc-ZipList &amp;gt;&lt;/h2>
+&lt;p>&lt;code>ZIPLIST&lt;/code>压缩列表，是排列紧凑的列表，为Redis供紧凑型的数据存储方式，能节约内存（节省链表指针的开销），数据量小的时候遍历访问性能好（连续+缓存命中率友好）&lt;/p>
+&lt;p>关于&lt;code>LISTPACK&lt;/code>是Redis 5.0引入，Redis 7.0完全替代&lt;code>ZIPLIST&lt;/code>.&lt;/p>
+&lt;h3 id="ziplsit-整体结构">ZIPLSIT 整体结构&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span>// redis代码注释，描述了ZIPLIST的结构
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &amp;lt;zlbytes&amp;gt; &amp;lt;zltail&amp;gt; &amp;lt;zllen&amp;gt; &amp;lt;entry&amp;gt; &amp;lt;entry&amp;gt; ... &amp;lt;entry&amp;gt; &amp;lt;zlend&amp;gt;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>各字段定义：&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>zlbytes&lt;/code>: 表示该ZIPLIST一共占了多少字节，这个数字是包含zlbytes本身占据的字节的&lt;/li>
+&lt;li>&lt;code>zltail&lt;/code>: ZIPLIST尾巴节点，相对于ZIPLIST的开头，偏移的字节数&lt;/li>
+&lt;li>&lt;code>zllen&lt;/code>: 表示有多少个数据节点&lt;/li>
+&lt;li>&lt;code>entry&lt;/code>: 表示压缩列表的数据节点&lt;/li>
+&lt;li>&lt;code>zlend&lt;/code>: 一个特殊的entry节点，为1个字节&lt;code>11111111&lt;/code>即255占据，表示ZIPLIST的结束&lt;/li>
+&lt;/ul>
+&lt;h3 id="ziplist-节点结构---entrys">ZIPLIST 节点结构 - entrys&lt;/h3>
+&lt;p>其定义如下&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-text" data-lang="text">&lt;span style="display:flex;">&lt;span> * &amp;lt;prevlen&amp;gt; &amp;lt;encoding&amp;gt; &amp;lt;entry-data&amp;gt;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>各字段含义：&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>&lt;code>prevlen&lt;/code>: 表示前一个节点的长度。通过该节点定位到前一个节点的起始地址，如果前一个节点是压缩列表的开头，那么这个字段的值为0，通过该字段，可以实现往前操作，即&lt;code>ZIPLIST&lt;/code>可以从后往前遍历.&lt;/p>
+&lt;blockquote>
+&lt;p>有关上一个&lt;code>entry&lt;/code>的长度，从&lt;code>prevlen&lt;/code>字段可以获得，根据&lt;code>entry&lt;/code>的大小，&lt;code>prevlen&lt;/code>所占字节也会有所变化:&lt;/p>
+&lt;ul>
+&lt;li>entry &amp;lt; 254 : &lt;code>prevlen&lt;/code>为1字节，(值得注意的是255在entry中是个特殊数字，被&lt;code>zlend&lt;/code>使用，表示&lt;code>ZIPLIST&lt;/code>的结束)&lt;/li>
+&lt;li>entry &amp;gt;= 254 : &lt;code>prevlen&lt;/code>为5字节，在这5个字节中，第一个字节作为标志位，固定为&lt;code>11111110&lt;/code>，表示&lt;code>prevlen&lt;/code>是5个字节，后面4个字节才是&lt;code>prevlen&lt;/code>记录的上一个节点长度.&lt;/li>
+&lt;/ul>&lt;/blockquote>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;code>encoding&lt;/code>: 编码类型，包含了entry的长度信息，用于正序遍历.&lt;/p>
+&lt;blockquote>
+&lt;p>encoding是一个整型数据，其二进制数据由&lt;code>entry-data&lt;/code>的类型和字节长度组成&lt;/p>
+&lt;ul>
+&lt;li>如果是string类型，那么encoding由两部分，前几位为标识位、后几位标识长度&lt;/li>
+&lt;li>如果是int类型，整体1字节编码，那么仅标识类型，根据不同的int类型，确定其长度，例如int32就是32位，4字节&lt;/li>
+&lt;/ul>&lt;/blockquote>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;code>entry-data&lt;/code>: 实际的数据&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="ziplist-查询数据">ZIPLIST 查询数据&lt;/h3>
+&lt;ul>
+&lt;li>获取节点数量
+&lt;code>ZIPLIST&lt;/code>可以在O(1)时间复杂度返回节点数量，因为其header定义了记录节点数量的&lt;code>zllen&lt;/code>，但是&lt;code>zllen&lt;/code>仅占2字节长度，最大记录&lt;strong>65534&lt;/strong>，当节点数量超过65535时，就需要通过遍历节点获取节点数量.&lt;/li>
+&lt;/ul>
+&lt;p>之所以zllen是2个字节，原因是redis中应用ZIPLIST是为了节点个数少的场景，所以将zllen设计得比较小，节约内存空间&lt;/p></description></item><item><title>Redis - Hash</title><link>https://chhz0.github.io/notes/database/redis/datatypes/hash/</link><pubDate>Tue, 10 Jun 2025 22:36:08 +0800</pubDate><guid>https://chhz0.github.io/notes/database/redis/datatypes/hash/</guid><description>&lt;h2 id="redis--hash-">Redis &amp;lt; Hash &amp;gt;&lt;/h2>
+&lt;p>Redis Hash 是结构化为字段值(field)-&amp;gt;值(value)集合的记录类型. 可以使用&lt;code>Hash&lt;/code>来表示基础对象并存储计数器分组.&lt;/p>
+&lt;blockquote>
+&lt;p>创建的&lt;code>Hash&lt;/code>数量没有实际限制，除了受到可用内存的限制，
+但是每个&lt;code>Hash&lt;/code>最多可以存储 4,294,967,295 (2^32 - 1) 个字段值对&lt;/p>&lt;/blockquote>
+&lt;p>&lt;code>Hash&lt;/code>可以很方便的表示对象&lt;/p>
+&lt;h3 id="hash-命令">Hash 命令&lt;/h3>
+&lt;p>Hash常用命令：&lt;/p>
+&lt;ul>
+&lt;li>创建：&lt;code>HSET&lt;/code>, &lt;code>HSETNX&lt;/code>
+&lt;ul>
+&lt;li>&lt;code>HSET key field value&lt;/code> # 为集合对于field设置value，可以一次设置多个field-value&lt;/li>
+&lt;li>&lt;code>HSETNX key field value&lt;/code> # 如果field不存在，则为集合对应field设置value数据&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>查询：&lt;code>HGETALL&lt;/code>, &lt;code>HGET&lt;/code>, &lt;code>HLEN&lt;/code>, &lt;code>HSCAN&lt;/code>
+&lt;ul>
+&lt;li>&lt;code>HGETALL key&lt;/code> # 查找全部数据&lt;/li>
+&lt;li>&lt;code>HGET key field&lt;/code> # 查找某个key（field）&lt;/li>
+&lt;li>&lt;code>HLEN key&lt;/code> # 查找Hash中元素总数&lt;/li>
+&lt;li>&lt;code>HSCAN key cursor [MATCH pattern] [COUNT count]&lt;/code> # 从指定位置查询一定数量的数据，这里注意如果是小数据量下，处于ZIPLIST时，COUNT不管填多少，都是返回全部，因为ZIPLIST本身就用于小集合，没必要切分几段返回&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>更新：&lt;code>HSET&lt;/code>, &lt;code>HSETNX&lt;/code>, &lt;code>HDEL&lt;/code>
+&lt;ul>
+&lt;li>&lt;code>HDEL key field [field ...]&lt;/code> # 删除指定field，可以一次删除多个&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>删除：&lt;code>DEL&lt;/code>
+&lt;ul>
+&lt;li>&lt;code>DEL key [key ...]&lt;/code> # 删除Hash对象&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="hash-编码底层实现">Hash 编码(底层实现)&lt;/h3>
+&lt;p>Hash底层有两个编码方式：&lt;code>ZIPLIST&lt;/code>, &lt;code>HASHTABLE&lt;/code>&lt;/p></description></item><item><title>Redis - List</title><link>https://chhz0.github.io/notes/database/redis/datatypes/list/</link><pubDate>Tue, 10 Jun 2025 22:36:08 +0800</pubDate><guid>https://chhz0.github.io/notes/database/redis/datatypes/list/</guid><description>&lt;h2 id="redis--list-">Redis &amp;lt; List &amp;gt;&lt;/h2>
+&lt;p>Redis List是一组连续的字符串值&lt;strong>链表&lt;/strong>，这意味着向List的头部或者尾部中添加新元素的操作会在恒定的时间内完成，
+无论其已经存储了多少元素，但是缺点是访问元素的操作则需要遍历List，时间复杂度为O(N)&lt;/p>
+&lt;p>Redis List经常用于:&lt;/p>
+&lt;ul>
+&lt;li>实现堆栈和队列&lt;/li>
+&lt;li>为后台系统构建队列管理&lt;/li>
+&lt;/ul>
+&lt;h3 id="list-命令">List 命令&lt;/h3>
+&lt;p>常用命令:&lt;/p>
+&lt;ul>
+&lt;li>创建 &amp;ndash;&amp;gt; &lt;code>LPUSH&lt;/code>, &lt;code>RPUSH&lt;/code>
+&lt;ul>
+&lt;li>&lt;code>LPUSH key value [value ...]&lt;/code> # 从头部增加元素，返回List中元素总数&lt;/li>
+&lt;li>&lt;code>RPUSH key value [value ...]&lt;/code> # 从尾部增加元素，返回List中元素总数&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>查询 &amp;ndash;&amp;gt; &lt;code>LLEN&lt;/code>, &lt;code>LRANGE&lt;/code>
+&lt;ul>
+&lt;li>&lt;code>LLEN&lt;/code> # 查看List的长度，即List中元素的总数&lt;/li>
+&lt;li>&lt;code>LRANGE key start stop&lt;/code> # 查看start到stop为角标的元素&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>更新 &amp;ndash;&amp;gt; &lt;code>LPUSH&lt;/code>, &lt;code>RPUSH&lt;/code>, &lt;code>LPOP&lt;/code>, &lt;code>RPOP&lt;/code>, &lt;code>LREM&lt;/code>
+&lt;ul>
+&lt;li>&lt;code>LPOP key&lt;/code> # 移除并获取列表的第一个元素&lt;/li>
+&lt;li>&lt;code>RPOP key&lt;/code> # 移除并获取列表的第一个元素&lt;/li>
+&lt;li>&lt;code>LREM key count value&lt;/code> # 移除值等于value的元素
+&lt;ul>
+&lt;li>count = 0 ，则移除所有等于value的元素；&lt;/li>
+&lt;li>count &amp;gt; 0 ，则从左到右开始移除count个value元素；&lt;/li>
+&lt;li>count &amp;lt; 0，则从右往左移除count个元素&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>删除 &amp;ndash;&amp;gt; &lt;code>DEL&lt;/code>, &lt;code>UNLINK&lt;/code>
+&lt;ul>
+&lt;li>&lt;code>DEL key [key ...]&lt;/code> # 删除对象，返回值为删除成功了几个键&lt;/li>
+&lt;li>&lt;code>UNLIKN key [key ...]&lt;/code> # 删除对象，返回值为删除成功了几个键&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;blockquote>
+&lt;p>del命令与unlink命令均为删除对象，不同的是del命令是同步删除目录，会阻塞客户端，直到删除完成；
+unlink命令是异步删除命令，只是取消key在键空间的关联，让其不在能查到，删除是异步进行，所以不会阻塞客户端.&lt;/p></description></item><item><title>Redis - Multi Thread</title><link>https://chhz0.github.io/notes/database/redis/arch/multi-thread/</link><pubDate>Tue, 10 Jun 2025 22:36:08 +0800</pubDate><guid>https://chhz0.github.io/notes/database/redis/arch/multi-thread/</guid><description>&lt;blockquote>
+&lt;p>Redis 多线程持久化 | IO复用&lt;/p>&lt;/blockquote>
+&lt;h2 id="redis-多线程持久化">Redis 多线程持久化&lt;/h2>
+&lt;p>Redis多线程模型&lt;/p>
+&lt;p>redis一开始就是基于单线程模型，Redis里所有的数据结构都是非线程安全，规避了数据竞争问题，使得Redis对各种数据结构的操作非常简单&lt;/p>
+&lt;blockquote>
+&lt;p>redis选择单线程的核心原因是Redis都是内存操作，CPU处理都非常快，瓶颈更容易出现在I/O而不是CPU，所以选择了单线程模型&lt;/p>&lt;/blockquote>
+&lt;p>随着数据量的增大，redis的瓶颈更容易出现在I/O而不是CPU&lt;/p>
+&lt;p>因为上述情况，Redis选择了引入多线程来处理网络I/O，这样即保持了Redis核心的单线程处理价格，又引入了多线程解决提高网络I/O的性能&lt;/p></description></item><item><title>Redis - redisDB</title><link>https://chhz0.github.io/notes/database/redis/arch/redisdb/</link><pubDate>Tue, 10 Jun 2025 22:36:08 +0800</pubDate><guid>https://chhz0.github.io/notes/database/redis/arch/redisdb/</guid><description>&lt;blockquote>
+&lt;p>Redis是一个基于内存的数据库，数据存储在内存中，以键值对的形式存储.&lt;/p>&lt;/blockquote>
+&lt;h2 id="redis-数据库结构">Redis 数据库结构&lt;/h2>
+&lt;p>Redis的数据库结构：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-c" data-lang="c">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">// redisDb 结构
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>type &lt;span style="color:#66d9ef">struct&lt;/span> redisDb {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> dict &lt;span style="color:#f92672">*&lt;/span>dict; &lt;span style="color:#75715e">//字典
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> dict &lt;span style="color:#f92672">*&lt;/span>expires; &lt;span style="color:#75715e">// 过期键
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span> dict &lt;span style="color:#f92672">*&lt;/span>blocking_keys;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> dict &lt;span style="color:#f92672">*&lt;/span>ready_keys;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> dict &lt;span style="color:#f92672">*&lt;/span>watched_keys;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">int&lt;/span> id;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">long&lt;/span> &lt;span style="color:#66d9ef">long&lt;/span> avg_ttl;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> list &lt;span style="color:#f92672">*&lt;/span>defrag_later;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>} redisDb;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">// dict 结构
+&lt;/span>&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">&lt;/span>&lt;span style="color:#66d9ef">typedef&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span> dict {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> dictType &lt;span style="color:#f92672">*&lt;/span>type;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#f92672">*&lt;/span>privdata;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> dictht ht[&lt;span style="color:#ae81ff">2&lt;/span>];
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">long&lt;/span> rehashidx;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">unsigned&lt;/span> &lt;span style="color:#66d9ef">long&lt;/span> iterators;
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>} dict;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;code>redisDb&lt;/code> 代表Redis数据库结构，各种操作对象，都存储在dict数据结构里.&lt;/p>
+&lt;ul>
+&lt;li>&lt;code>dict&lt;/code> 是Redis的字典结构，存储键值对.&lt;/li>
+&lt;li>&lt;code>expires&lt;/code> 是Redis的过期键字典结构，存储过期键.&lt;/li>
+&lt;/ul>
+&lt;p>&lt;img src="https://chhz0.github.io/redis/redis-redisDb-struct.drawio.svg" alt="redis-redisDb-struct">&lt;/p>
+&lt;h3 id="操作redis在内存中的表现">操作Redis在内存中的表现&lt;/h3>
+&lt;ul>
+&lt;li>&lt;code>添加数据&lt;/code> # 即添加键值对，添加到dict结构字典中，Key必须为String对象，value为任何类型的对象，添加数据后，会在redisDb里字段dict上添加dict对象&lt;/li>
+&lt;li>&lt;code>查询数据&lt;/code> # 直接在dict找到对应的key，即完成查询&lt;/li>
+&lt;li>&lt;code>更新数据&lt;/code> # 对已经Key对象的任何变更操作，都是更新&lt;/li>
+&lt;li>&lt;code>删除数据&lt;/code> # 删除即把key和value从dict结构里删除&lt;/li>
+&lt;/ul>
+&lt;h3 id="关于过期键-expireskey">关于过期键 expiresKey&lt;/h3>
+&lt;p>Redis可以设置过期键，到达一定时间，这些对象会被自动过期并回收&lt;/p></description></item><item><title>Redis - Set</title><link>https://chhz0.github.io/notes/database/redis/datatypes/set/</link><pubDate>Tue, 10 Jun 2025 22:36:08 +0800</pubDate><guid>https://chhz0.github.io/notes/database/redis/datatypes/set/</guid><description>&lt;h2 id="redis-set-">Redis&amp;lt; Set &amp;gt;&lt;/h2>
+&lt;p>Redis Set是一个唯一字符串的集合&lt;/p>
+&lt;p>适用于：&lt;/p>
+&lt;ol>
+&lt;li>跟踪唯一目标(e.g., 跟踪访问给定博客的所有唯一IP地址)&lt;/li>
+&lt;li>表示关系(e.g., 具有给定角色的所有用户集合)&lt;/li>
+&lt;li>执行常见的集合运算(e.g., 根据集合运算能力获取不同用户的共同信息)&lt;/li>
+&lt;/ol>
+&lt;blockquote>
+&lt;p>Redis Set的最大大小为2^32-1(4294967295)&lt;/p>&lt;/blockquote>
+&lt;h3 id="set-命令">Set 命令&lt;/h3>
+&lt;p>Set的基本操作有：&lt;/p>
+&lt;ul>
+&lt;li>创建：&lt;code>SADD&lt;/code>
+&lt;ul>
+&lt;li>&lt;code>SADD key member [member ...]&lt;/code> # 添加元素，返回值为成功添加了几个元素&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>查询：&lt;code>SISMEMBR&lt;/code>, &lt;code>SCARD&lt;/code>, &lt;code>SMEMBERS&lt;/code>, &lt;code>SSCAN&lt;/code>, &lt;code>SINTER&lt;/code>, &lt;code>SUNION&lt;/code>, &lt;code>SDIFF&lt;/code>
+&lt;ul>
+&lt;li>&lt;code>SISMEMBER key member&lt;/code> # 查询元素是否存在&lt;/li>
+&lt;li>&lt;code>SCARD key&lt;/code> # 查询集合元素个数&lt;/li>
+&lt;li>&lt;code>SMEMBERS key&lt;/code> # 查看集合的所有元素&lt;/li>
+&lt;li>&lt;code>SSCAN key cursor[MATCH pattern][COUNT count]&lt;/code> # 查看集合元素，可以理解为指定游标进行查询，可以指定个数，默认为10&lt;/li>
+&lt;li>&lt;code>SINTER key [key ...]&lt;/code> # 返回在第一个集合，同时在后面所有集合都存在元素&lt;/li>
+&lt;li>&lt;code>SUNION key [key ...]&lt;/code> # 返回所有集合的并集，集合个数大于等于2&lt;/li>
+&lt;li>&lt;code>SDIFF key [key ...]&lt;/code> # 返回第一个集合有，且后续集合中不存在的元素，结合个数大于等于2，注意&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>更新：&lt;code>SADD&lt;/code>, &lt;code>SREM&lt;/code>
+&lt;ul>
+&lt;li>&lt;code>SADD&lt;/code> &amp;ndash; &amp;gt; 参考上文&lt;/li>
+&lt;li>&lt;code>SREM key member [member ...]&lt;/code> # 删除元素，返回值为成功删除几个元素&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>删除：&lt;code>DEL&lt;/code>
+&lt;ul>
+&lt;li>&lt;code>DEL key&lt;/code> 删除元素&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;p>::: tip 详细Set命令
+🔗 &lt;a href="https://redis.io/docs/latest/commands/?group=set">Set命令列表&lt;/a>
+:::&lt;/p></description></item><item><title>Redis - Single Thread</title><link>https://chhz0.github.io/notes/database/redis/arch/single-thread/</link><pubDate>Tue, 10 Jun 2025 22:36:08 +0800</pubDate><guid>https://chhz0.github.io/notes/database/redis/arch/single-thread/</guid><description>&lt;blockquote>
+&lt;p>Redis的单线程模型&lt;/p>&lt;/blockquote>
+&lt;h2 id="redis-单线程模型">Redis 单线程模型&lt;/h2>
+&lt;p>redis是一个能高效处理请求的组件&lt;/p>
+&lt;p>核心处理逻辑：Redis一直都是单线程，其他辅助模块会有一些多线程、多进程的功能，例如：复制模块用的多进程；某些异步流程从4.0开始用多线程；网络I/O解包从6.0开始用多线程；&lt;/p>
+&lt;blockquote>
+&lt;p>Redis在处理客户端的请求时，包括获取（socket写）、解析、执行、内容返回等都是由一个顺序串行的主线程处理，这就是所谓的单线程&lt;/p>&lt;/blockquote>
+&lt;h3 id="redis-单线程的选择">Redis 单线程的选择&lt;/h3>
+&lt;p>Redis的定位是内存k-v存储，是做短平快的热点数据处理，一般来说执行会很快，执行本身不会成为瓶颈，瓶颈通常在网络I/O，处理逻辑多线程并不会有太大收益&lt;/p>
+&lt;p>同时Redis本身秉持简洁高效的理念，代码的简单性、可维护性是redis一直依赖的追求，执行本身不应该成为瓶颈，而且多线程本身也会引起额外成本&lt;/p>
+&lt;h4 id="引入多线程带来复杂度和额外成本">引入多线程带来复杂度和额外成本&lt;/h4>
+&lt;ol>
+&lt;li>
+&lt;p>多线程引入的复杂度是极大的&lt;/p>
+&lt;ul>
+&lt;li>多线程引入后，redis原来的顺序执行特性就不复存在，为了事务的原子性、隔离性，redis就不得不引入一些很复杂的实现&lt;/li>
+&lt;li>redis的数据结构是极其高效，在单线程模式下做了很多特性的优化，如果引入多线程，那么所有底层数据都要改为线性安全，这很复杂&lt;/li>
+&lt;li>多线程模式使得程序调试更加复杂和麻烦，会带来额外的开发成本及运营成本&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>
+&lt;p>多线程带来额外的成本&lt;/p>
+&lt;ul>
+&lt;li>上下文切换成本，多线程调度需要切换线程上下文，这个操作先存储当前线程的本地数据，程序指针，然后载入另一个线程数据，这种内核操作的成本不可忽略&lt;/li>
+&lt;li>同步机制的开销，一些公共资源，在单线程模式下直接访问就行，多线程需要通过加锁等方式进行同步&lt;/li>
+&lt;li>一个线程本身也占据内存大小，对redis这种内存数据库来说，内存非常珍贵，多线程本身带来的内存使用的成本也需要谨慎决策&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ol>
+&lt;h3 id="redis-单线程的高性能">Redis 单线程的高性能&lt;/h3>
+&lt;p>Redis 核心的请求处理是&lt;code>单线程&lt;/code>，但是Redis却能使用单线程模型达到每秒数万级别的处理能力，这是Redis多方面极致设计的一个综合结果.&lt;/p>
+&lt;ol>
+&lt;li>Redis的大部分操作在内存上完成，内存操作本身就特别快&lt;/li>
+&lt;li>Redis选择了很多高效的数据结构，并做了很多优化，比如&lt;code>ziplist&lt;/code>，&lt;code>hash&lt;/code>，&lt;code>skiplist&lt;/code>等，有时候一种对象底层有几种实现以应对不同场景&lt;/li>
+&lt;li>Redis采用了多路复用机制，使其在网络IO操作中能并发处理大量的客户端请求，实现高吞并量&lt;/li>
+&lt;/ol>
+&lt;h4 id="redis-io多路复用">Redis I/O多路复用&lt;/h4>
+&lt;p>Redis在内存中处理数据，其性能瓶颈更多是在I/O&lt;/p>
+&lt;p>Redis的I/O多路复用机制，是指Redis在处理客户端请求时，通过使用操作系统提供的I/O多路复用功能，实现同时处理多个客户端的请求，而不是阻塞等待每个请求的处理完成&lt;/p>
+&lt;p>Redis做了一层包装，叫&lt;code>Reactor模型&lt;/code>，本质就是监听各种事件，当事件发生时，将事件分发给不同的处理器&lt;/p>
+&lt;p>&lt;img src="https://chhz0.github.io/redis/redis-reactor.drawio.svg" alt="redis-reactor">&lt;/p>
+&lt;p>I/O多路复用让redis单线程有了较大的并发度，这里是并发，不是并行，这种模式下，Redis单核的性能可以是被充分利用&lt;/p></description></item><item><title>Redis - Stream</title><link>https://chhz0.github.io/notes/database/redis/datatypes/stream/</link><pubDate>Tue, 10 Jun 2025 22:36:08 +0800</pubDate><guid>https://chhz0.github.io/notes/database/redis/datatypes/stream/</guid><description>&lt;h2 id="redis-stream-">Redis&amp;lt; Stream &amp;gt;&lt;/h2>
+&lt;p>Redis Stream是一种数据结构，其作用类似于仅追加日志，但也实现了多种操作克服典型的仅追加日志的限制. 包括O(1)时间内的随机访问和复杂的消费策略&lt;/p>
+&lt;p>Stream的使用示例：&lt;/p>
+&lt;pre>&lt;code>1. 事件溯源(追踪用户操作、点击)；
+2. 传感器健康;
+3. 通知(将每个用户的通知存储在单独的流中)
+&lt;/code>&lt;/pre>
+&lt;p>Redis为每个流条目生成一个唯一ID，可以使用这些ID检索其关联条目或读取并处理流中的所有后续条目&lt;/p>
+&lt;p>Redis支持多种修剪策略和多种消费策略&lt;/p>
+&lt;h3 id="stream-命令">Stream 命令&lt;/h3>
+&lt;ul>
+&lt;li>&lt;code>XADD&lt;/code> # 将新条目添加到流中&lt;/li>
+&lt;li>&lt;code>XREAD&lt;/code> # 读取一个或多个条目，从给定位置开始并及时向前移动&lt;/li>
+&lt;li>&lt;code>XRANGE&lt;/code> # 返回两个提供的条目ID之间的条目范围&lt;/li>
+&lt;li>&lt;code>XLEN&lt;/code> # 返回流的长度&lt;/li>
+&lt;/ul>
+&lt;blockquote>
+&lt;p>Redis Stream 详细请阅读
+&lt;a href="https://redis.io/docs/latest/develop/data-types/streams/">Redis Stream&lt;/a>&lt;/p>&lt;/blockquote></description></item><item><title>Redis - String</title><link>https://chhz0.github.io/notes/database/redis/datatypes/string/</link><pubDate>Tue, 10 Jun 2025 22:36:08 +0800</pubDate><guid>https://chhz0.github.io/notes/database/redis/datatypes/string/</guid><description>&lt;h2 id="redis-string-">Redis&amp;lt; String &amp;gt;&lt;/h2>
+&lt;p>Redis String 类型，存储字节，包括文本，序列化对象和二进制数组，因此 &lt;em>&lt;strong>String是Redis最基本的数据结构&lt;/strong>&lt;/em>. 通常用于&lt;strong>缓存&lt;/strong>，而且Redis支持其他功能，允许实现&lt;strong>计数器&lt;/strong>并执行按位运算.&lt;/p>
+&lt;p>由于Redis中key是一个字符串，因此Redis使用String数据结构作为key的值.&lt;/p>
+&lt;p>在默认情况下，Stirng最大为512MB，可以通过配置项&lt;code>proto-max-bulk-len&lt;/code>进行修改.&lt;/p>
+&lt;h3 id="string-适用场景">String 适用场景&lt;/h3>
+&lt;p>使用场景：一般用来存放字节数据、文本数据、序列化后的对象数据.&lt;/p>
+&lt;ol>
+&lt;li>缓存场景：Value存Json字符串等信息.&lt;/li>
+&lt;li>计数场景：因为Redis处理命令是单线程，所以执行命令的过程是原子的，因此String数据结构适合计数场景.&lt;/li>
+&lt;/ol>
+&lt;h3 id="string-命令">String 命令&lt;/h3>
+&lt;p>常用命令:&lt;/p>
+&lt;ul>
+&lt;li>创建 &amp;ndash;&amp;gt; &lt;code>set&lt;/code>, &lt;code>setnx&lt;/code>, &lt;code>getset&lt;/code>
+&lt;ul>
+&lt;li>&lt;code>SET key value&lt;/code> # 设置一个key值为特定的value&lt;/li>
+&lt;/ul>
+&lt;blockquote>
+&lt;p>set命令扩展参数：
+EX（键过期时间秒）、PX（键过期时间毫秒）、NX（只有键不存在时才对键进行操作，基本替代下面的SETNX操作）、XX（键存在时才对键进行操作）&lt;/p>&lt;/blockquote>
+&lt;ul>
+&lt;li>&lt;code>SETNX key value&lt;/code> # 用于在指定的key不存在时，为key设置指定的值，对于实现锁很有用&lt;/li>
+&lt;li>&lt;code>GETSET key value&lt;/code> # 设置一个key的值，并返回原来的值&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>查询 &amp;ndash;&amp;gt; &lt;code>get&lt;/code>, &lt;code>mget&lt;/code>
+&lt;ul>
+&lt;li>&lt;code>Get key&lt;/code> # 查询某个key，存在就返回对应的value，不存在返回nil&lt;/li>
+&lt;li>&lt;code>Mget key [key ...]&lt;/code> # 一次查询多个key，如果某个key不存在，对应位置返回nil&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>更新 &amp;ndash;&amp;gt; &lt;code>set&lt;/code>
+&lt;ul>
+&lt;li>见上面的set命令&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>删除 &amp;ndash;&amp;gt; &lt;code>del&lt;/code>
+&lt;ul>
+&lt;li>&lt;code>DEL key [key ...]&lt;/code> # 删除对象，返回值为删除成功了几行&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;p>其他命令：&lt;code>incr&lt;/code>, &lt;code>incrby&lt;/code>, &lt;code>incrbyfloat&lt;/code>&lt;/p></description></item><item><title>Redis - ZSet</title><link>https://chhz0.github.io/notes/database/redis/datatypes/zset/</link><pubDate>Tue, 10 Jun 2025 22:36:08 +0800</pubDate><guid>https://chhz0.github.io/notes/database/redis/datatypes/zset/</guid><description>&lt;h2 id="redis-zset-">Redis&amp;lt; ZSet &amp;gt;&lt;/h2>
+&lt;p>Redis ZSet 是一个关联分数排序的唯一字符串集合. 当多个字符串具有相同分数时，字符串会按照字典顺序排列。&lt;/p>
+&lt;p>&lt;code>ZSet&lt;/code>可以适用于:&lt;/p>
+&lt;ul>
+&lt;li>排行榜. 使用ZSet维护大型游戏中最高分数的有序列表.&lt;/li>
+&lt;li>速率限制器. 使用ZSet构建滑动窗口速率限制器，以防止过多的API请求.&lt;/li>
+&lt;/ul>
+&lt;p>&lt;code>ZSet&lt;/code>可以视为是集合和哈希的混合，一方面，其与集合类似，由唯一的、不重复的字符串元素组成；另一方面，集合内元素没有排序，但是排序集合中每个元素都和一个浮点值相关联，也就是类似于哈希，每个元素映射一个值&lt;/p>
+&lt;p>此外，排序集中的元素是按顺序获取的，这个顺序遵守以下规则：&lt;/p>
+&lt;ol>
+&lt;li>如果 B 和 A 是具有不同分数的两个元素，则如果 A.score 是 &amp;gt; B.score，则 A &amp;gt; B.&lt;/li>
+&lt;li>如果 B 和 A 的分数完全相同，则如果 A 字符串按字典顺序大于 B 字符串，则 A &amp;gt; B。 B 和 A 字符串不能相等，因为排序集仅具有唯一元素&lt;/li>
+&lt;/ol>
+&lt;h3 id="zset-命令">ZSet 命令&lt;/h3>
+&lt;p>ZSet常见命令：&lt;/p>
+&lt;ul>
+&lt;li>创建：&lt;code>ZADD&lt;/code>
+&lt;ul>
+&lt;li>&lt;code>ZADD key score member [score member]&lt;/code> # 向Sorted Set增加数据，如果key已经存在的Key，则更新对应的数据
+&lt;ul>
+&lt;li>扩展参数：XX, NX, LT, GT&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>查询：&lt;code>ZRANGE&lt;/code>, &lt;code>ZCOUNT&lt;/code>, &lt;code>ZRANK&lt;/code>, &lt;code>ZCARD&lt;/code>, &lt;code>ZSCORE&lt;/code>
+&lt;ul>
+&lt;li>&lt;code>ZCARD key&lt;/code> # 查看ZSet中的成员&lt;/li>
+&lt;li>&lt;code>ZRANGE key start stop [WITHSCORES]&lt;/code> # 查询从start到stop范围的ZSet数据，WITHSCORES选填，不写输出里只有key，没有score值&lt;/li>
+&lt;li>&lt;code>ZREVRANGE key start stop [WITHSCORES]&lt;/code> # 即reverse range，从大到小遍历，WITHSCORES选项，不写不会输出score&lt;/li>
+&lt;li>&lt;code>ZCOUNT key min max&lt;/code> # 计算min-max积分范围的成员&lt;/li>
+&lt;li>&lt;code>ZRANK key member&lt;/code> # 查看ZSet中member的排名索引，索引从0开始，所以排名是第一，索引就是0&lt;/li>
+&lt;li>&lt;code>ZSCORE key member&lt;/code> # 查询ZSet成员的分数&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>更新：&lt;code>ZADD&lt;/code>, &lt;code>ZREM&lt;/code>
+&lt;ul>
+&lt;li>&lt;code>ZREM key member [member ...]&lt;/code> # 删除ZSet中的元素&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>删除：&lt;code>DEL&lt;/code>, &lt;code>UNLINK&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;p>::: tip 详细ZSet命令
+🔗 &lt;a href="https://redis.io/docs/latest/commands/?group=sorted-set">ZSets命令列表&lt;/a>
+:::&lt;/p></description></item><item><title>Redis - 过期淘汰算法</title><link>https://chhz0.github.io/notes/database/redis/arch/lru-lfu/</link><pubDate>Tue, 10 Jun 2025 22:36:08 +0800</pubDate><guid>https://chhz0.github.io/notes/database/redis/arch/lru-lfu/</guid><description>&lt;blockquote>
+&lt;p>Redis 中使用的过期淘汰算法 LRU &amp;amp;&amp;amp; LFU&lt;/p>&lt;/blockquote>
+&lt;h2 id="redis-过期淘汰算法">Redis 过期淘汰算法&lt;/h2></description></item><item><title>Redis-core</title><link>https://chhz0.github.io/notes/database/redis/redis-core/</link><pubDate>Tue, 10 Jun 2025 22:36:08 +0800</pubDate><guid>https://chhz0.github.io/notes/database/redis/redis-core/</guid><description>&lt;blockquote>
 &lt;p>一文详解 &lt;em>Redis&lt;/em> 核心内容&lt;/p>&lt;/blockquote>
 &lt;h2 id="1-redis-简介">1. Redis 简介&lt;/h2>
 &lt;h3 id="11-redis-安装">1.1 Redis 安装&lt;/h3>
@@ -779,4 +1250,98 @@ description&amp;ndash;&amp;gt;对commit的简短描述，以动词开头&lt;/p>
 &lt;h3 id="源码构建">源码构建&lt;/h3>
 &lt;h3 id="仓库软件包">仓库软件包&lt;/h3>
 &lt;h2 id="configuration">Configuration&lt;/h2>
-&lt;h2 id="cli">CLI&lt;/h2></description></item></channel></rss>
+&lt;h2 id="cli">CLI&lt;/h2></description></item><item><title>Go-常见设计模式</title><link>https://chhz0.github.io/notes/langs/golang/go-design-pattern/</link><pubDate>Tue, 19 Nov 2024 00:00:00 +0000</pubDate><guid>https://chhz0.github.io/notes/langs/golang/go-design-pattern/</guid><description>&lt;blockquote>
+&lt;p>Go项目开发中比较常用的设计模式介绍&lt;/p>&lt;/blockquote>
+&lt;ul>
+&lt;li>创建型模式
+&lt;ul>
+&lt;li>单例模式&lt;/li>
+&lt;li>工厂模式&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>结构型模式
+&lt;ul>
+&lt;li>策略模式&lt;/li>
+&lt;li>模板模式&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;li>行为型模式
+&lt;ul>
+&lt;li>代理模式&lt;/li>
+&lt;li>选项模式&lt;/li>
+&lt;/ul>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="创建型模式">创建型模式&lt;/h2>
+&lt;h3 id="单例模式">单例模式&lt;/h3>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">package&lt;/span> &lt;span style="color:#a6e22e">singleton&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">import&lt;/span> &lt;span style="color:#e6db74">&amp;#34;sync&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">type&lt;/span> &lt;span style="color:#a6e22e">singleton&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span> {}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">var&lt;/span> &lt;span style="color:#a6e22e">ins&lt;/span> &lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">singleton&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">var&lt;/span> &lt;span style="color:#a6e22e">once&lt;/span> &lt;span style="color:#a6e22e">sync&lt;/span>.&lt;span style="color:#a6e22e">Once&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> &lt;span style="color:#a6e22e">GetInsOr&lt;/span>() &lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">singleton&lt;/span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">once&lt;/span>.&lt;span style="color:#a6e22e">Do&lt;/span>(&lt;span style="color:#66d9ef">func&lt;/span>(){
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">ins&lt;/span> = &lt;span style="color:#f92672">&amp;amp;&lt;/span>&lt;span style="color:#a6e22e">singleton&lt;/span>{}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> })
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#66d9ef">nil&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>使用&lt;code>once.Do&lt;/code>可以确保ins实例全局被创建一次&lt;/p>
+&lt;p>单例模式实际上有饿汉方式和懒汉方式，这里只介绍在Go项目中单例模式最优雅的实现方式&lt;/p>
+&lt;h3 id="工厂模式">工厂模式&lt;/h3>
+&lt;p>工厂模式是&lt;strong>面向对象编程中的常用模式&lt;/strong>。可以通过不同的工厂模式来带得Go项目变得简洁&lt;/p>
+&lt;ul>
+&lt;li>简单工厂模式&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">package&lt;/span> &lt;span style="color:#a6e22e">factory&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">type&lt;/span> &lt;span style="color:#a6e22e">Person&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">Name&lt;/span> &lt;span style="color:#66d9ef">string&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">Age&lt;/span> &lt;span style="color:#66d9ef">string&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> (&lt;span style="color:#a6e22e">p&lt;/span> &lt;span style="color:#a6e22e">Person&lt;/span>) &lt;span style="color:#a6e22e">Greet&lt;/span>() {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">fmt&lt;/span>.&lt;span style="color:#a6e22e">Printf&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;name := %s, age := %s&amp;#34;&lt;/span>, &lt;span style="color:#a6e22e">p&lt;/span>.&lt;span style="color:#a6e22e">Name&lt;/span>, &lt;span style="color:#a6e22e">p&lt;/span>.&lt;span style="color:#a6e22e">Age&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> &lt;span style="color:#a6e22e">NewPerson&lt;/span>(&lt;span style="color:#a6e22e">name&lt;/span> &lt;span style="color:#66d9ef">string&lt;/span>, &lt;span style="color:#a6e22e">age&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span>) &lt;span style="color:#f92672">*&lt;/span>&lt;span style="color:#a6e22e">Person&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#f92672">&amp;amp;&lt;/span>&lt;span style="color:#a6e22e">Person&lt;/span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">Name&lt;/span>: &lt;span style="color:#a6e22e">name&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">Age&lt;/span>: &lt;span style="color:#a6e22e">age&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>通过&lt;code>NewPerson&lt;/code>创建实例，可以确保实例的Name和Age属性被设置&lt;/p>
+&lt;ul>
+&lt;li>抽象工厂模式&lt;/li>
+&lt;/ul>
+&lt;p>抽象工厂模式和简单工厂模式的唯一区别，返回的是&lt;strong>接口&lt;/strong>而不是结构体&lt;/p>
+&lt;p>通过返回接口，可以在不公开内部实现的情况下，让调用者使用提供的各种功能&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#f92672">package&lt;/span> &lt;span style="color:#a6e22e">factory&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">type&lt;/span> &lt;span style="color:#a6e22e">PersonIntf&lt;/span> &lt;span style="color:#66d9ef">interface&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">Greet&lt;/span>()
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">type&lt;/span> &lt;span style="color:#a6e22e">person&lt;/span> &lt;span style="color:#66d9ef">struct&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">name&lt;/span> &lt;span style="color:#66d9ef">string&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">age&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> (&lt;span style="color:#a6e22e">p&lt;/span> &lt;span style="color:#a6e22e">person&lt;/span>) &lt;span style="color:#a6e22e">Greet&lt;/span>() {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">fmt&lt;/span>.&lt;span style="color:#a6e22e">Printf&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;Hi! My name is %s&amp;#34;&lt;/span>, &lt;span style="color:#a6e22e">p&lt;/span>.&lt;span style="color:#a6e22e">name&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#75715e">// Here, NewPerson returns an interface, and not the person struct itself&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">func&lt;/span> &lt;span style="color:#a6e22e">NewPerson&lt;/span>(&lt;span style="color:#a6e22e">name&lt;/span> &lt;span style="color:#66d9ef">string&lt;/span>, &lt;span style="color:#a6e22e">age&lt;/span> &lt;span style="color:#66d9ef">int&lt;/span>) &lt;span style="color:#a6e22e">PersonIntf&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">return&lt;/span> &lt;span style="color:#a6e22e">person&lt;/span>{
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">name&lt;/span>: &lt;span style="color:#a6e22e">name&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#a6e22e">age&lt;/span>: &lt;span style="color:#a6e22e">age&lt;/span>,
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ul>
+&lt;li>工厂方式模式&lt;/li>
+&lt;/ul>
+&lt;p>在工厂方法模式，依赖工厂函数，通过实现工厂函数来创建多种工厂，将对象创建从由一个对象辅助所有具体类的实例化，变成由一群子类来负责具体类的实例化&lt;/p></description></item></channel></rss>
