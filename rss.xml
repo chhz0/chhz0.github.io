@@ -1,12 +1,36 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>&lt;ch'ang/></title><link>https://chhz0.github.io/</link><description>Recent content on &lt;ch'ang/></description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Mon, 15 Sep 2025 15:29:25 +0800</lastBuildDate><atom:link href="https://chhz0.github.io/rss.xml" rel="self" type="application/rss+xml"/><item><title>Golang/Context</title><link>https://chhz0.github.io/posts/golang/context/</link><pubDate>Mon, 15 Sep 2025 15:29:25 +0800</pubDate><guid>https://chhz0.github.io/posts/golang/context/</guid><description>&lt;blockquote>
-&lt;p>Context(上下文) 是 Go 语言中用于在并发程序中传递截止时间、取消信号和其他请求范围值的机制.&lt;/p>&lt;/blockquote>
-&lt;h2 id="推荐阅读">推荐阅读&lt;/h2>
-&lt;ul>
-&lt;li>&lt;a href="https://go.dev/src/context/context.go">context.go&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://go.dev/blog/context">Go Concurrency Patterns: Context&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://go.dev/blog/context-and-structs">Contexts and structs&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://www.sohamkamani.com/golang/context/">How to Use Context in Golang (Deadlines, Cancellation, and Passing Values)&lt;/a>&lt;/li>
-&lt;/ul></description></item><item><title>Recommand Resource</title><link>https://chhz0.github.io/recommand/</link><pubDate>Tue, 13 May 2025 19:32:24 +0800</pubDate><guid>https://chhz0.github.io/recommand/</guid><description>&lt;blockquote>
+&lt;p>&lt;code>Context&lt;/code> 是&lt;strong>Go&lt;/strong>语言于&lt;strong>v1.7&lt;/strong>引入，用于在&lt;code>goroutine&lt;/code>中传递截止时间、取消信号和其他请求范围值的标准库，也是Go语言的一个特殊机制.&lt;/p>&lt;/blockquote>
+&lt;h2 id="为什么需要-context-">为什么需要 Context ？&lt;/h2>
+&lt;p>在经典的网络服务器中，每个传入的请求都在一个单独的&lt;code>goroutine&lt;/code>中处理，这里处理过程可能涉及到多个下游调用，例如访问数据库、调用 RPC 服务等，这时会面临几个问题：&lt;/p>
+&lt;ol>
+&lt;li>&lt;strong>请求取消&lt;/strong>：如果客户端连接关闭或者请求超时，那么需要关闭所有相关的 &lt;code>goroutine&lt;/code> ，避免资源浪费.&lt;/li>
+&lt;li>&lt;strong>超时控制&lt;/strong>：某些操作需要明确的执行时间，超过该时间该停止，并返回超时错误.&lt;/li>
+&lt;li>&lt;strong>数据传递&lt;/strong>：在整个请求链中，共享一些数据（例如：user_id, trace_id&amp;hellip;），需要一种安全的方式将共享的数据传递到各个函数，同时不污染函数签名.&lt;/li>
+&lt;/ol>
+&lt;p>&lt;code>context.Context&lt;/code> 正是为了优雅解决这些问题，提供了一个在 API 边界之间和 &lt;code>goroutine&lt;/code> 之间传递“元数据”的标准方式.&lt;/p>
+&lt;h2 id="context-的核心原理">Context 的核心原理&lt;/h2>
+&lt;h3 id="context-接口">Context 接口&lt;/h3>
+&lt;p>&lt;code>context&lt;/code> 包的核心是 &lt;code>Context&lt;/code> 接口，它定义了四个方法：&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#abb2bf;background-color:#282c34;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-go" data-lang="go">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#c678dd">type&lt;/span> &lt;span style="color:#e06c75">Context&lt;/span> &lt;span style="color:#c678dd">interface&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#7f848e">// Deadline 返回一个时间点，当到达该时间点后，Context 将被自动取消。&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#7f848e">// 如果没有设置 Deadline，ok 将返回 false。&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#61afef;font-weight:bold">Deadline&lt;/span>() (&lt;span style="color:#e06c75">deadline&lt;/span> &lt;span style="color:#e06c75">time&lt;/span>.&lt;span style="color:#e06c75">Time&lt;/span>, &lt;span style="color:#e06c75">ok&lt;/span> &lt;span style="color:#e5c07b">bool&lt;/span>)
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#7f848e">// Done 返回一个 channel。当 Context 被取消或超时时，该 channel 会被关闭。&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#7f848e">// 如果 Context 不可取消，Done() 可能返回 nil。&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#61afef;font-weight:bold">Done&lt;/span>() &lt;span style="color:#56b6c2">&amp;lt;-&lt;/span>&lt;span style="color:#c678dd">chan&lt;/span> &lt;span style="color:#c678dd">struct&lt;/span>{}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#7f848e">// Err 在 Done() channel 关闭后，返回 Context 被取消的原因。&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#7f848e">// 如果 Context 未被取消，返回 nil。&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#7f848e">// 常见原因为 context.Canceled 和 context.DeadlineExceeded。&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#61afef;font-weight:bold">Err&lt;/span>() &lt;span style="color:#e5c07b">error&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#7f848e">// Value 返回与该 Context 关联的键（key）对应的值（value）。&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#7f848e">// 主要用于在请求处理链中传递请求范围的数据。&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#61afef;font-weight:bold">Value&lt;/span>(&lt;span style="color:#e06c75">key&lt;/span> &lt;span style="color:#e5c07b">any&lt;/span>) &lt;span style="color:#e5c07b">any&lt;/span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="context-树状结构和传播机制">Context 树状结构和传播机制&lt;/h3>
+&lt;p>Go 中的 &lt;code>Context&lt;/code> 具有&lt;strong>继承关系&lt;/strong>，可以形成一棵树状结构。当你基于一个父 &lt;code>Context&lt;/code> 创建一个子 &lt;code>Context&lt;/code> 时，它们之间就建立了关联.&lt;/p></description></item><item><title>Recommand Resource</title><link>https://chhz0.github.io/recommand/</link><pubDate>Tue, 13 May 2025 19:32:24 +0800</pubDate><guid>https://chhz0.github.io/recommand/</guid><description>&lt;blockquote>
 &lt;p>该页面主要收集一些好用的资源，包括但不限于：学习资料、工具以及开源项目等.&lt;/p>&lt;/blockquote>
 
 
@@ -17,12 +41,12 @@
  &lt;/div>
  &lt;div class="toc-content">
  &lt;nav id="TableOfContents">
- &lt;ol>
+ &lt;ul>
  &lt;li>&lt;a href="#programming-language-learning">Programming Language Learning&lt;/a>&lt;/li>
  &lt;li>&lt;a href="#website">Website&lt;/a>&lt;/li>
  &lt;li>&lt;a href="#github-repository">Github Repository&lt;/a>&lt;/li>
  &lt;li>&lt;a href="#tool">Tool&lt;/a>&lt;/li>
- &lt;/ol>
+ &lt;/ul>
 &lt;/nav>
  &lt;/div>
 &lt;/div>
@@ -105,6 +129,7 @@
 &lt;li>&lt;a href="https://go.dev/doc/effective_go">Effective Go&lt;/a> :Effective Go 是 Go 语言的官方文档，它包含了 Go 语言的基础知识、编码规范、性能优化技巧等.&lt;/li>
 &lt;li>&lt;a href="https://draven.co/golang/">Go语言设计与实现&lt;/a> :详细解释Go语言的编译原理、运行时、基础知识和进阶知识.&lt;/li>
 &lt;li>&lt;a href="https://tonybai.com/">Go/tonybai&lt;/a> :Go语言博客，由Tony Bai创作.&lt;/li>
+&lt;li>&lt;a href="https://www.yuque.com/aceld/npyr8s">Go/aceid - 轻量级并发服务框架zinx&lt;/a> :通过Zinx框架来了解基于Golang编写一个TCP服务器的整体轮廓&lt;/li>
 &lt;li>&lt;a href="https://developer.mozilla.org/zh-CN/">MDN Web Docs&lt;/a> :MDN Web Docs 是 Mozilla 开发的一个免费的、开放的、跨平台的 Web 文档项目，它包含了 Web 技术的所有文档，包括 HTML、CSS、JavaScript 等.&lt;/li>
 &lt;li>&lt;a href="https://kaisery.github.io/trpl-zh-cn/">Rust/trpl-zh-cn&lt;/a> :The Rust Programming Language 中文翻译.&lt;/li>
 &lt;/ul>
